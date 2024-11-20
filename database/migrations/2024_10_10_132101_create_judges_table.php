@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('slug');
             $table->string('name');
+            $table->foreignId('courttype_id')->nullable();
             $table->foreignId('court_id')->nullable();
-            $table->string('case_count');
-            $table->boolean('availability');
+            $table->string('case_count')->nullable();
+            $table->boolean('availability')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
+            $table->string('status')->default('Published');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

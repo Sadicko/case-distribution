@@ -34,4 +34,10 @@ class Courttype extends Model
         return $this->hasMany(Category::class, 'courttype_id');
 
     }
+
+    public function judges()
+    {
+        return $this->hasMany(Judge::class, 'courttype_id');
+
+    }
 }

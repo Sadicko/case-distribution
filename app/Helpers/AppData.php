@@ -19,8 +19,9 @@ function editStatus(){
 
     return [
         'Published',
+        'Archived',
         'Draft',
-        'Move to trash',
+//        'Move to trash',
     ];
 }
 
