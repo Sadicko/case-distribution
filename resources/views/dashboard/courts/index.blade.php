@@ -48,7 +48,7 @@
                                         <tr>
                                             <th scope="row">{{ $loop->index + 1 }}</th>
                                             <td>{{ $court->name }}</td>
-                                            <td>{{ '-' }}</td>
+                                            <td>{{ $court->currentJudge[0]?->name ?? '-'}}</td>
                                             <td>{{ $court->locations->name }}</td>
                                             <td>{{ $court->courttypes->name }}</td>
                                             <td>{{ $court->registries?->name ?? '-' }}</td>
