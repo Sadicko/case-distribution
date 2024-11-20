@@ -66,6 +66,7 @@ class ModuleSeeder extends Seeder
                     'Update courts',
                     'Delete courts',
                     'Print courts',
+                    'Assign court judges',
                 ]
             ],
             [

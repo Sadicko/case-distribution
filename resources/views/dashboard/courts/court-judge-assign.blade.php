@@ -32,31 +32,37 @@
                                 <h6 class="mb-0 fw-bold text-danger"><span>Current judge:</span> <small>Not assigned <i class="fas fa-times-circle"></i></small></h6>
                             @endif
                         </div>
-                        <div class="card-body">
-                            <form action="{{ route('court-judge', $court->slug) }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="slug" value="{{ $court->slug }}">
-                                <div class="mb-4">
-                                    <h5 class="modal-title" id="assignJudgeModalLabel">Assign New Judge</h5>
-                                    <small class="text-muted">Please note that a new judge will be assigned to <strong>{{ $court->name }}</strong> when you submit. The current judge will be moved to a historical judge position if they were previously assigned.</small>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-6 mb-5">
-                                        <label for="judgeSelect">Choose a Judge</label>
-                                        <select name="judge_id" id="judgeSelect" class="form-control select2" required>
-                                            @foreach($judges as $judge)
-                                                <option value="{{ $judge->id }}">{{ $judge->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    <a href="{{ route('courts') }}" class="btn btn-secondary">Cancel</a>
-                                </div>
-                            </form>
 
-                        </div>
+                        @if(!session()->has('success'))
+                            <div class="card-body">
+                                <form action="{{ route('court-judge', $court->slug) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="court" value="{{ $court->id }}">
+                                    <div class="mb-4">
+                                        <h5 class="modal-title" id="assignJudgeModalLabel">Assign New Judge</h5>
+                                        <small class="text-muted">Please note that a new judge will be assigned to <strong>{{ $court->name }}</strong> when you submit. The current judge will be moved to a historical judge position if they were previously assigned.</small>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-6 mb-5">
+                                            <label for="judgeSelect">Choose a Judge</label>
+                                            <select name="judge" id="judgeSelect" class="form-control select2" required>
+                                                <option></option>
+                                                @foreach($judges as $judge)
+                                                    <option value="{{ $judge->id }}">{{ $judge->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        <a href="{{ route('courts') }}" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </form>
+
+                            </div>
+                        @else
+                            <div style="height: 20vh"></div>
+                        @endif
                     </div>
                 </div>
             </div>

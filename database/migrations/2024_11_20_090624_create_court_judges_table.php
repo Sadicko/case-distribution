@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('court_judges', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
             $table->foreignId('court_id')->constrained()->onDelete('cascade');
             $table->foreignId('judge_id')->constrained()->onDelete('cascade');
             $table->timestamp('assigned_at')->comment('When the judge was assigned');
