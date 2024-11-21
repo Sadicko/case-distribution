@@ -80,6 +80,8 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::post('/courts/create', [CourtController::class, 'store'])->name('courts.create');
     Route::get('/courts/{slug}/edit', [CourtController::class, 'edit'])->name('courts.edit');
     Route::post('/courts/{slug}/edit', [CourtController::class, 'update'])->name('courts.edit');
+    Route::get('/courts/assign/{slug}/categories', [CourtController::class, 'assignCategories'])->name('courts.assign-categories');
+    Route::post('/courts/assign/{slug}/categories', [CourtController::class, 'saveCourtCategories'])->name('courts.assign-categories');
 
     // judges
     Route::get('/judges', [JudgeController::class, 'index'])->name('judges');

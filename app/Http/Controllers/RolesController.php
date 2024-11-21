@@ -23,9 +23,9 @@ class RolesController extends Controller
         }
 
         $roles =  Role::withCount(['permissions', 'users'])
-        ->whereNot('name', 'Super Admin')->latest()
-        ->latest()
-        ->get();
+            ->whereNot('name', 'Super Admin')->latest()
+            ->latest()
+            ->get();
 
         $this->createAuditTrail('Visited role list page.');
 
@@ -55,7 +55,7 @@ class RolesController extends Controller
 
     public function  store(Request $request)
     {
-     
+
         if(Gate::denies('Create roles') || Gate::denies('Update roles')){
 
             $this->createAuditTrail("Denied access to  Create/Update roles: Unauthorized");
@@ -75,23 +75,23 @@ class RolesController extends Controller
 
         $role =  Role::updateOrcreate(
             [
-                'slug'      => request()->slug ?? str_shuffle(strtotime(now())), 
+                'slug'      => request()->slug ?? str_shuffle(strtotime(now())),
             ],
             [
-                'name' => $request->role_name,  
-                'guard_name' => 'web',  
-                'status' => $request->status,  
+                'name' => $request->role_name,
+                'guard_name' => 'web',
+                'status' => $request->status,
             ]
         );
 
 
         if (empty($request->slug) ) {
-            $this->createAuditTrail("Created a new role $role->name."); 
+            $this->createAuditTrail("Created a new role $role->name.");
 
             return to_route('admin.roles.assign', $role->slug)->with('success', 'Role created successfully. Assign permissions to this role');
         }else{
 
-            $this->createAuditTrail("Updated the role: $role->name"); 
+            $this->createAuditTrail("Updated the role: $role->name");
 
             return back()->with('success', 'Role updated successfully.');
         }
@@ -103,7 +103,7 @@ class RolesController extends Controller
         return Role::where([
             'name' => request()->role_name,
         ])->where('slug', '!=' , request()->slug)
-        ->first();
+            ->first();
     }
 
     public function  showAssignPermissionsPage(Request $request, $slug)
@@ -112,7 +112,7 @@ class RolesController extends Controller
 
         $modules = Module::with('permissions')->get();
 
-        $this->createAuditTrail("Visted permissions assignment page to assign permisions to the role $role->name"); 
+        $this->createAuditTrail("Visted permissions assignment page to assign permisions to the role $role->name");
 
         return view('admin.roles.assign-permissions', compact('role', 'modules'));
 
@@ -120,14 +120,12 @@ class RolesController extends Controller
 
     public function  assignPermissions(Request $request, $slug){
 
-        // return $request;
-
         $role =  Role::whereSlug($slug)->firstOrfail();
 
 
         $role->syncPermissions($request->permissions);
 
-        $this->createAuditTrail("Assigned ".count($request->permissions)." permisions to the role $role->name"); 
+        $this->createAuditTrail("Assigned ".count($request->permissions)." permisions to the role $role->name");
 
         return to_route('admin.roles')->with('success', 'Permissions assigned to role successfully');
     }

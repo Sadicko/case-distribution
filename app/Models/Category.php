@@ -16,10 +16,17 @@ class Category extends Model
         return $this->belongsTo(Courttype::class, 'courttype_id');
     }
 
+    public function courts()
+    {
+       return $this->belongsToMany(Court::class, 'court_categories')
+            ->withPivot( 'created_by');
+    }
+
     public function dockets()
     {
         return $this->hasMany(Docket::class, 'category_id');
 
     }
+
 
 }

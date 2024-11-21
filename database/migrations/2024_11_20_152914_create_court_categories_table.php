@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('court_judges', function (Blueprint $table) {
+        Schema::create('court_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
             $table->foreignId('court_id')->constrained();
-            $table->foreignId('judge_id')->constrained();
-            $table->timestamp('assigned_at')->comment('When the judge was assigned');
-            $table->timestamp('unassigned_at')->nullable()->comment('When the judge was unassigned');
+            $table->foreignId('category_id')->constrained();
             $table->unsignedBigInteger('created_by')->nullable()->comment('who assigned or unassigned');
             $table->timestamps(); // created_at and updated_at
         });
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('court_judges');
+        Schema::dropIfExists('court_categories');
     }
 };

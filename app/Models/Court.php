@@ -50,6 +50,13 @@ class Court extends Model
             ->wherePivotNull('unassigned_at');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'court_categories')
+            ->withPivot('created_by')
+            ->withTimestamps();
+    }
+
 
 //    public static function getCourt()
 //    {

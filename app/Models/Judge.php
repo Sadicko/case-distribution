@@ -20,9 +20,10 @@ class Judge extends Model
 
     public function currentCourt()
     {
-        return $this->hasOne(CourtJudge::class)
-            ->whereNull('unassigned_at')
-            ->with('courts');
+        return $this->belongsToMany(Court::class, 'court_judges')
+            ->withPivot('assigned_at', 'unassigned_at')
+            ->wherePivotNull('unassigned_at')
+            ->limit(1);
     }
 
     public function currentCourts()

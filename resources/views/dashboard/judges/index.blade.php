@@ -31,7 +31,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
                                         <th scope="col" class="text-center">Availability</th>
-                                        <th scope="col">Court</th>
+                                        <th scope="col">Assigned court</th>
                                         <th scope="col">Location</th>
                                         <th scope="col">status</th>
                                         <th scope="col" class="text-center">Actions</th>
@@ -49,8 +49,8 @@
                                                     <span class="text-danger"><i class="fas fa-times-circle"></i></span>
                                                 @endif
                                             </td>
-                                            <td>{{ $judge->current_court?->name ?? '-'}}</td>
-                                            <td>{{ $judge->current_court?->locations?->name ?? '-' }}</td>
+                                            <td>{{ $judge->currentCourt[0]->name ?? '-'}}</td>
+                                            <td>{{ $judge->currentCourt[0]?->locations?->name ?? '-' }}</td>
                                             <td>{{ $judge->status }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('judges.edit', $judge->slug) }}"><i class="fas fa-pencil"></i></a>

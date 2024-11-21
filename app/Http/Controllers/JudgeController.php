@@ -23,7 +23,7 @@ class JudgeController extends Controller
             return back()->with(['error' => 'You are not authorized to Manage judges.']);
         }
 
-        $judges = Judge::query()->with('currentCourt')->latest()->get();
+        $judges = Judge::query()->with('currentCourt', 'currentCourt.locations')->latest()->get();
 
         $this->createAuditTrail('Visited judges page.');
 

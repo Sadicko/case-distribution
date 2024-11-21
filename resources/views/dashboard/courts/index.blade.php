@@ -36,9 +36,10 @@
                                         <th scope="col">Court</th>
                                         <th scope="col">Current judge</th>
                                         <th scope="col">Location</th>
+                                        <th scope="col" class="text-center">Availability</th>
                                         <th scope="col">Court type</th>
                                         <th scope="col">Registry</th>
-                                        <th scope="col">Categories</th>
+                                        <th scope="col" class="text-center">Categories</th>
                                         <th scope="col">Case counts</th>
                                         <th scope="col" class="text-center">Actions</th>
                                     </tr>
@@ -50,13 +51,31 @@
                                             <td>{{ $court->name }}</td>
                                             <td>{{ $court->currentJudge[0]?->name ?? '-'}}</td>
                                             <td>{{ $court->locations->name }}</td>
+                                            <td class="text-center">
+                                                @if($court->availability)
+                                                    <span class="text-success"><i class="fas fa-check-circle"></i></span>
+                                                @else
+                                                    <span class="text-danger"><i class="fas fa-times-circle"></i></span>
+                                                @endif
+                                            </td>
                                             <td>{{ $court->courttypes->name }}</td>
                                             <td>{{ $court->registries?->name ?? '-' }}</td>
-                                            <td>{{ 0  }}</td>
-                                            <td>{{ 0  }}</td>
+                                            <td class="text-center">{{ count($court->categories)  }}</td>
+                                            <td class="text-center">{{ $court->case_count ?? 0 }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('courts.edit', $court->slug) }}" class="me-2"><i class="fas fa-pencil"></i></a>
-                                                <a href="{{ route('court-judge', $court->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change/Assign judge"><i class="fas fa-user-edit"></i></a>
+                                                @canany(['Update courts', 'Assign court judges', 'Assign categories courts'])
+                                                    @can('Update courts')
+                                                        <a href="{{ route('courts.edit', $court->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-pencil"></i></a>
+                                                    @endcan
+                                                    @can('Assign court judges')
+                                                        <a href="{{ route('court-judge', $court->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change/Assign judge"><i class="fas fa-user-edit"></i></a>
+                                                    @endcan
+                                                    @can('Assign categories courts')
+                                                        <a href="{{ route('courts.assign-categories', $court->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign Categories"><i class="fas fa-tasks"></i></a>
+                                                    @endcan
+                                                @else
+                                                    <span>-</span>
+                                                @endcanany
                                             </td>
                                         </tr>
                                     @endforeach

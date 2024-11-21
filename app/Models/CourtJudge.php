@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class CourtJudge extends Model
 {
     use HasFactory;
+
+
+//    public function courts()
+//    {
+//        return $this->belongsTo(Court::class, 'court_id');
+//    }
+//
+//    public function judges()
+//    {
+//        return $this->belongsTo(Judge::class, 'judge_id');
+//    }
 }

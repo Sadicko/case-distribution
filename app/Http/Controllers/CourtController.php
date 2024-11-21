@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Court;
 use App\Models\Courttype;
 use App\Models\Location;
-use App\Models\Region;
-use App\Models\Registry;
 use App\Traits\AuditTrailLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +24,7 @@ class CourtController extends Controller
             return back()->with(['error' => 'You are not authorized to Manage courts.']);
         }
 
-        $courts = Court::query()->with('currentJudge')->latest()->get();
+        $courts = Court::query()->with('currentJudge', 'locations', 'courttypes', 'registries', 'categories')->latest()->get();
 
         $this->createAuditTrail('Visited court page.');
 
@@ -89,6 +88,7 @@ class CourtController extends Controller
             'registry_id' => $request->registry,
             'location_id' => $request->location,
             'region_id' => $location->region_id,
+            'availability' => 1,
             'slug' => str_shuffle(uniqid()),
             'created_by' => Auth::id(),
         ]);
@@ -117,7 +117,6 @@ class CourtController extends Controller
 
         $court =  Court::whereslug($slug)->firstOrfail();
         $courttypes = Courttype::latest()->get();
-        // $regions = Region::orderby('name', 'asc')->get();
 
         $this->createAuditTrail('Visited edit court page.');
 
@@ -148,7 +147,7 @@ class CourtController extends Controller
         }
 
         $court =  Court::whereslug($slug)->firstOrfail();
-        $location = Location::find($request->location);
+        $location = Location::query()->find($request->location);
 
         $court->update([
             'name' => $request->court_name,
@@ -158,6 +157,7 @@ class CourtController extends Controller
             'location_id' => $request->location,
             'registry_id' => $request->registry,
             'region_id' => $location->region_id,
+            'availability' => $request->get('availability') ? 1 : 0,
         ]);
 
 
@@ -183,4 +183,43 @@ class CourtController extends Controller
 
         return back()->with('success', 'Court updated successfully.');
     }
+
+    public function assignCategories($slug)
+    {
+        if(Gate::denies('Assign categories courts')){
+
+            $this->createAuditTrail("Denied access to  Assign categories courts: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Assign categories courts.']);
+        }
+
+        $court = Court::query()->with('categories')->where('slug', $slug)->firstOrfail();
+
+        $categories =  Category::query()->where('courttype_id', $court->courttype_id)->get();
+
+        $this->createAuditTrail('Visited categories assign page.');
+
+        return view('dashboard.courts.assign-categories', compact('court', 'categories'));
+    }
+
+    public function saveCourtCategories(Request $request, $slug)
+    {
+        if(Gate::denies('Assign categories courts')){
+
+            $this->createAuditTrail("Denied access to  Assign categories courts: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Assign categories courts.']);
+        }
+
+        $court = Court::query()->where('slug', $slug)->firstOrfail();
+
+        // Sync the categories
+        $court->categories()->sync($request->categories);
+
+        $this->createAuditTrail('Assigned '. count($request->categories). "categories to the court #". $court->name);
+
+        return to_route('courts')->with('success', count($request->categories).' categories assigned to '.$court->name.' successfully.');
+
+    }
+
 }
