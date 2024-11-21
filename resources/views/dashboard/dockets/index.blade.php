@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Asset Management')
+@section('title', 'Case management')
 
 @section('cases_collapse', 'show')
 @section('case_active', 'active')
@@ -15,11 +15,22 @@
                     <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
                         <h3 class="h4 mb-0 text-uppercase"><i class="fas fa-folder-open"></i> Asset Management</h3>
 
-                        @can('Create cases')
+                        @canany(['Create cases', 'Upload cases'])
                             <div class="col-auto d-flex w-sm-100  mt-sm-0">
-                                <a href="{{ route('cases.create') }}" class="btn btn-dark  w-sm-100"><i class="fas fa-plus-circle me-2"></i>New asset</a>
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                    New
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+                                    @can('Create cases')
+                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Case filing</a></li>
+                                    @endcan
+                                    @can('Upload cases')
+                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Case upload </a></li>
+                                    @endcan
+                                </ul>
+                                {{--                                <a href="{{ route('cases.create') }}" class="btn btn-dark  w-sm-100"><i class="fas fa-plus-circle me-2"></i>New asset</a>--}}
                             </div>
-                        @endcan
+                        @endcanany
                     </div>
                 </div>
             </div> <!-- Row end  -->

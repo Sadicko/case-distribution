@@ -46,7 +46,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     //assets
     Route::get('/cases', [ DocketController::class, 'showCases'])->name('cases');
-    Route::get('/cases/create', [ DocketController::class, 'createCreate'])->name('cases.create');
+    Route::get('/cases/create', [ DocketController::class, 'createCase'])->name('cases.create');
     Route::post('/cases/create', [ DocketController::class, 'saveCase'])->name('cases.create');
     Route::get('/cases/{slug}/show', [ DocketController::class, 'showCase'])->name('cases.show');
     Route::get('/cases/{slug}/edit', [ DocketController::class, 'showEditCase'])->name('cases.edit');

@@ -25,6 +25,14 @@ function editStatus(){
     ];
 }
 
+function  priority_level()
+{
+    return [
+        "normal",
+        "urgent"
+    ];
+}
+
 
 
 function user_status(){

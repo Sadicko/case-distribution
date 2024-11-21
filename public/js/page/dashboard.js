@@ -81,67 +81,6 @@ $(function(){
     $('[data-bs-toggle="tooltip"]').tooltip();
 
 
-    // select and preview founder
-    $(document).on('change', ".passport_picture", function(){
-
-        let inputFile = $(this);
-
-        if (checkFile(inputFile.val())) {
-
-            if (inputFile.val().substring(inputFile.val().lastIndexOf('.') + 1).toLowerCase() === 'pdf') {
-                $('.passport_picture_preview').hide();
-            }else{
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    inputFile.parents('.image-box').find('.passport_picture_preview').show().attr('src', e.target.result).css({'width':'200px', 'height':'137px', 'object-fit':'cover'});
-                }
-
-                reader.readAsDataURL(this.files[0]);
-            }
-
-
-        }else{
-            $(this).val('');
-            toastr.error('File is not supported. Only png, jpg and jpeg images and pdf documents are supported');
-        }
-    })
-
-    $(document).on('change', ".id_card", function(){
-        let inputFile = $(this);
-
-        if (checkFile(inputFile.val())) {
-
-            if (inputFile.val().substring(inputFile.val().lastIndexOf('.') + 1).toLowerCase() == 'pdf') {
-
-                $('.id_card_preview').hide();
-
-            }else{
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    inputFile.parents('.image-box').find('.id_card_preview').show().attr('src', e.target.result).css({'width':'200px', 'height':'137px', 'object-fit':'cover'});
-                }
-
-                reader.readAsDataURL(this.files[0]);
-            }
-
-
-        }else{
-            $(this).val('');
-            toastr.error('File is not supported. Only png, jpg and jpeg images and pdf documents are supported');
-        }
-    })
-
-    $(document).on('change', "#status", function(){
-
-        if($(this).val() == 'Released'){
-            $('#releasedDateBox').show();
-            // $('#released_date').attr('required', 'required');
-        }else{
-            $('#releasedDateBox').hide();
-            // $('#released_date').removeAttr('required', 'required');
-        }
-    })
-
     $(document).on('change', "#status", function(){
 
         if($(this).val() == 'Move to trash'){
@@ -150,25 +89,6 @@ $(function(){
             $('.status-info').hide();
         }
     })
-
-
-    $(document).on('change', ".document_type", function(){
-
-        // Get the data-name attribute of the selected option
-        var selectedName = $(this).find('option:selected').data('name');
-
-        // Define the array of valid names
-        var validNames = ['Civil Servant', 'Business Certificate', 'Private Payslip', 'Valuation Report'];
-
-        // Check if the selectedName is in the validNames array
-        if (validNames.includes(selectedName)) {
-            $(this).parents('.surety-box').find('.payslip-box').show();
-            $('.selected_document_name').html(selectedName);
-        } else {
-            $(this).parents('.surety-box').find('.payslip-box').hide();
-        }
-    });
-
 
 
 // check image upload
@@ -237,150 +157,6 @@ $(function(){
     })
 
 
-    $(document).on('change', '.document_number', function() {
-
-        let input = $(this);
-
-        let info =  input.parents('.document-box');
-        info.find('.document-message-error').hide();
-        info.find('.document-message-success').hide();
-
-        info.find('.document-info').show();
-
-        $.ajax({
-            url: "/validations/verify-document",
-            type: "POST",
-            dataType:"json",
-            data: { document: input.val() },
-            success: function (response) {
-
-                if(response.success){
-
-                    $('.create-bail').removeAttr('disabled', 'disabled');
-                    setTimeout(function () {
-                        info.find('.document-info').hide();
-                        info.find('.document-message-error').hide();
-                        info.find('.document-message-success').html(response.success).show();
-                    }, 1000);
-
-                }else{
-
-                    $('.create-bail').attr('disabled', 'disabled');
-                    toastr.error(response.error);
-                    setTimeout(function () {
-                        info.find('.document-info').hide();
-                        info.find('.document-message-success').hide();
-                        info.find('.document-message-error').html(response.error).show();
-                    }, 1000);
-
-                }
-            },
-            error: function () {
-                info.find('.document-info').hide();
-                toastr.error('An error occurred during request.');
-            }
-        });
-    })
-
-// $('.create-bail').attr('disabled', 'disabled');
-
-    $(document).on('click', '.create-bail', function(){
-        let button = $(this);
-        button.html('<i class="fas fa-spin fa-spinner"></i> Creating bail...');
-
-        // Get form data using FormData
-        let formData = new FormData($('#bailForm')[0]);
-
-        $.ajax({
-            url: '/bail/create',
-            type: 'POST',
-            data: formData,
-            // Prevent jQuery from processing data
-            processData: false,
-            // Prevent jQuery from setting content type
-            contentType: false,
-            success: function(data){
-                if (data.success) {
-                    toastr.success(data.success);
-                    window.location.reload();
-                } else if(data.url) {
-                    toastr.success('Bail created successfully. You can now validate document!');
-                    // console.log(data);
-                    window.location.href = data.url;
-                } else {
-                    button.html('<i class="fas fa-save"></i> Create bail');
-                    toastr.error(data.error);
-                }
-            },
-            error: function(xhr, status, error){
-                button.html('<i class="fas fa-save"></i> Create bail');
-                toastr.error('An error occurred while processing the request.');
-                // console.error(xhr.responseText);
-            }
-        });
-    });
-
-
-    $(document).on('click', '.update-bail', function(e){
-        // $(document).on('submit', '#bailForm', function(e){
-        e.preventDefault();
-        let button = $(this);
-        button.html('<i class="fas fa-spin fa-spinner"></i> Saving changes...');
-
-        // Get form data using FormData
-        let formData = new FormData($('#bailForm')[0]);
-        let slug = $('slug').val();
-
-        $.ajax({
-            url: '/bail/'+slug+'/edit',
-            type: 'POST',
-            data: formData,
-            // Prevent jQuery from processing data
-            processData: false,
-            // Prevent jQuery from setting content type
-            contentType: false,
-            success: function(data){
-                if (data.bail_url) {
-                    toastr.success('Bail changes saved successfully.');
-                    window.location.href = data.bail_url;
-                } else if(data.url) {
-                    toastr.warning('Bail moved to trash successfully.');
-                    window.location.href = data.url;
-                } else {
-                    button.html('<i class="fas fa-save"></i> Save changes');
-                    toastr.error(data.error);
-                }
-            },
-            error: function(xhr, status, error){
-                button.html('<i class="fas fa-save"></i> Save changes');
-                toastr.error('An error occurred while processing the request.');
-                // console.error(xhr.responseText);
-            }
-        });
-    });
-
-
-
-
-    $(document).on('click', '.view_bail', function(){
-
-        let btn = $(this);
-
-        let slug = btn.data('slug');
-        // console(slug);
-        btn.siblings(".show-spinner").fadeIn();
-
-        $.post('/bail/fetch-content', {slug: slug}, function(data){
-
-            $('.bail-modal-content').html(data);
-
-            setTimeout(function(){
-                btn.siblings(".show-spinner").fadeOut();
-                $('#bailModal').modal('show');
-            }, 1000);
-        })
-    })
-
     $(document).on('click', '#releaseBail', function(){
 
         if (confirm('Are you sure you want to RELEASE this bail?')) {
@@ -409,49 +185,6 @@ $(function(){
         }
     })
 
-
-    $(document).on('click', '.add-surity', function(){
-
-        $('.surety-loader').show();
-
-        $.post('/bail/fetch-surety', function(data){
-
-            $('.surety-loader').hide();
-
-            $('#surety-content').append(data);
-            $('#surety-content').find('.select2').select2({
-                allowClear: true,
-                placeholder: "Choose an option",
-            });
-        })
-
-        if ($('.surety-box').length >= 2){
-            $('.add-surity').hide();
-        }
-    })
-
-    $(document).on('click', '.remove-surity', function(){
-
-        $(this).parents('.surety-box').remove();
-
-        if ($('.surety-box').length <=  2){
-            $('.add-surity').show();
-        }
-    })
-
-    $(document).on('click', '.delete-surety', function(){
-        // Show confirmation dialog
-        if (confirm('Are you sure you want to delete this surety?')) {
-            // Proceed with the AJAX request if the user confirms
-            $.post('/bail/delete-surety', {'slug': $(this).data('slug')}, function(data){
-                if(data.url){
-                    window.location.reload();
-                }else{
-                    toastr.error(data.error);
-                }
-            });
-        }
-    });
 
     $(document).on('click', '#releaseSurety', function(){
 
@@ -546,37 +279,6 @@ $(function(){
 
 
 
-    $(document).on('click', '.releaseBail', function(){
-
-        $('#release_slug').val($(this).data('slug'));
-
-        $("#releaseBailModal").modal('show');
-    })
-
-
-    $(document).on('click', '#proceedRelease', function(){
-
-        let btn = $(this);
-
-        let slug = $('#release_slug').val();
-
-        btn.html('<i class="fas fa-spin fa-spinner"></i> Releasing...');
-
-        $.post('/bail/release', {slug: slug}, function(data){
-
-            if(data.success){
-                // $("#releaseBailModal").modal('hide');
-                window.location.reload();
-                toastr.success(data.success);
-
-            }else{
-                btn.html('<i class="fas fa-check"></i> Release bail').show();
-                toastr.error(data.error);
-            }
-        })
-    })
-
-
     $(document).on('keydown', '#suit_number', function(event){
 
         var allowedCharacters = /^[a-zA-Z0-9\/]*$/;
@@ -592,5 +294,9 @@ $(function(){
             event.preventDefault();
         }
     })
+
+    // Gets today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelector('.date').setAttribute('max', today);
 
 })

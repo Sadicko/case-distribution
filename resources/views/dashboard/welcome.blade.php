@@ -20,22 +20,22 @@
                                         <i class="icofont-edit me-2 fs-6"></i>File a Case</a>
                                 @endcan
 
-                                {{--                            @canany(['Read reports', 'Filter reports'])--}}
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Shortcuts
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-                                    @can('Create cases')
-                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">File a Case</a></li>
-                                    @endcan
-                                    @can('Upload cases')
-                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Upload Case</a></li>
-                                    @endcan
-                                    @canany(['Read reports', 'Filter reports'])
-                                        <li><a class="dropdown-item" href="#!">Reports</a></li>
-                                    @endcanany
-                                </ul>
-                                {{--                            @endcanany--}}
+                                @canany(['Create cases', 'Upload cases', 'Read reports', 'Filter reports'])
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Shortcuts
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+                                        @can('Create cases')
+                                            <li><a class="dropdown-item" href="{{ route('cases.create') }}">File a Case</a></li>
+                                        @endcan
+                                        @can('Upload cases')
+                                            <li><a class="dropdown-item" href="{{ route('cases.create') }}">Upload Case</a></li>
+                                        @endcan
+                                        @canany(['Read reports', 'Filter reports'])
+                                            <li><a class="dropdown-item" href="#!">Reports</a></li>
+                                        @endcanany
+                                    </ul>
+                                @endcanany
                             </div>
                         </div>
                     </div>

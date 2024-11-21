@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('dockets', function (Blueprint $table) {
             $table->string('slug');
-            $table->string('suit_no');
+            $table->string('suit_number');
             $table->longText('case_title');
             $table->foreignId('category_id')->constrained();
-            $table->foreignId('court_id')->nullable();
+            $table->foreignId('court_id')->constrained();
+            $table->foreignId('location_id')->constrained();
             $table->string('priority_level')->default('normal')->comment('normal & urgent');
-            $table->string('status');
+            $table->string('status')->default('Assigned')->comment('Assigned & Closed');
             $table->boolean('is_assigned')->default(0);
+            $table->dateTime('date_filed')->nullable();
             $table->dateTime('assigned_date')->nullable();
             $table->boolean('exported')->default(0);
             $table->dateTime('exported_at')->nullable();
