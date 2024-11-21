@@ -191,7 +191,7 @@
                                 <ul
                                     class="menu-grid list-unstyled row row-cols-xl-3 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 mb-0 mt-lg-3">
 
-                                    @can('Manage bail')
+                                    @can('Manage cases')
                                         <li class="col">
                                             <a href="#!" class="d-flex color-700">
                                                 <div class="avatar">

@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourtController;
 use App\Http\Controllers\CourtJudgeController;
 use App\Http\Controllers\CourttypeController;
+use App\Http\Controllers\DocketController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JudgeController;
 use App\Http\Controllers\LocationController;
@@ -45,12 +45,12 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     //assets
-    Route::get('/assets', [ AssetController::class, 'showAssets'])->name('assets');
-    Route::get('/assets/create', [ AssetController::class, 'createAsset'])->name('assets.create');
-    Route::post('/assets/create', [ AssetController::class, 'saveAsset'])->name('assets.create');
-    Route::get('/assets/{slug}/show', [ AssetController::class, 'showAsset'])->name('assets.show');
-    Route::get('/assets/{slug}/edit', [ AssetController::class, 'showEdit'])->name('assets.edit');
-    Route::post('/assets/{slug}/edit', [ AssetController::class, 'updateAsset'])->name('assets.edit');
+    Route::get('/cases', [ DocketController::class, 'showCases'])->name('cases');
+    Route::get('/cases/create', [ DocketController::class, 'createCreate'])->name('cases.create');
+    Route::post('/cases/create', [ DocketController::class, 'saveCase'])->name('cases.create');
+    Route::get('/cases/{slug}/show', [ DocketController::class, 'showCase'])->name('cases.show');
+    Route::get('/cases/{slug}/edit', [ DocketController::class, 'showEditCase'])->name('cases.edit');
+    Route::post('/cases/{slug}/edit', [ DocketController::class, 'updateCase'])->name('cases.edit');
 
     // reports
     Route::get('reports', [ReportController::class, 'index'])->name('reports');

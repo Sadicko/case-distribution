@@ -16,14 +16,15 @@ return new class extends Migration
             $table->string('suit_no');
             $table->longText('case_title');
             $table->foreignId('category_id')->constrained();
+            $table->foreignId('court_id')->nullable();
+            $table->string('priority_level')->default('normal')->comment('normal & urgent');
             $table->string('status');
             $table->boolean('is_assigned')->default(0);
             $table->dateTime('assigned_date')->nullable();
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('court_id')->nullable();
             $table->boolean('exported')->default(0);
             $table->dateTime('exported_at')->nullable();
             $table->dateTime('disposed_at')->nullable();
+            $table->unsignedBigInteger('disposed_by')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
             $table->softDeletes();

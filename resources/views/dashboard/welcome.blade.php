@@ -15,8 +15,8 @@
                             <h3 class="h4 mb-0">Dashboard</h3>
                             </h3>
                             <div class="col-auto d-flex w-sm-100 mt-2 mt-sm-0">
-                                @can('Create asset')
-                                    <a href="{{ route('assets.create') }}" class="btn btn-dark  w-sm-100 me-2">
+                                @can('Create cases')
+                                    <a href="{{ route('cases.create') }}" class="btn btn-dark  w-sm-100 me-2">
                                         <i class="icofont-edit me-2 fs-6"></i>File a Case</a>
                                 @endcan
 
@@ -25,12 +25,12 @@
                                     Shortcuts
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-                                    {{--                                    @can('Search document')--}}
-                                    <li><a class="dropdown-item" href="#!">File a Case</a></li>
-                                    {{--                                    @endcan--}}
-                                    {{--                                    @can('Validate document')--}}
-                                    <li><a class="dropdown-item" href="{{ route('assets') }}">Upload Case</a></li>
-                                    {{--                                    @endcan--}}
+                                    @can('Create cases')
+                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">File a Case</a></li>
+                                    @endcan
+                                    @can('Upload cases')
+                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Upload Case</a></li>
+                                    @endcan
                                     @canany(['Read reports', 'Filter reports'])
                                         <li><a class="dropdown-item" href="#!">Reports</a></li>
                                     @endcanany

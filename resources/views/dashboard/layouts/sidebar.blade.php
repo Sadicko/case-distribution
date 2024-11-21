@@ -32,25 +32,29 @@
                 </li>
             @endcan
 
-            {{--            @canany(['Manage bail', 'Create bail', 'Read bail', 'Update bail', 'Delete bail', 'Print bail',  'Track bail'])--}}
-            <li class="collapsed">
-                <a class="m-link @yield('cases_active')" data-bs-toggle="collapse" data-bs-target="#menu-Components" href="#">
-                    <i class="fas fa-folder-open"></i>
-                    <div>
-                        <h6 class="mb-0">Cases</h6>
-                    </div><span class="arrow icofont-dotted-down ms-auto text-end fs-5"></span>
-                </a>
-                <!-- Menu: Sub menu ul -->
-                <ul class="sub-menu collapse @yield('asset_collapse')" id="menu-Components">
+            @canany(['Manage cases', 'Create cases', 'Upload cases', 'Read cases', 'Update cases', 'Delete cases', 'Print cases',  'Track cases'])
+                <li class="collapsed">
+                    <a class="m-link @yield('cases_active')" data-bs-toggle="collapse" data-bs-target="#menu-Components" href="#">
+                        <i class="fas fa-folder-open"></i>
+                        <div>
+                            <h6 class="mb-0">Cases</h6>
+                        </div><span class="arrow icofont-dotted-down ms-auto text-end fs-5"></span>
+                    </a>
+                    <!-- Menu: Sub menu ul -->
+                    <ul class="sub-menu collapse @yield('cases_collapse')" id="menu-Components">
 
-                    <li><a class="ms-link @yield('list_assets_active')" href="{{ route('assets') }}"><span>Case list</span> </a></li>
+                        <li><a class="ms-link @yield('list_case_active')" href="{{ route('cases') }}"><span>Case list</span> </a></li>
 
-                    {{--                    @can('Create bail')--}}
-                    <li><a class="ms-link @yield('create_asset_active')" href="{{ route('assets.create') }}"><span>New case</span></a></li>
-                    {{--                    @endcan--}}
-                </ul>
-            </li>
-            {{--            @endcanany--}}
+                        @can('Create cases')
+                            <li><a class="ms-link @yield('create_case_active')" href="{{ route('cases.create') }}"><span>File a new case</span></a></li>
+                        @endcan
+                        @can('Upload cases')
+                            <li><a class="ms-link @yield('upload_case_active')" href="{{ route('cases.create') }}"><span>Upload cases</span></a></li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcanany
+
             <li>
                 <a class="m-link @yield('reset_case_active')" href="{{ route('categories') }}">
                     <i class="fas fa-list-alt"></i>

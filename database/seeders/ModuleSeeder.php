@@ -34,6 +34,20 @@ class ModuleSeeder extends Seeder
             ],
             [
                 'slug' => uniqid(),
+                'name' => 'Cases',
+                'permissions' => [
+                    'Manage cases',
+                    'Create cases',
+                    'Upload cases',
+                    'Read cases',
+                    'Update cases',
+                    'Delete cases',
+                    'Print cases',
+                    'Track cases',
+                ]
+            ],
+            [
+                'slug' => uniqid(),
                 'name' => 'Registries',
                 'permissions' => [
                     'Manage registries',

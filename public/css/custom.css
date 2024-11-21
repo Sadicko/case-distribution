@@ -10,6 +10,7 @@
     --gray-50: 250, 250, 250;
     --gray-700: 63, 63, 70;
     --primary-color: #142444;
+    --teal-color: #2D5A6C;
 }
 
 * {
@@ -93,7 +94,7 @@ p, strong, i{
 
 
 .sidebar {
-    background-color: #2D5A6C;
+    background-color: var(--teal-color);
     overflow-x: hidden;
 }
 
@@ -465,4 +466,8 @@ table.dataTable td, table.dataTable th, table.dataTable i {
     scrollbar-highlight-color: #333;
     scrollbar-shadow-color: #333;
     scrollbar-track-color: #eee;
+}
+
+.bg-teal{
+    background-color: var(--teal-color) !important;
 }

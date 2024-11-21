@@ -35,12 +35,12 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Court</th>
                                         <th scope="col">Current judge</th>
-                                        <th scope="col">Location</th>
+                                        <th scope="col">Workload</th>
                                         <th scope="col" class="text-center">Availability</th>
+                                        <th scope="col">Location</th>
                                         <th scope="col">Court type</th>
                                         <th scope="col">Registry</th>
                                         <th scope="col" class="text-center">Categories</th>
-                                        <th scope="col">Case counts</th>
                                         <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                     </thead>
@@ -50,7 +50,7 @@
                                             <th scope="row">{{ $loop->index + 1 }}</th>
                                             <td>{{ $court->name }}</td>
                                             <td>{{ $court->currentJudge[0]?->name ?? '-'}}</td>
-                                            <td>{{ $court->locations->name }}</td>
+                                            <td >{{ $court->case_count ?? 0 }} Cases</td>
                                             <td class="text-center">
                                                 @if($court->availability)
                                                     <span class="text-success"><i class="fas fa-check-circle"></i></span>
@@ -58,10 +58,10 @@
                                                     <span class="text-danger"><i class="fas fa-times-circle"></i></span>
                                                 @endif
                                             </td>
+                                            <td>{{ $court->locations->name }}</td>
                                             <td>{{ $court->courttypes->name }}</td>
                                             <td>{{ $court->registries?->name ?? '-' }}</td>
                                             <td class="text-center">{{ count($court->categories)  }}</td>
-                                            <td class="text-center">{{ $court->case_count ?? 0 }}</td>
                                             <td class="text-center">
                                                 @canany(['Update courts', 'Assign court judges', 'Assign categories courts'])
                                                     @can('Update courts')
