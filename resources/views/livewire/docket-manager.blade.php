@@ -33,23 +33,23 @@
                             <div class="form-group col-2 mb-2">
                                 <label for="from">From</label>
                                 <input type="date" name="startDate" id="startDate" class="form-control datepicker" placeholder="Start date"
-                                       autocomplete="off" required wire:model="startDate">
+                                       autocomplete="off" wire:model="startDate">
                             </div>
                             <div class="form-group col-2 mb-2">
                                 <label for="to"> To</label>
                                 <input type="date" name="endDate" id="endDate" class="form-control datepicker" placeholder="End date"
-                                       autocomplete="off" required  wire:model="endDate">
+                                       autocomplete="off"  wire:model="endDate">
                             </div>
                             <div class="form-group col-9 mb-2">
-                                <label for="search_item"> Enter search</label>
-                                <input type="text" name="search" class="form-control" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
+                                <label for="searchTerm"> Enter search</label>
+                                <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
                             </div>
                             <div class="form-group col-3 mb-2 mt-2">
                                 <div class="form-group btn-group  d-flex justify-content-end pt-3">
                                     <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
                                             class="fas fa-search"></i>
                                         Search</button>
-                                    <button type="button" class="btn btn-secondary btn-sm btn-block clear-filter" wire:click="clear"><i
+                                    <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
                                             class="fas fa-undo"></i>
                                         Reset</button>
                                 </div>
@@ -87,8 +87,30 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @if($dockets->total() > 0)
+                                    @foreach($dockets as $docket)
+                                        <tr>
+                                            <td>{{ $docket->index + 1 }}</td>
+                                            <td>{{ $docket->suit_number }}</td>
+                                            <td>{{ $docket->case_title }}</td>
+                                            <td>{{ $docket->categories->name }}</td>
+                                            <td>{{ $docket->courts?->name ?? '-' }}</td>
+                                            <td>{{ $docket->courts?->currentJudge[0]?->name ?? '-' }}</td>
+                                            <td>{{ $docket->date_filed->format('d-m-Y') }}</td>
+                                            <td>{{ $docket->assigned_date?->format('d-m-Y') ?? '-' }}</td>
+                                            <td>{{ $docket->status }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <td colspan="9">
+                                        <h5 class="text-muted text-center">No records found</h5>
+                                    </td>
+                                @endif
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="mt-3">
+                            {{ $dockets->links() }}
                         </div>
                     </div>
                 </div>
@@ -116,6 +138,10 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('startDate').setAttribute('max', today);
             document.getElementById('endDate').setAttribute('max', today);
+
+            document.getElementById('startDate').addEventListener('change', function () {
+                $('#endDate').attr('required', 'required');
+            });
 
             //events
             $wire.on('search-completed', () => {
@@ -148,6 +174,17 @@
             $('#filterForm').submit(function (){
                 let selectedCourt = $('#case_court').val();
             @this.set('selectedCourt', selectedCourt);
+
+                let searchTerm = $('#searchTerm').val();
+            @this.set('searchTerm', searchTerm);
+
+                let startDate = $('#startDate').val();
+            @this.set('startDate', startDate);
+
+                let endDate = $('#endDate').val();
+            @this.set('endDate', endDate);
+
+
             })
 
         })

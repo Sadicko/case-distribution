@@ -86,7 +86,7 @@
                                     <div class="row">
                                         <div class="form-group col-6 mb-3">
                                             <label for="date_filed" class="form-label">Date filed*</label>
-                                            <input class="form-control date" type="text" required name="date_filed" id="date_filed" value="{{ old('date_filed') }}" placeholder="d/m/Y">
+                                            <input class="form-control date" type="text" required name="date_filed" id="date_filed" value="{{ old('date_filed') }}" placeholder="d/m/Y" autocomplete="off">
                                             @error('date_filed')
                                             <small class="invalid-feedback">{{ $message }}</small>
                                             @enderror

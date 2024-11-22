@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dockets', function (Blueprint $table) {
+            $table->id();
             $table->string('slug');
             $table->string('suit_number');
             $table->longText('case_title');
             $table->foreignId('category_id')->constrained();
-            $table->foreignId('court_id')->constrained();
+            $table->foreignId('court_id')->nullable()->constrained();
             $table->foreignId('location_id')->constrained();
             $table->string('priority_level')->default('normal')->comment('normal & urgent');
             $table->string('status')->default('Assigned')->comment('Assigned & Closed');

@@ -7,6 +7,7 @@ use App\Models\Docket;
 use App\Models\Location;
 use App\Services\CaseDistributionService;
 use App\Traits\AuditTrailLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -32,8 +33,15 @@ class DocketController extends Controller
 
     public function createCase()
     {
-        $categories = Category::query()->orderBy('name', 'asc')->get();
-        $locations = Location::query()->orderBy('name', 'asc')->get();
+        //show locations that have courts and has been assigned categories
+        $categories = Category::query()->whereHas('courts', function ($qeury){
+            $qeury->where('availability', 1);
+        })->orderBy('name', 'asc')->get();
+
+        //show locations that have courts and has been assigned categories
+        $locations = Location::query()->whereHas('courts', function ($qeury){
+            $qeury->where('availability', 1);
+        })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
 
         // create audit
         $this->createAuditTrail('Visited case creation page.');
@@ -63,21 +71,22 @@ class DocketController extends Controller
             'case_title' => $request->case_title,
             'category_id' => $request->case_category,
             'location_id' => $request->location,
+            'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
             'priority_level' => $request->priority_level,
             'status' => 'Filed',
             'created_by' => Auth::id(),
         ]);
 
         //log case creation
-        $this->createAuditTrail("Created a case with suit number $docket->suit_no");
+        $this->createAuditTrail("Created a case with suit number $docket->suit_number");
 
         try {
 
             $assignedCourt = $this->caseDistributionService->assignCase($docket);
 
-            $this->createAuditTrail("Assigned the case with suit no $docket->suit_no to $assignedCourt->name successfully");
+            $this->createAuditTrail("Assigned the case with suit no $docket->suit_number to $assignedCourt->name successfully");
 
-            return back()->with('success', "Assigned the case with suit no $docket->suit_no to $assignedCourt->name successfully");
+            return back()->with('success', "Assigned the case with suit no $docket->suit_number to $assignedCourt->name successfully");
 
 
         } catch (\Exception $e) {

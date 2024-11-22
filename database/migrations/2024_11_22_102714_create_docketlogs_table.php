@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('docketlogs', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
+            $table->foreignId('docket_id');
+            $table->foreignId('user_id');
+            $table->enum('activity', ['Created', 'Updated', 'Change', 'Added'])->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
