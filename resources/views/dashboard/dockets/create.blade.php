@@ -71,21 +71,28 @@
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="location" class="form-label">Case category*</label>
+                                        <label for="location" class="form-label">Location*</label>
                                         <select name="location" class="form-control select2" id="location">
                                             <option value=""></option>
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                            @foreach($locations as $location)
+                                                <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
                                             @endforeach
                                         </select>
-                                        @error('case_category')
+                                        @error('location')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
 
                                     <div class="row">
                                         <div class="form-group col-6 mb-3">
-                                            <label for="priority_level" class="form-label">Case priority</label>
+                                            <label for="date_filed" class="form-label">Date filed*</label>
+                                            <input class="form-control date" type="text" required name="date_filed" id="date_filed" value="{{ old('date_filed') }}" placeholder="d/m/Y">
+                                            @error('date_filed')
+                                            <small class="invalid-feedback">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group col-6 mb-3">
+                                            <label for="priority_level" class="form-label">Case priority*</label>
                                             <select name="priority_level" class="form-control select2" id="priority_level">
                                                 @foreach(priority_level() as $priority_level)
                                                     <option value="{{ $priority_level }}" {{ old('priority_level') == $priority_level ? 'selected' : ($priority_level == 'normal' ? 'selected' : '') }}>{{ ucfirst($priority_level) }}</option>
@@ -95,18 +102,10 @@
                                             <small class="invalid-feedback">{{ $message }}</small>
                                             @enderror
                                         </div>
-
-                                        <div class="form-group col-6 mb-3">
-                                            <label for="date_filed" class="form-label">Date filed</label>
-                                            <input class="form-control date" type="text" required name="date_filed" id="date_filed" value="{{ old('date_filed') }}" placeholder="d/m/Y">
-                                            @error('date_filed')
-                                            <small class="invalid-feedback">{{ $message }}</small>
-                                            @enderror
-                                        </div>
                                     </div>
                                     <div class="row mt-4">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary bg-dark float-end assignBtn">Assign Case</button>
+                                            <button type="button" class="btn btn-primary bg-dark float-end assignBtn">Submit for allocation</button>
                                         </div>
                                     </div>
                                 </div>
@@ -119,15 +118,15 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="assignCaseModalLabel">Case Assignment Confirmation</h5>
+                                <h5 class="modal-title" id="assignCaseModalLabel">Case allocation Confirmation</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h5><i class="fas fa-exclamation-circle text-danger"></i> Are you sure you want to assign this case?</h5>
+                                <h5><i class="fas fa-exclamation-circle text-danger"></i> Are you sure you want to submit this case for allocation?</h5>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary bg-dark proceedAssignment">Yes! Assign now.</button>
+                                <button type="button" class="btn btn-primary bg-dark proceedAssignment">Yes! Proceed.</button>
                             </div>
                         </div>
                     </div>
@@ -146,7 +145,7 @@
 
             $(document).on("click", ".assignBtn", function () {
 
-                if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#cat').val() == ''){
+                if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#cat').val() == '' || $('#case_category').val() == '' || $('#date_filed').val() == '' || $('#location').val() == '' || $('#priority_level').val() == ''){
 
                     toastr.error('All fields are required.');
 
