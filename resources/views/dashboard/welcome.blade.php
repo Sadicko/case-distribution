@@ -29,7 +29,7 @@
                                             <li><a class="dropdown-item" href="{{ route('cases.create') }}">File a Case</a></li>
                                         @endcan
                                         @can('Upload cases')
-                                            <li><a class="dropdown-item" href="{{ route('cases.create') }}">Upload Case</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('upload-cases') }}">Upload Case</a></li>
                                         @endcan
                                         @canany(['Read reports', 'Filter reports'])
                                             <li><a class="dropdown-item" href="#!">Reports</a></li>

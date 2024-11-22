@@ -25,7 +25,7 @@
                                         <li><a class="dropdown-item" href="{{ route('cases.create') }}">Case filing</a></li>
                                     @endcan
                                     @can('Upload cases')
-                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Case upload </a></li>
+                                        <li><a class="dropdown-item" href="{{ route('upload-cases') }}">Case upload </a></li>
                                     @endcan
                                 </ul>
                                 {{--                                <a href="{{ route('cases.create') }}" class="btn btn-dark  w-sm-100"><i class="fas fa-plus-circle me-2"></i>New asset</a>--}}

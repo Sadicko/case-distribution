@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,15 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/cases/{slug}/show', [ DocketController::class, 'showCase'])->name('cases.show');
     Route::get('/cases/{slug}/edit', [ DocketController::class, 'showEditCase'])->name('cases.edit');
     Route::post('/cases/{slug}/edit', [ DocketController::class, 'updateCase'])->name('cases.edit');
+
+        // download csv template
+    Route::get('/download-template', [UploadController::class, 'downloadTemplate'])->name('download-template');
+    // show upload form
+    Route::get('/upload-cases', [UploadController::class, 'showUploadCasesForm'])->name('upload-cases');
+    // upload file
+    Route::post('/upload-file', [UploadController::class, 'processImport'])->name('upload-file');
+    Route::post('/upload-file/process', [UploadController::class, 'saveBulkUpload'])->name('save-upload');
+
 
     // reports
     Route::get('reports', [ReportController::class, 'index'])->name('reports');

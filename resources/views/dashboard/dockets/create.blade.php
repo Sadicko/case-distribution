@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'New Asset')
+@section('title', 'New case')
 
 @section('cases_collapse', 'show')
 @section('case_active', 'active')

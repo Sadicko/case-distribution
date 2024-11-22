@@ -49,7 +49,7 @@
                             <li><a class="ms-link @yield('create_case_active')" href="{{ route('cases.create') }}"><span>File a new case</span></a></li>
                         @endcan
                         @can('Upload cases')
-                            <li><a class="ms-link @yield('upload_case_active')" href="{{ route('cases.create') }}"><span>Upload cases</span></a></li>
+                            <li><a class="ms-link @yield('upload_case_active')" href="{{ route('upload-cases') }}"><span>Upload cases</span></a></li>
                         @endcan
                     </ul>
                 </li>
