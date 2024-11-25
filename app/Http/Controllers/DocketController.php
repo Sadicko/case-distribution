@@ -92,10 +92,6 @@ class DocketController extends Controller
         } catch (\Exception $e) {
 
             return back()->with('error', $e->getMessage());
-//            return response()->json([
-//                'success' => false,
-//                'message' => $e->getMessage(),
-//            ], 400);
         }
 
     }

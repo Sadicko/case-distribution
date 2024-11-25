@@ -44,6 +44,8 @@ class ModuleSeeder extends Seeder
                     'Delete cases',
                     'Print cases',
                     'Track cases',
+                    'Set case as urgent',
+                    'Set case location',
                 ]
             ],
             [

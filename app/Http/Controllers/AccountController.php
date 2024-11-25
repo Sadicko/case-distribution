@@ -28,7 +28,7 @@ class AccountController extends Controller
 
         $request->validate([
             'current_password' => ['required'],
-            'new_password' => ['required', 'confirmed', Rules\Password::defaults(),  Rule::notIn(['1234@abcd', '12345678'])],
+            'new_password' => ['required', 'confirmed', Rules\Password::defaults(),  Rule::notIn(['1234@abcd', '123@abcd', '12345678', '123456789'])],
         ]);
 
 

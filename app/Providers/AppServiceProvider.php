@@ -47,6 +47,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Should return TRUE or FALSE if Registrar
         Gate::define('court_registrar', function(User $user) {
+            return $user->access_type === "Registrar";
+        });
+
+        // Should return TRUE or FALSE if Director
+        Gate::define('director', function(User $user) {
             return $user->access_type === "Director";
         });
 
@@ -58,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
         // Should return TRUE or FALSE if Court Staff
         Gate::define('court_staff', function(User $user) {
             return $user->access_type === "Staff";
+        });
+
+        // Should return TRUE or FALSE if Court Staff
+        Gate::define('filing_clerk', function(User $user) {
+            return $user->access_type === "Filing Clerk";
         });
 
     }

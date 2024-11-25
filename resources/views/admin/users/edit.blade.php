@@ -92,18 +92,18 @@
                                 <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
-{{--                            <div class="form-group  col-md-6 mb-3">--}}
-{{--                                <label for="registry"  class="form-label">Registry</label>--}}
-{{--                                <select class="form-control select2" name="registry"  id="registry">--}}
-{{--                                    <option value=""></option>--}}
-{{--                                    @foreach(fetch_registries((old('location') ?? $user->location_id)) as $registry)--}}
-{{--                                        <option value="{{ $registry->id }}" {{ old('registry') == $registry->id ? 'selected' : ($user->registry_id == $registry->id ? 'selected' : '') }} >{{ $registry->name }}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                                @error('registry')--}}
-{{--                                <span class="invalid-feedback">{{ $message }}</span>--}}
-{{--                                @enderror--}}
-{{--                            </div>--}}
+                            <div class="form-group  col-md-6 mb-3">
+                                <label for="registry"  class="form-label">Registry</label>
+                                <select class="form-control select2" name="registry"  id="registry">
+                                    <option value=""></option>
+                                    @foreach(fetch_registries((old('location') ?? $user->location_id)) as $registry)
+                                        <option value="{{ $registry->id }}" {{ old('registry') == $registry->id ? 'selected' : ($user->registry_id == $registry->id ? 'selected' : '') }} >{{ $registry->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('registry')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
                         <hr>
@@ -167,7 +167,7 @@
                                     <input type="checkbox" class="custom-control-input" id="require_password_reset" name="require_password_reset" @checked(old('require_password_reset', $user->require_password_reset == 'yes')) value="yes">
                                     <label class="custom-control-label" for="require_password_reset">Require Password Reset <small class="text-muted"></small></label>
                                 </div>
-                                <small class="text-muted">NB: Default password is  {{ config('jams.default_password') }}</small>
+                                <small class="text-muted">NB: Default password is  {{ config('ecds.default_password') }}</small>
                                 <br>
                                 @error('require_password_reset')
                                 <span class="invalid-feedback">{{ $message }}</span>

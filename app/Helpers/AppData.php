@@ -48,7 +48,9 @@ function user_status(){
 function access_level(){
 
     return [
+        'Filing Clerk' => "Filing Clerk",
         'Staff' => "Staff",
+        'Registrar' => "Registrar",
         'Court Manager' => "Court Manager",
         'Director' => "Director",
         'Management' => "Management",

@@ -75,7 +75,7 @@ class UserController extends Controller
             'is_expire' => ['nullable'],
             'expire_date' => ['nullable'],
             'location' => ['required', 'integer'],
-//            'registry' => [],
+            'registry' => ['nullable', 'integer'],
         ]);
 
 
@@ -124,9 +124,9 @@ class UserController extends Controller
 
         $user = User::whereslug($slug)->firstOrfail();
 
-        $roles = Role::whereNot('name', 'Super Admin')->latest()->get();
+        $roles = Role::query()->whereNot('name', 'Super Admin')->latest()->get();
 
-        $locations = Location::orderby('name', 'asc')->get();
+        $locations = Location::query()->orderby('name', 'asc')->get();
 
         $this->createAuditTrail("Visited page to edit $user->username.");
 
@@ -155,7 +155,7 @@ class UserController extends Controller
             'is_expire' => ['nullable'],
             'expire_date' => ['nullable'],
             'location' => ['required', 'integer'],
-//            'registry' => ['nullable', 'integer'],
+            'registry' => ['nullable', 'integer'],
         ]);
 
         if($this->emailExist()){
@@ -191,7 +191,7 @@ class UserController extends Controller
 
         if($request->require_password_reset == 'yes'){
             $user->update([
-                'password' => Hash::make(config('bail.default_password')),
+                'password' => Hash::make(config('ecds.default_password')),
             ]);
 
             $this->createAuditTrail("Reset the password for $user->username.");
@@ -218,7 +218,7 @@ class UserController extends Controller
     public function emailExist()
     {
 
-        return User::where('slug', '!=', request()->slug)
+        return User::query()->where('slug', '!=', request()->slug)
             ->where('email', request()->email)
             ->exists();
 
@@ -228,7 +228,7 @@ class UserController extends Controller
     public function userNameExist()
     {
 
-        return User::where('slug', '!=', request()->slug)
+        return User::query()->where('slug', '!=', request()->slug)
             ->where('username', request()->username)
             ->exists();
 
