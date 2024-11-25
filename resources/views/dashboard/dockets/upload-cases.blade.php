@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Update cases')
+@section('title', 'Upload preview of cases')
 
 @section('cases_collapse', 'show')
 @section('case_active', 'active')
@@ -25,8 +25,13 @@
             <div class="row">
                 <div class="card mb-5">
                     <div class="card-header bg-dark text-white">
-                        <i class="fas fa-upload me-1"></i>
-                        File new case
+                        <div>
+                            <i class="fas fa-upload me-1"></i>
+                            Bulk upload of cases
+                        </div>
+                        <div>
+                            <small class="text-muted"><i class="fas fa-exclamation-circle"></i> Please note that you can upload a maximum of 500 cases at a time.</small>
+                        </div>
                     </div>
                     <div class="card-body">
 

@@ -21,9 +21,10 @@ return new class extends Migration
             $table->foreignId('location_id')->constrained();
             $table->string('priority_level')->default('normal')->comment('normal & urgent');
             $table->string('status')->default('Assigned')->comment('Assigned & Closed');
-            $table->boolean('is_assigned')->default(0);
             $table->dateTime('date_filed')->nullable();
+            $table->boolean('is_assigned')->default(0);
             $table->dateTime('assigned_date')->nullable();
+            $table->string('assign_type')->default('auto')->comment('auto & manual');
             $table->boolean('exported')->default(0);
             $table->dateTime('exported_at')->nullable();
             $table->dateTime('disposed_at')->nullable();
