@@ -105,7 +105,9 @@ class UserController extends Controller
 
         $user->syncRoles($request->roles);
 
-        event(new AccountCreationEvent($user));
+        if (getenv('SEND_ACCOUNT_NOTICE_MAIL')){
+            event(new AccountCreationEvent($user));
+        }
 
         $this->createAuditTrail("Created a new user account for $user->username.");
 

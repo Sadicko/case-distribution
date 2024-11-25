@@ -156,7 +156,7 @@
                         <div class="row mt-4">
 
                             <div class="form-group mb-3 col-md-6">
-                                <label for="signin-password" class="control-label">Password*  <small class="text-muted">(Default password is  {{ config('jams.default_password') }})</small></label>
+                                <label for="signin-password" class="control-label">Password*  <small class="text-muted">(Default password is  {{ config('ecds.default_password') }})</small></label>
                                 <input type="password" name="password" class="form-control round   @error('password') is-invalid @enderror" id="signin-password" placeholder="Password" required autocomplete="signin-password" value="{{ config('ecds.default_password') }}" readonly>
                                 @error('password')
                                 <span class="invalid-feedback">{{ $message }}</span>
