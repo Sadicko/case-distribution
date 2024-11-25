@@ -40,7 +40,7 @@
 										</div>
 										<div class="col-md-6 mb-3">
 										<label for="email"  class="form-label">Email</label>
-										<input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+										<input type="email" class="form-control" name="email" value="{{ old('email') }}">
 										<x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
 										</div>
 										<div class="col-md-6 mb-3">

@@ -79,9 +79,9 @@ class UserController extends Controller
         ]);
 
 
-//        if (count(array_diff($request->roles, ["Super Admin", "Administrator"])) > 0 && empty($request->registry)) {
-//            return back()->withInput()->withErrors(['registry' => 'The registry field is required.']);
-//        }
+        if (count(array_diff($request->roles, ["Super Admin", "Administrator", 'Court Manager', 'Director', 'Management'])) > 0 && empty($request->registry)) {
+            return back()->withInput()->withErrors(['registry' => 'The registry field is required.']);
+        }
 
         $user = User::query()->create([
             'first_name' => $request->first_name,

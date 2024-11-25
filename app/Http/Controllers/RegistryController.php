@@ -56,17 +56,17 @@ class RegistryController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'registry_code' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
             'location' => ['required', 'integer'],
         ]);
 
         if ($this->registryNameExist()) {
-            return back()->withInput()->withErrors(['name' => 'The registry name is already taken.']);    
+            return back()->withInput()->withErrors(['name' => 'The registry name is already taken.']);
         }
 
         if ($this->registryCodeExist()) {
-            return back()->withInput()->withErrors(['registry_code' => 'The registry code is already taken.']);    
+            return back()->withInput()->withErrors(['registry_code' => 'The registry code is already taken.']);
         }
 
         $registry = Registry::create([
@@ -117,16 +117,16 @@ class RegistryController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'registry_code' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'max:255'],
             'location' => ['required', 'integer'],
         ]);
 
         if ($this->registryNameExist()) {
-            return back()->withInput()->withErrors(['name' => 'The registry name is already taken.']);    
+            return back()->withInput()->withErrors(['name' => 'The registry name is already taken.']);
         }
 
         if ($this->registryCodeExist()) {
-            return back()->withInput()->withErrors(['registry_code' => 'The registry code is already taken.']);    
+            return back()->withInput()->withErrors(['registry_code' => 'The registry code is already taken.']);
         }
 
         $registry =  Registry::whereslug($slug)->firstOrfail();
@@ -157,7 +157,7 @@ class RegistryController extends Controller
 
             return to_route('registries')
             ->with('warning', 'Location moved to trash successfully.');
-        }   
+        }
 
         $this->createAuditTrail("Udpated records for $registry->name registry");
 
