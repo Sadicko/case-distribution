@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'accepted' => 1,
             'accepted_date' => now(),
             'created_at' => now(),
-            'access_type' => 'Admin',
+            'access_type' => 'Super Admin',
             'is_approved' => 1,
             'approved_at' => now(),
             'password' => Hash::make('1234@abcd'),

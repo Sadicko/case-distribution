@@ -10,6 +10,8 @@ use App\Traits\AuditTrailLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DocketController extends Controller
@@ -25,6 +27,12 @@ class DocketController extends Controller
 
     public function showCases()
     {
+        if(Gate::denies('Manage cases')){
+
+            $this->createAuditTrail("Denied access to  Manage cases: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Manage cases.']);
+        }
         // create audit
         $this->createAuditTrail('Visited cases page.');
 
@@ -33,15 +41,35 @@ class DocketController extends Controller
 
     public function createCase()
     {
-        //show locations that have courts and has been assigned categories
-        $categories = Category::query()->whereHas('courts', function ($qeury){
-            $qeury->where('availability', 1);
-        })->orderBy('name', 'asc')->get();
+        //get user
+        $user = Auth::user();
+        if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
+            //show categories that have courts
+            $categories = Category::query()->whereHas('courts', function ($qeury){
+                $qeury->where('availability', 1);
+            })->orderBy('name', 'asc')->get();
 
-        //show locations that have courts and has been assigned categories
-        $locations = Location::query()->whereHas('courts', function ($qeury){
-            $qeury->where('availability', 1);
-        })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+            //show locations that have courts and has been assigned categories
+            $locations = Location::query()->whereHas('courts', function ($qeury){
+                $qeury->where('availability', 1);
+            })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+
+
+        }else{
+            //show categories that have courts
+            $categories = Category::query()->whereHas('courts', function ($query) use ($user){
+                $query->where('registry_id', $user->registry_id)
+                    ->where('availability', 1);
+            })->get();
+
+            //show locations that have courts and has been assigned categories
+            $locations = Location::query()->whereHas('courts', function ($locationQeury)use ($user){
+                $locationQeury->where('registry_id', $user->registry_id)
+                    ->where('availability', 1);
+            })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+
+        }
+
 
         // create audit
         $this->createAuditTrail('Visited case creation page.');
@@ -90,6 +118,12 @@ class DocketController extends Controller
 
 
         } catch (\Exception $e) {
+
+            //submit for manuel assignment
+            $docket->assign_type = 'manuel';
+            $docket->save();
+
+            Log::info("The error below occurred and there for submitted for manual assignment: ". $e->getMessage());
 
             return back()->with('error', $e->getMessage());
         }

@@ -50,6 +50,17 @@ class ModuleSeeder extends Seeder
             ],
             [
                 'slug' => uniqid(),
+                'name' => 'Reports',
+                'permissions' => [
+                    'Read reports',
+                    'Filter reports',
+                    'Export reports',
+                    'Print reports',
+                ]
+            ],
+
+            [
+                'slug' => uniqid(),
                 'name' => 'Registries',
                 'permissions' => [
                     'Manage registries',

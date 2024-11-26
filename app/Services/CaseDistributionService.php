@@ -23,9 +23,7 @@ class CaseDistributionService
             ->whereHas('categories', function ($query) use ($docket) {
                 $query->where('categories.id', $docket->category_id); // Match the case category
             })
-            ->whereHas('currentJudge', function ($query) {
-                $query->wherePivotNull('unassigned_at'); // Ensure the court has a current judge
-            })
+            ->whereHas('currentJudge')
             ->get();
 
         if ($eligibleCourts->isEmpty()) {
@@ -61,7 +59,6 @@ class CaseDistributionService
         // Step 6: Assign court and judge to docket
         $assignedJudge = $selectedCourt->judges->firstWhere('pivot.unassigned_at', null);
         $docket->court_id = $selectedCourt->id;
-        $docket->judge_id = $assignedJudge->id;
         $docket->assigned_date = now();
         $docket->is_assigned = 1;
         $docket->save();

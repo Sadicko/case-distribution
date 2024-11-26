@@ -193,7 +193,7 @@
 
                                     @can('Manage cases')
                                         <li class="col">
-                                            <a href="#!" class="d-flex color-700">
+                                            <a href="{{ route('cases') }}" class="d-flex color-700">
                                                 <div class="avatar">
                                                     <i class="fas fa-folder-open"></i>
                                                 </div>
@@ -263,20 +263,6 @@
                                         </li>
                                     @endcan
 
-                                    @can('Manage courts')
-                                        <li class="col">
-                                            <a href="{{ route('courts') }}" class="d-flex color-700">
-                                                <div class="avatar">
-                                                    <i class="fas fa-balance-scale"></i>
-                                                </div>
-                                                <div class="flex-fill text-truncate">
-                                                    <p class="h6 mb-0">Courts</p>
-                                                    <small class="text-muted">Manage all courts</small>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    @endcan
-
                                     @can('Manage judges')
                                         <li class="col">
                                             <a href="{{ route('judges') }}" class="d-flex color-700">
@@ -286,6 +272,20 @@
                                                 <div class="flex-fill text-truncate">
                                                     <p class="h6 mb-0">Judges</p>
                                                     <small class="text-muted">Manage all judges</small>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endcan
+
+                                    @can('Manage courts')
+                                        <li class="col">
+                                            <a href="{{ route('courts') }}" class="d-flex color-700">
+                                                <div class="avatar">
+                                                    <i class="fas fa-balance-scale"></i>
+                                                </div>
+                                                <div class="flex-fill text-truncate">
+                                                    <p class="h6 mb-0">Courts</p>
+                                                    <small class="text-muted">Manage all courts</small>
                                                 </div>
                                             </a>
                                         </li>

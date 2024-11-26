@@ -43,7 +43,7 @@ class UserController extends Controller
             return back()->with(['error' => 'You are not authorized to Create users.']);
         }
 
-        $roles = Role::whereNot('name', 'Super Admin')->latest()->get();
+        $roles = Role::query()->latest()->get();
 
         $locations = Location::orderby('name', 'asc')->get();
 
@@ -126,7 +126,7 @@ class UserController extends Controller
 
         $user = User::whereslug($slug)->firstOrfail();
 
-        $roles = Role::query()->whereNot('name', 'Super Admin')->latest()->get();
+        $roles = Role::query()->latest()->get();
 
         $locations = Location::query()->orderby('name', 'asc')->get();
 

@@ -57,6 +57,7 @@ function access_level(){
         'Developer' => "Developer",
         'General Admin' => "General Admin",
         'System Admin' => "System Admin",
+        'Super Admin' => 'Super Admin',
     ];
 }
 

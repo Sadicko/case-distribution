@@ -2,7 +2,13 @@
 
 namespace App\Providers;
 
+use App\Listeners\LoginListener;
+use App\Listeners\LogoutListener;
 use App\Models\User;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +27,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //pagination
+        Paginator::useBootstrapFive();
+        //Events
+        Event::listen(
+            Login::class,
+            LoginListener::class,
+        );
+        Event::listen(
+            Logout::class,
+            LogoutListener::class,
+        );
+
+
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;
         });

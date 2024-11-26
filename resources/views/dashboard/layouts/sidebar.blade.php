@@ -55,22 +55,22 @@
                 </li>
             @endcanany
 
-            <li>
-                <a class="m-link @yield('reset_case_active')" href="{{ route('categories') }}">
-                    <i class="fas fa-list-alt"></i>
-                    <div>
-                        <h6 class="mb-0">Reset case counts</h6>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a class="m-link @yield('dispose_case_active')" href="{{ route('categories') }}">
-                    <i class="fas fa-list-alt"></i>
-                    <div>
-                        <h6 class="mb-0">Dispose cases</h6>
-                    </div>
-                </a>
-            </li>
+{{--            <li>--}}
+{{--                <a class="m-link @yield('reset_case_active')" href="{{ route('categories') }}">--}}
+{{--                    <i class="fas fa-list-alt"></i>--}}
+{{--                    <div>--}}
+{{--                        <h6 class="mb-0">Reset case counts</h6>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+{{--            <li>--}}
+{{--                <a class="m-link @yield('dispose_case_active')" href="{{ route('categories') }}">--}}
+{{--                    <i class="fas fa-list-alt"></i>--}}
+{{--                    <div>--}}
+{{--                        <h6 class="mb-0">Dispose cases</h6>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
+{{--            </li>--}}
 
             @canany(['Read reports', 'Filter reports', 'Export reports', 'Print reports'])
                 <li class>
