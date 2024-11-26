@@ -150,4 +150,21 @@ class DocketController extends Controller
         return Docket::query()->where(['suit_number' => request()->suit_number, 'category_id' => request()->case_category, 'location_id' => request()->location])->exists();
     }
 
+
+    public function printCase($slug)
+    {
+        if(Gate::denies('Print cases')){
+
+            $this->createAuditTrail("Denied access to  Print cases: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Print cases.']);
+        }
+
+        $docket = Docket::query()->with('courts', 'courts.currentJudge', 'categories', 'locations')->where(['slug' => $slug])->firstOrFail();
+
+        $this->createAuditTrail("Visited printing page for case with suit number $docket->suit_number");
+
+        return view('dashboard.dockets.print', compact('docket'));
+    }
+
 }

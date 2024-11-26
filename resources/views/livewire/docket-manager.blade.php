@@ -109,7 +109,7 @@
 {{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
 {{--                                                    @endcan--}}
                                                     @can('Print cases')
-                                                        <a href="{{ route('courts.assign-categories', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
+                                                        <a href="{{ route('cases.print', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
                                                     @endcan
                                                 @else
                                                     <span>-</span>

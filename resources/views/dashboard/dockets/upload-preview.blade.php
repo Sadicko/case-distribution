@@ -29,7 +29,37 @@
                         File new case
                     </div>
                     <div class="card-body">
-
+                        <form class="csv-upload" method="POST" action="{{ route('save-upload') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <small class="text-muted">
+                                    Showing {{count($csv_data)}} of {{count($data)}} entries in the CSV. Does your data look correct?
+                                </small>
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-hover bg-deep-grey">
+                                        <thead>
+                                        <th>Suit number</th>
+                                        <th>Case title</th>
+                                        <th>Case category</th>
+                                        <th>Status</th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($csv_data as $row)
+                                            <tr>
+                                                @foreach ($row as $key => $value)
+                                                    <td>{{ $value }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <a href="{{route('upload-cases')}}" class="btn btn-secondary">No, try again</a>
+                                <button class="btn btn-primary bg-dark" type="submit">Proceed with import</button>
+                            </div>
+                        </form>
 
                     </div>
                 </div>

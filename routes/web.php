@@ -52,6 +52,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/cases/{slug}/show', [ DocketController::class, 'showCase'])->name('cases.show');
     Route::get('/cases/{slug}/edit', [ DocketController::class, 'showEditCase'])->name('cases.edit');
     Route::post('/cases/{slug}/edit', [ DocketController::class, 'updateCase'])->name('cases.edit');
+    Route::get('/cases/{slug}/print', [ DocketController::class, 'printCase'])->name('cases.print');
 
         // download csv template
     Route::get('/download-template', [UploadController::class, 'downloadTemplate'])->name('download-template');

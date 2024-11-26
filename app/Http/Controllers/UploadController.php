@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\AuditTrailLog;
 use Illuminate\Http\Request;
 
 class UploadController extends Controller
 {
+    use AuditTrailLog;
     public function showUploadCasesForm()
     {
         return view('dashboard.dockets.upload-cases');
