@@ -41,6 +41,13 @@ class DocketController extends Controller
 
     public function createCase()
     {
+        if(Gate::denies('Create cases')){
+
+            $this->createAuditTrail("Denied access to  Create cases: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Create cases.']);
+        }
+
         //get user
         $user = Auth::user();
         if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
@@ -79,7 +86,6 @@ class DocketController extends Controller
 
     public function saveCase(Request $request)
     {
-//        return $request;
         $request->validate([
             'suit_number' => ['required', 'string', 'regex:/^[A-Z]{2,5}\/\d{4,5}\/\d{4}$/'],
             'case_title' => ['required', 'string'],
@@ -90,13 +96,17 @@ class DocketController extends Controller
 
         // check if suit number exist
         if($this->isCaseRegistered()){
+
+            $this->createAuditTrail("Attempted to create a case with suit number $request->suit_number but already exists.");
+            // create audit
+            $this->createAuditTrail('Visited cases page.');
             return back()->withInput()->withErrors(['suit_number' => 'The suit number is already taken.']);
         }
 
         $docket = Docket::query()->create([
             'slug' => $slug = Str::slug($request->suit_number),
-            'suit_number' => $request->suit_number,
-            'case_title' => $request->case_title,
+            'suit_number' => strtoupper($request->suit_number),
+            'case_title' => strtoupper($request->case_title),
             'category_id' => $request->case_category,
             'location_id' => $request->location,
             'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
@@ -114,10 +124,12 @@ class DocketController extends Controller
 
             $this->createAuditTrail("Assigned the case with suit no $docket->suit_number to $assignedCourt->name successfully");
 
-            return back()->with('success', "Assigned the case with suit no $docket->suit_number to $assignedCourt->name successfully");
+            return back()->with('success', "The case with suit no $docket->suit_number created and allocated to $assignedCourt->name successfully");
 
 
         } catch (\Exception $e) {
+
+            $this->createAuditTrail("Created a case with suit number $docket->suit_number but redirected for manuel allocation due to the follow: ". $e->getMessage());
 
             //submit for manuel assignment
             $docket->assign_type = 'manuel';

@@ -41,11 +41,12 @@ class ModuleSeeder extends Seeder
                     'Upload cases',
                     'Read cases',
                     'Update cases',
-                    'Delete cases',
-                    'Print cases',
-                    'Track cases',
                     'Set case as urgent',
                     'Set case location',
+                    'Re-assign cases',
+                    'Track cases',
+                    'Print cases',
+                    'Delete cases',
                 ]
             ],
             [

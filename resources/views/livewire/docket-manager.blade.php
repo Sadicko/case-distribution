@@ -71,7 +71,7 @@
             <div id="caseCollapseOne" class="accordion-collapse collapse show" aria-labelledby="caseHeadingOne" data-bs-parent="#accordionCases">
                 <div class="accordion-body" wire:loading.class="opacity-25">
                     <div class="card-body">
-                        <div class="row table-responsive">
+                        <div class="table-responsive">
                             <table class="table table-striped table-hover display">
                                 <thead>
                                 <tr>
@@ -84,6 +84,7 @@
                                     <th>Date Filed</th>
                                     <th>Date assigned</th>
                                     <th>Status</th>
+                                    <th  class="text-nowrap w-auto">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -99,6 +100,21 @@
                                             <td>{{ $docket->date_filed->format('d-m-Y') }}</td>
                                             <td>{{ $docket->assigned_date?->format('d-m-Y') ?? '-' }}</td>
                                             <td>{{ $docket->status }}</td>
+                                            <td class="text-center">
+                                                @canany(['Update cases', 'Re-assign cases', 'Print cases'])
+                                                    @can('Update cases')
+                                                        <a href="{{ route('courts.edit', $docket->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil"></i></a>
+                                                    @endcan
+{{--                                                    @can('Re-assign cases')--}}
+{{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
+{{--                                                    @endcan--}}
+                                                    @can('Print cases')
+                                                        <a href="{{ route('courts.assign-categories', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
+                                                    @endcan
+                                                @else
+                                                    <span>-</span>
+                                                @endcanany
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @else

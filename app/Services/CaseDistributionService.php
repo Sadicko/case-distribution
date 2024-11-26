@@ -61,6 +61,7 @@ class CaseDistributionService
         $docket->court_id = $selectedCourt->id;
         $docket->assigned_date = now();
         $docket->is_assigned = 1;
+        $docket->status = 'Assigned';
         $docket->save();
 
         return $selectedCourt;

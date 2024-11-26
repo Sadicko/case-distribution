@@ -46,7 +46,7 @@ class Categories extends Component
         $this->validate();
         Category::query()->create([
             'slug' => uniqid(),
-            'name' => $this->categoryName,
+            'name' => strtolower($this->categoryName),
             'status' => $this->status,
             'courttype_id' => $this->courtType,
             'created_by' => Auth::id(),
@@ -82,7 +82,7 @@ class Categories extends Component
         $category = Category::query()->where('slug', $this->slug)->first();
 
         $category->update([
-            'name' => $this->editCategoryName,
+            'name' => strtoupper($this->editCategoryName),
             'courttype_id' => $this->editCourtType,
             'status' => $this->editStatus,
         ]);

@@ -57,7 +57,7 @@ class JudgeController extends Controller
 
         $judge = Judge::query()->create([
             'slug' => uniqid(),
-            'name' => $request->get('name'),
+            'name' => strtoupper($request->get('name')),
             'status' => $request->get('status'),
             'courttype_id' => $request->get('courttype'),
         ]);
@@ -98,7 +98,7 @@ class JudgeController extends Controller
 
         $judge = Judge::query()->where('slug', $request->slug)->firstOrFail();
         $judge->update([
-            'name' => $request->get('name'),
+            'name' => strtoupper($request->get('name')),
             'status' => $request->get('status'),
             'courttype_id' => $request->get('courttype'),
             'availability' => $request->get('availability') ? 1 : 0,

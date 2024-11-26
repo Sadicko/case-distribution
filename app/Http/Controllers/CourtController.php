@@ -81,7 +81,7 @@ class CourtController extends Controller
         $location = Location::query()->find($request->location);
 
         $court = Court::query()->create([
-            'name' => $request->court_name,
+            'name' => strtoupper($request->court_name),
             'code' => $request->court_code,
             'status' => $request->status,
             'courttype_id' => $request->court_type,
@@ -150,7 +150,7 @@ class CourtController extends Controller
         $location = Location::query()->find($request->location);
 
         $court->update([
-            'name' => $request->court_name,
+            'name' => strtoupper($request->court_name),
             'code' => $request->court_code,
             'status' => $request->status,
             'courttype_id' => $request->court_type,
