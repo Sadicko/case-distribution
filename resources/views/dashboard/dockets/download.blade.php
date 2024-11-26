@@ -1,10 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Print case')
-
-@section('cases_collapse', 'show')
-@section('case_active', 'active')
-@section('create_case_active', 'active')
+@section('title', 'Download case')
 
 @section('styles')
     <style>
@@ -75,21 +71,6 @@
 
 
 @section('content')
-    <div class="body d-flex py-3">
-        <div class="container-xxl">
-            <div class="row align-items-center">
-                <div class="border-0 mb-4">
-                    <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
-                        <h3 class="h4 mb-0 text-uppercase"><i class="fas fa-folder-open"></i> Print case</h3>
-
-                        <div class="col-auto d-flex w-sm-100  mt-sm-0">
-                            <a href="{{ route('cases') }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- Row end  -->
-        </div>
-    </div>
     <section class="content invoice" id="print-area">
         <div class="border p-4 border-dark  print-area">
             <div class="row justify-content-center text-center">
@@ -179,25 +160,4 @@
             <a href="{{ route('cases.download', $docket->slug) }}" class="btn btn-primary btn-sm bg-gradient-primary print-button"><i class="fas fa-download"></i> Download Confirmation</a>
         @endcan
     </div>
-@endsection
-
-@section('scripts')
-    <script>
-        function printContent() {
-            const printArea = document.getElementById('print-area').innerHTML;
-            const originalContent = document.body.innerHTML;
-
-            // Replace body content with the print area
-            document.body.innerHTML = printArea;
-
-            // Trigger the print dialog
-            window.print();
-
-            // Restore the original content
-            document.body.innerHTML = originalContent;
-
-            // Reload the scripts (if needed)
-            window.location.reload();
-        }
-    </script>
 @endsection

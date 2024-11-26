@@ -7,6 +7,7 @@ use App\Models\Docket;
 use App\Models\Location;
 use App\Services\CaseDistributionService;
 use App\Traits\AuditTrailLog;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -165,6 +166,26 @@ class DocketController extends Controller
         $this->createAuditTrail("Visited printing page for case with suit number $docket->suit_number");
 
         return view('dashboard.dockets.print', compact('docket'));
+    }
+
+    public function downloadCase($slug)
+    {
+        if(Gate::denies('Download cases')){
+
+            $this->createAuditTrail("Denied access to  Download cases: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Download cases.']);
+        }
+
+        $docket = Docket::query()->with('courts', 'courts.currentJudge', 'categories', 'locations')->where(['slug' => $slug])->firstOrFail();
+
+        $this->createAuditTrail("Downloaded case with suit number $docket->suit_number");
+
+        // Generate the PDF from the Blade view
+        $pdf = PDF::loadView('dashboard.dockets.download', compact('docket'))->setPaper('a4', 'portrait');
+
+        // Download the PDF
+        return $pdf->download(Str::slug($docket->suit_number) . '.pdf');
     }
 
 }

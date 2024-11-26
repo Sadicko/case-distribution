@@ -127,8 +127,8 @@ class UploadController extends Controller
         $dockets = collect($allRows)->map(function ($row) use ($request) {
             return [
                 'slug' => uniqid(),
-                'suit_number' => $row['suit_number'],
-                'case_title' => $row['case_title'],
+                'suit_number' => strtoupper($row['suit_number']),
+                'case_title' => strtoupper($row['case_title']),
                 'date_filed' => $row['date_filed'],
                 'category_id' => $request->case_category,
                 'location_id' => $request->location,
