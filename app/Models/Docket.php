@@ -37,7 +37,7 @@ class Docket extends Model
         parent::boot();
 
         // Log the initial creation of the will
-        static::created(function ($will) {
+        static::created(function ($docket) {
             $fields = [
                 'suit_number',
                 'case_title',
@@ -51,16 +51,16 @@ class Docket extends Model
             foreach ($fields as $field) {
                 Docketlog::query()->create([
                     'slug' => uniqid(),
-                    'docket_id' => $will->id,
-                    'user_id' => auth()->id(),
+                    'docket_id' => $docket->id,
+                    'user_id' => $docket->created_by,
                     'activity' => 'Created',
-                    'comment' => "Initial value for ".$field. " : " .$will->$field ?? " not_set"
+                    'comment' => "Initial value for ".$field. " : " .$docket->$field ?? " not_set"
                 ]);
             }
         });
 
         // Log any updates to specific fields after the will has been created
-        static::updated(function ($will) {
+        static::updated(function ($docket) {
             $fieldsToCheck = [
                 'suit_number',
                 'case_title',
@@ -81,13 +81,13 @@ class Docket extends Model
 
             foreach ($fieldsToCheck as $field) {
                 // Check if the specific field was modified
-                if ($will->isDirty($field)) {
+                if ($docket->isDirty($field)) {
                     Docketlog::query()->create([
                         'slug' => uniqid(),
-                        'docket_id' => $will->id,
-                        'user_id' => auth()->id(),
+                        'docket_id' => $docket->id,
+                        'user_id' => $docket->created_by,
                         'activity' => 'Updated',
-                        'comment' => "{$field} was changed from " . ($will->getOriginal($field) ?? 'not_set') . " to " . ($will->$field ?? 'not_set'),
+                        'comment' => "{$field} was changed from " . ($docket->getOriginal($field) ?? 'not_set') . " to " . ($docket->$field ?? 'not_set'),
                     ]);
                 }
             }

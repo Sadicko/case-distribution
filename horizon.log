@@ -1,0 +1,192 @@
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   INFO  Horizon started successfully.  
+
+  2024-11-26 21:29:36 App\Mail\AccountCreationMail ................... RUNNING
+  2024-11-26 21:29:36 App\Mail\AccountCreationMail .............. 96.86ms DONE
+  2024-11-26 21:35:39 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:35:39 App\Jobs\ProcessCasesJob ................. 222.76ms FAIL
+  2024-11-26 21:35:57 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:35:57 App\Jobs\ProcessCasesJob ................... 3.56ms DONE
+  2024-11-26 21:36:39 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:36:40 App\Jobs\ProcessCasesJob ................. 102.35ms FAIL
+  2024-11-26 21:38:18 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:38:18 App\Jobs\ProcessCasesJob .................. 44.37ms FAIL
+  2024-11-26 21:46:13 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:46:13 App\Jobs\ProcessCasesJob ................. 108.08ms FAIL
+  2024-11-26 21:47:22 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:47:22 App\Jobs\ProcessCasesJob .................. 33.68ms FAIL
+  2024-11-26 21:50:13 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:50:13 App\Jobs\ProcessCasesJob .................. 76.68ms FAIL
+
+   INFO  Horizon started successfully.  
+
+  2024-11-26 21:53:10 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-11-26 21:53:20 App\Jobs\ProcessCasesJob ....................... 9s DONE

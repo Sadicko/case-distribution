@@ -1,0 +1,168 @@
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+
+
+   ErrorException 
+
+  Undefined array key "connection"
+
+  at /var/www/ecds/vendor/laravel/horizon/src/SupervisorOptions.php:351
+    347▕      * @return static
+    348▕      */
+    349▕     public static function fromArray(array $array)
+    350▕     {
+  ➜ 351▕         return tap(new static($array['name'], $array['connection']), function ($options) use ($array) {
+    352▕             foreach ($array as $key => $value) {
+    353▕                 $options->{$key} = $value;
+    354▕             }
+    355▕         });
+
+      [2m+25 vendor frames [22m
+
+  26  /var/www/ecds/artisan:13
+      Illuminate\Foundation\Application::handleCommand()
+

@@ -91,7 +91,7 @@
                                 @if($dockets->total() > 0)
                                     @foreach($dockets as $docket)
                                         <tr>
-                                            <td>{{ $docket->index + 1 }}</td>
+                                            <td>{{ $loop->index + 1 }}</td>
                                             <td>{{ $docket->suit_number }}</td>
                                             <td>{{ $docket->case_title }}</td>
                                             <td>{{ $docket->categories->name }}</td>
@@ -105,12 +105,14 @@
                                                     @can('Update cases')
                                                         <a href="{{ route('courts.edit', $docket->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil"></i></a>
                                                     @endcan
-{{--                                                    @can('Re-assign cases')--}}
-{{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
-{{--                                                    @endcan--}}
-                                                    @can('Print cases')
-                                                        <a href="{{ route('cases.print', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
-                                                    @endcan
+                                                    {{--                                                    @can('Re-assign cases')--}}
+                                                    {{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
+                                                    {{--                                                    @endcan--}}
+                                                    @if(!empty($docket->assigned_date))
+                                                        @can('Print cases')
+                                                            <a href="{{ route('cases.print', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
+                                                        @endcan
+                                                    @endif
                                                 @else
                                                     <span>-</span>
                                                 @endcanany

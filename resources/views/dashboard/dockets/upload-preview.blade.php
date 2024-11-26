@@ -29,35 +29,45 @@
                         File new case
                     </div>
                     <div class="card-body">
-                        <form class="csv-upload" method="POST" action="{{ route('save-upload') }}" enctype="multipart/form-data">
+                        <div>
+                            <small class="text-muted">
+                                Showing {{count($rows)}} of {{count(session()->get('import_data'))}} entries in the Excel File. Does your data look correct?
+                            </small>
+                        </div>
+
+                        <form action="{{ route('upload-cases.import') }}" method="POST">
                             @csrf
-                            <div class="row">
-                                <small class="text-muted">
-                                    Showing {{count($csv_data)}} of {{count($data)}} entries in the CSV. Does your data look correct?
-                                </small>
-                                <div class="table-responsive mt-3">
-                                    <table class="table table-hover bg-deep-grey">
-                                        <thead>
-                                        <th>Suit number</th>
-                                        <th>Case title</th>
-                                        <th>Case category</th>
-                                        <th>Status</th>
-                                        </thead>
-                                        <tbody>
-                                        @foreach ($csv_data as $row)
-                                            <tr>
-                                                @foreach ($row as $key => $value)
-                                                    <td>{{ $value }}</td>
-                                                @endforeach
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="mt-3">
+                            <input type="hidden" name="case_category" value="{{ $category->id }}">
+                            <input type="hidden" name="location" value="{{ $location->id }}">
+
+                            <table class="table table-boarded">
+                                <thead>
+                                <tr>
+                                    <th>#!</th>
+                                    <th>Suit Number</th>
+                                    <th>Case Title</th>
+                                    <th>Date Of Filing</th>
+                                    <th>Case Category</th>
+                                    <th>Case Location</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($rows as $row)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $row['suit_number'] }}</td>
+                                        <td>{{ $row['case_title'] }}</td>
+                                        <td>{{ $row['date_filed'] }}</td>
+                                        <td>{{ $row['case_category'] }}</td>
+                                        <td>{{ $row['location'] }}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+
+                            <div class="mt-5">
                                 <a href="{{route('upload-cases')}}" class="btn btn-secondary">No, try again</a>
-                                <button class="btn btn-primary bg-dark" type="submit">Proceed with import</button>
+                                <button type="submit" class="btn btn-primary">Proceed imports</button>
                             </div>
                         </form>
 

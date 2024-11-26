@@ -49,9 +49,34 @@
                             @csrf
                             <div class="row justify-content-center mb-5">
                                 <div class="col-6">
+
+                                    <div class="form-group mb-3 mt-5">
+                                        <label for="case_category" class="form-label">Case category*</label>
+                                        <select name="case_category" class="form-control select2" id="case_category" required>
+                                            <option value=""></option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('case_category')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="location" class="form-label">Location*</label>
+                                        <select name="location" class="form-control select2" id="location" required>
+                                            <option value=""></option>
+                                            @foreach($locations as $location)
+                                                <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('location')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                     <div class="form-group mb-5 mt-5">
-                                        <label for="formFile" class="form-label text-muted">Select a file.( Only .xlsx files are accepted.)</label>
-                                        <input class="form-control" type="file" required name="csv_file" id="formFile" accept=".xlsx,.csv">
+                                        <label for="formFile" class="form-label text-muted">Select a file.( Only .xlsx and csv files are accepted.)</label>
+                                        <input class="form-control" type="file" required name="case_file" id="formFile" accept=".xlsx,.csv">
                                         @error('csv_file')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
@@ -103,7 +128,7 @@
             // validate file upload input
             $(document).on("change", "#formFile", function () {
                 if (!checkFile($(this).val())) {
-                    toastr.error("File is not a supported type. Upload a csv file.");
+                    toastr.error("File is not a supported type. Upload a xlsx file.");
                     $(this).val("");
                 }
             });
@@ -113,6 +138,9 @@
                 let valid;
                 switch (val.substring(val.lastIndexOf(".") + 1).toLowerCase()) {
                     case "csv":
+                        valid = true;
+                        break;
+                    case "xlsx":
                         valid = true;
                         break;
 

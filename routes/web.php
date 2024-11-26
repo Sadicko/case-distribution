@@ -54,13 +54,15 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::post('/cases/{slug}/edit', [ DocketController::class, 'updateCase'])->name('cases.edit');
     Route::get('/cases/{slug}/print', [ DocketController::class, 'printCase'])->name('cases.print');
 
-        // download csv template
+    // download csv template
     Route::get('/download-template', [UploadController::class, 'downloadTemplate'])->name('download-template');
     // show upload form
     Route::get('/upload-cases', [UploadController::class, 'showUploadCasesForm'])->name('upload-cases');
     // upload file
-    Route::post('/upload-file', [UploadController::class, 'processImport'])->name('upload-file');
-    Route::post('/upload-file/process', [UploadController::class, 'saveBulkUpload'])->name('save-upload');
+    Route::post('/upload-cases/preview', [UploadController::class, 'previewUploadedFile'])->name('upload-file');
+    //import
+    Route::post('/upload-cases/import', [UploadController::class, 'processImport'] )->name('upload-cases.import');
+
 
 
     // reports

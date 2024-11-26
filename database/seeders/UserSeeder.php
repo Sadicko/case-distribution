@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'first_name' => 'ECDS',
             'last_name' => 'Admin',
             'username' => 'admin.ecds',
-            'email' => 'info@ecds.gov.gh',
+            'email' => 'sadick.sessah-odai@jsg.gov.gh',
             'phone' => '0200000000',
             'email_verified_at' => now(),
             'status' => 'Active',

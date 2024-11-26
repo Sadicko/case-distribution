@@ -2,107 +2,158 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessCasesJob;
+use App\Models\Category;
+use App\Models\Docket;
+use App\Models\Location;
 use App\Traits\AuditTrailLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class UploadController extends Controller
 {
     use AuditTrailLog;
     public function showUploadCasesForm()
     {
-        return view('dashboard.dockets.upload-cases');
+        if(Gate::denies('Upload cases')){
+
+            $this->createAuditTrail("Denied access to  Upload cases: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Upload cases.']);
+        }
+
+        //get user
+        $user = Auth::user();
+        if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
+            //show categories that have courts
+            $categories = Category::query()->whereHas('courts', function ($qeury){
+                $qeury->where('availability', 1);
+            })->orderBy('name', 'asc')->get();
+
+            //show locations that have courts and has been assigned categories
+            $locations = Location::query()->whereHas('courts', function ($qeury){
+                $qeury->where('availability', 1);
+            })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+
+
+        }else{
+            //show categories that have courts
+            $categories = Category::query()->whereHas('courts', function ($query) use ($user){
+                $query->where('registry_id', $user->registry_id)
+                    ->where('availability', 1);
+            })->get();
+
+            //show locations that have courts and has been assigned categories
+            $locations = Location::query()->whereHas('courts', function ($locationQeury)use ($user){
+                $locationQeury->where('registry_id', $user->registry_id)
+                    ->where('availability', 1);
+            })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+
+        }
+
+        if (session('file_path')){
+            // Delete the temporary file after processing
+            Storage::delete(session('file_path'));
+            // Clear the session data after import
+            session()->forget('import_data');
+            session()->forget('file_path');
+        }
+
+        $this->createAuditTrail('Visited case upload page.');
+
+
+        return view('dashboard.dockets.upload-cases', compact('categories', 'locations'));
     }
 
 
-    /**
-     * Process csv file
-     *
-     * @param <type>
-     * @return <type>
-     */
-    public function processImport(Request $request)
+    public function previewUploadedFile(Request $request)
     {
         $request->validate([
-            'csv_file' => ['required', 'file', 'max:10240'],
+            'case_category' => 'required|integer',
+            'location' => 'required|integer',
+            'case_file' => ['required', 'file', 'mimes:xlsx,csv'],
         ]);
 
-        // return back if not a csv file
-        if (strtolower($request->file('csv_file')->getClientOriginalExtension()) != 'csv') {
-            return back()->withInput()->withErors(['csv_file' => 'The file is not supported. Only .csv file is allowed']);
-        }
+        $category = Category::query()->findOrFail($request->case_category);
+        $location = Location::query()->findOrFail($request->location);
 
-        // get filepath
-        $path = $request->file('csv_file')->getRealPath();
+        $filePath = $request->file('case_file')->store('temp', 'local');
 
-        // get records from csv
-        // $data = array_map('str_getcsv', file($path));
+        $rows = SimpleExcelReader::create(storage_path('app/private/' . $filePath))
+            ->useHeaders(['suit_number', 'case_title', 'date_filed'])
+            ->take(500)
+            ->getRows();
 
-        // array to store csv data
-        $csv_data = [];
-        $row = 1;
+        $allRows = $rows->map(function ($row) use ($category, $location) {
+            // Adjust index based on the column for date_filed
+            $filingDate = \DateTime::createFromFormat('dmY', $row['date_filed']);
+            return [
+                'suit_number' => $row['suit_number'],  // Adjust index based on the column for suit_number
+                'case_title' => $row['case_title'],   // Adjust index based on the column for case_title
+                'date_filed' => $filingDate ? $filingDate->format('Y-m-d') : now()->format('d-m-Y'),
+                'case_category' => $category->name,
+                'location' => $location->name,
+            ];
+        })->toArray();
 
-        if (($handle = fopen($request->file('csv_file'), "r")) !== false) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-                $num = count($data);
-                for ($i = 0; $i < $num; $i++) {
-                    $csv_data[$row][$i] = $data[$i];
-                }
-                $row++;
-            }
-            fclose($handle);
-        }
+        // Store the full dataset in the session
+        session(['import_data' => $allRows]);
+        session(['file_path' => $filePath]);
 
-        // check if records exceeds 1000. This allows to upload 1000 records at a time
-        if (count($csv_data) > 1001) {
-            // create audit trail
-            $this->createAuditTrail('Tried to import large data.');
+        // Get the first 10 rows for preview
+        $previewRows = array_slice($allRows, 0, 15);
 
-            \Session::flash('info', 'CSV file contains ' . (count($csv_data) - 1001) . ' records. Only 1000 records can be uploaded at time');
-            return back();
-        }
 
-        return $this->process_csv($request, $csv_data);
+        $this->createAuditTrail('Uploaded '. count($allRows).' records for preview');
+
+        return view('dashboard.dockets.upload-preview', ['rows' => $previewRows, 'category' => $category, 'location' => $location]);
     }
 
     /**
      * process the csv file
      *
-     * @param      <type>  $request  The request
-     *
-     * @return     <type>  ( description_of_the_return_value )
-     */
-    public function process_csv($request, $data)
+     * */
+
+    public function processImport(Request $request)
     {
 
-        $json_data = json_encode($data , JSON_FORCE_OBJECT);
-        if ( json_last_error_msg() == "Malformed UTF-8 characters, possibly incorrectly encoded" ) {
-            $json_data = json_encode($data, JSON_PARTIAL_OUTPUT_ON_ERROR );
-        }
-        if ( $json_data == false ) {
-            \Session::flash('info', json_last_error_msg());
-            return back();
-        }
+        // Retrieve the full dataset from the session
+        $allRows = session('import_data', []);
 
-
-        if (count($data) > 1) {
-            $csv_data = array_slice($data, 1, 5);
-
-            $session_data = [
-
-                'csv_filename' => $request->file('csv_file')->getClientOriginalName(),
-                'csv_data' => $json_data,
+        // Step 1: Insert all dockets in a single query
+        $dockets = collect($allRows)->map(function ($row) use ($request) {
+            return [
+                'slug' => uniqid(),
+                'suit_number' => $row['suit_number'],
+                'case_title' => $row['case_title'],
+                'date_filed' => $row['date_filed'],
+                'category_id' => $request->case_category,
+                'location_id' => $request->location,
+                'status' => 'Filed',
+                'created_by' => Auth::id(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
+        });
+        //insert
+        Docket::query()->insert($dockets->toArray());
 
-            $request->session()->put('csv_data', $session_data);
-        } else {
+        // Step 2: Dispatch a single job for all dockets
+        $insertedDockets = Docket::query()
+            ->whereIn('slug', collect($dockets)->pluck('slug'))
+            ->get();
 
-            \Session::flash('info', 'No records found in CSV file');
-            return back();
-        }
+        ProcessCasesJob::dispatch($insertedDockets);
 
-        // create audit trail
-        $this->createAuditTrail('Previewed imported data before upload');
+        // Delete the temporary file after processing
+        Storage::delete(session('file_path'));
+        // Clear the session data after import
+        session()->forget('import_data');
+        session()->forget('file_path');
 
-        return view('dashboard.dockets.upload-preview', compact('csv_data', 'data'));
+        return redirect()->route('cases')->with('success', 'Cases imported successfully.');
     }
 }
