@@ -23,6 +23,7 @@ class BackupController extends Controller
 
         $disk = Storage::disk(config('backup.backup.destination.disks')[0]);
         $files = $disk->files(config('backup.backup.name'));
+//        dd(count($files));
 
         $backups = [];
         foreach ($files as $file) {
@@ -35,6 +36,8 @@ class BackupController extends Controller
                 ];
             }
         }
+
+        $backups = collect($backups)->sortDesc();
 
         $this->createAuditTrail('Visited backup page.');
 
