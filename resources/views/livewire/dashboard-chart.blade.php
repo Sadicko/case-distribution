@@ -63,11 +63,6 @@
         //start chart
         window.myChart = new Chart(ctx, {
             type: "bar",
-            toolbar: {
-                show: true,
-                offsetX: 0, // Horizontal offset
-                offsetY: 15, // Add vertical margin
-            },
             data: {
                 labels: labels,
                 datasets: [{
