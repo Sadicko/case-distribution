@@ -296,7 +296,9 @@ $(function(){
     })
 
     // Gets today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split('T')[0];
-    document.querySelector('.date').setAttribute('max', today);
+    if ($('.date').length > 0){
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('.date').setAttribute('max', today);
+    }
 
 })

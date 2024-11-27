@@ -18,6 +18,7 @@ class ModuleSeeder extends Seeder
                 'name' => 'Dashboard',
                 'permissions' => [
                     'Read dashboard',
+                    'Read dashboard chart',
                 ]
             ],
             [

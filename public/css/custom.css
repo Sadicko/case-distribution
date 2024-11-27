@@ -11,6 +11,8 @@
     --gray-700: 63, 63, 70;
     --primary-color: #142444;
     --teal-color: #2D5A6C;
+    --pink-color: #D441A0;
+    --blue-color: #007BFF;
 }
 
 * {
@@ -26,9 +28,21 @@ p, strong, i{
     font-size: 0.9rem;
 }
 
+.bg-teal{
+    background-color: var(--teal-color) !important;
+}
+
+.bg-pink{
+    background-color: var(--pink-color) !important;
+}
+
 .bg-gray {
     --tw-bg-opacity: 1;
     background-color: rgba(var(--gray-50), var(--tw-bg-opacity));
+}
+
+.bg-blue {
+    background-color: var(--blue-color) !important;
 }
 
 /*.bg-cream {*/

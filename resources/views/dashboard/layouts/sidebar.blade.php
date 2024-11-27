@@ -55,22 +55,22 @@
                 </li>
             @endcanany
 
-{{--            <li>--}}
-{{--                <a class="m-link @yield('reset_case_active')" href="{{ route('categories') }}">--}}
-{{--                    <i class="fas fa-list-alt"></i>--}}
-{{--                    <div>--}}
-{{--                        <h6 class="mb-0">Reset case counts</h6>--}}
-{{--                    </div>--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li>--}}
-{{--                <a class="m-link @yield('dispose_case_active')" href="{{ route('categories') }}">--}}
-{{--                    <i class="fas fa-list-alt"></i>--}}
-{{--                    <div>--}}
-{{--                        <h6 class="mb-0">Dispose cases</h6>--}}
-{{--                    </div>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            {{--            <li>--}}
+            {{--                <a class="m-link @yield('reset_case_active')" href="{{ route('categories') }}">--}}
+            {{--                    <i class="fas fa-list-alt"></i>--}}
+            {{--                    <div>--}}
+            {{--                        <h6 class="mb-0">Reset case counts</h6>--}}
+            {{--                    </div>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
+            {{--            <li>--}}
+            {{--                <a class="m-link @yield('dispose_case_active')" href="{{ route('categories') }}">--}}
+            {{--                    <i class="fas fa-list-alt"></i>--}}
+            {{--                    <div>--}}
+            {{--                        <h6 class="mb-0">Dispose cases</h6>--}}
+            {{--                    </div>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
 
             @canany(['Read reports', 'Filter reports', 'Export reports', 'Print reports'])
                 <li class>
@@ -87,26 +87,26 @@
                     <!-- Menu: Sub menu ul -->
                     <ul class="sub-menu collapse @yield('asset_collapse')" id="general-report">
                         <li>
-                            <a class="m-link @yield('reports_active')" href="{{ route('reports') }}">
+                            <a class="m-link @yield('reports_active')" href="#!">
                                 <i class="fas fa-chart-pie"></i>
                                 <div>
-                                    <h6 class="mb-0">Case counts</h6>
+                                    <h6 class="mb-0">Workload report</h6>
                                 </div>
                             </a>
                         </li>
                         <li>
-                            <a class="m-link @yield('reports_active')" href="{{ route('reports') }}">
+                            <a class="m-link @yield('reports_active')" href="#!">
                                 <i class="fas fa-line-chart"></i>
                                 <div>
-                                    <h6 class="mb-0">Case summary</h6>
+                                    <h6 class="mb-0">Case summary report</h6>
                                 </div>
                             </a>
                         </li>
                         <li>
-                            <a class="m-link @yield('case_distribution_active')" href="{{ route('reports') }}">
+                            <a class="m-link @yield('case_distribution_active')" href="#!">
                                 <i class="fas fa-area-chart"></i>
                                 <div>
-                                    <h6 class="mb-0">Case distributions</h6>
+                                    <h6 class="mb-0">Registry Report</h6>
                                 </div>
                             </a>
                         </li>

@@ -54,18 +54,7 @@
                 <div class="row">
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-primary text-white mb-4">
-                            <div class="card-body d-flex justify-content-between">
-                                Total Judges
-                            </div>
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <i class="fas fa-users"></i>
-                                <span class="badge bg-white text-dark">{{ $judges }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card bg-warning text-white mb-4">
-                            <div class="card-body">Total cases</div>
+                            <div class="card-body">Total case filed</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
                                 <i class="fas fa-briefcase"></i>
                                 <span class="badge bg-white text-dark">{{ $cases }}</span>
@@ -74,15 +63,42 @@
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-success text-white mb-4">
-                            <div class="card-body">Registered cases</div>
+                            <div class="card-body">Total cases allocated</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
                                 <i class="fas fa-project-diagram"></i>
-                                <span class="badge bg-white text-dark">{{ $registered_cases }}</span>
+                                <span class="badge bg-white text-dark">{{ $casesAllocated }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
-                        <div class="card bg-secondary text-white mb-4">
+                        <div class="card bg-info text-white mb-4">
+                            <div class="card-body">Cases awaiting allocation</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <i class="fas fa-pager"></i>
+                                <span class="badge bg-white text-dark">{{ $casesNotAllocated }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-teal text-white mb-4">
+                            <div class="card-body">Total System allocation</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <i class="fas fa-list-alt"></i>
+                                <span class="badge bg-white text-dark">{{ $casesAutoAllocated }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-warning text-white mb-4">
+                            <div class="card-body">Total manuel allocation</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <i class="fas fa-list-alt"></i>
+                                <span class="badge bg-white text-dark">{{ $manualCasesAllocated }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-danger text-white mb-4">
                             <div class="card-body">Disposed cases</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
                                 <i class="fas fa-list-alt"></i>
@@ -90,9 +106,30 @@
                             </div>
                         </div>
                     </div>
+
+                    @can('Manage judges')
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-blue text-white mb-4">
+                                <div class="card-body d-flex justify-content-between">
+                                    Total Judges
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <i class="fas fa-users"></i>
+                                    <span class="badge bg-white text-dark">{{ $judges }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endcan
                 </div>
 
-                @livewire('dashboard-chart')
+                @can('Read dashboard chart')
+                    @livewire('dashboard-chart')
+
+                @else
+                    <div style="height: 30vh;">
+
+                    </div>
+                @endcan
 
             </div>
         </div>

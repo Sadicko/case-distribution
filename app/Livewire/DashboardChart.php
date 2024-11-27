@@ -9,20 +9,6 @@ use Livewire\Component;
 class DashboardChart extends Component
 {
 
-//    public $caseDistributions = [
-//        ['period' => 'Jan', 'case_count' => 5],
-//        ['period' => 'Feb', 'case_count' => 10],
-//        ['period' => 'Mar', 'case_count' => 5],
-//        ['period' => 'Apr', 'case_count' => 5],
-//        ['period' => 'May', 'case_count' => 5],
-//        ['period' => 'Jun', 'case_count' => 5],
-//        ['period' => 'Jul', 'case_count' => 5],
-//        ['period' => 'Aug', 'case_count' => 5],
-//        ['period' => 'Sep', 'case_count' => 5],
-//        ['period' => 'Oct', 'case_count' => 9],
-//        ['period' => 'Nov', 'case_count' => 5],
-//        ['period' => 'Dec', 'case_count' => 5],
-//    ];
     public $caseDistributions = [];
     public $status = 'weekly'; // Default status
 
@@ -31,10 +17,11 @@ class DashboardChart extends Component
     {
 
         sleep(1);
-//        dd($status);
 
         // If status is passed, update it; otherwise, use the default (weekly)
         $this->status = $status ?? $this->status;
+        $legalYearStart = legalYear()['legalYearStart'];
+        $legalYearEnd = legalYear()['legalYearEnd'];
 
         switch ($this->status) {
             case 'monthly':
@@ -42,13 +29,13 @@ class DashboardChart extends Component
                     $assignment = Docket::query()
                         ->selectRaw('monthname(assigned_date) period, count(*) as case_count')
                         ->groupBy('period')
-                        ->whereYear('assigned_date', date('Y'))
+                        ->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])
                         ->orderBy('period', 'desc')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::query()
                         ->selectRaw("datename(month, assigned_date) as period, count(*) as case_count")
-                        ->whereYear('assigned_date', date('Y'))
+                        ->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])
                         ->groupByRaw("datename(month, assigned_date)")
                         ->orderByRaw("datename(month, assigned_date) DESC")
                         ->get()->toArray();
@@ -97,6 +84,9 @@ class DashboardChart extends Component
         }
 
         $this->caseDistributions = $assignment;
+
+        // Emit event to the frontend
+        $this->dispatch('caseDistributionsUpdated', ['caseDistributions' => $this->caseDistributions, 'status' => $this->status] );
     }
 
     // Fetch data when component mounts

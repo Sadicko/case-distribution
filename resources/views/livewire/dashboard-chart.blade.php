@@ -30,63 +30,70 @@
 
 @script
 <script>
+    //load chart on page load
+    document.addEventListener('livewire:initialized', () => {
+        renderChart()
+    })
 
-    const caseDistributions = $wire.caseDistributions;
-    //
-    console.log(caseDistributions);
-    // console.log(getRandomColor());
-
-    let labels = [];
-    let caseCounts = [];
-    let colors = [];
-
-    labels = caseDistributions.map(item => item.period);
-    console.log(labels);
-    caseCounts =  caseDistributions.map(item => item.case_count);
-    console.log(caseCounts);
-    colors = caseDistributions.map(item => getRandomColor());
-    console.log(colors);
-
-    // caseDistributions.forEach(item => {
-    //     labels.push(item.period);
-    //     caseCounts.push(item.case_count);
-    //     colors.push(getRandomColor());
-    // });
-
-
-    var ctx = document.getElementById("myBarChart");
-
-    window.myChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: `${$wire.status.toUpperCase()} CASE DISTRIBUTION`,
-                data: caseCounts,
-                backgroundColor: colors,
-                borderColor: colors,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            maintainAspectRatio: true,
-            legend: {
-                display: true,
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-                xAxes: [
-                    {
-                        gridLines: {
-                            display: false,
-                        },
-                    },
-                ],
-            },
-        },
+    //load chart when clicked on weekly, monthly or year
+    $wire.on('caseDistributionsUpdated', () => {
+        renderChart()
     });
+
+    //chart function
+    function renderChart(){
+        //get data
+        const caseDistributions = $wire.caseDistributions;
+
+        let labels = [];
+        let caseCounts = [];
+        let colors = [];
+
+        labels = caseDistributions.map(item => item.period.toUpperCase());
+        caseCounts =  caseDistributions.map(item => item.case_count);
+        colors = caseDistributions.map(item => getRandomColor());
+
+        //get chat id
+        var ctx = document.getElementById("myBarChart");
+
+        if (window.myChart) {
+            window.myChart.destroy(); //destroy canvas if exist
+        }
+
+        //start chart
+        window.myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `${$wire.status.toUpperCase()} CASE DISTRIBUTION`,
+                    data: caseCounts,
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                legend: {
+                    display: true,
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                    xAxes: [
+                        {
+                            gridLines: {
+                                display: false,
+                            },
+                        },
+                    ],
+                },
+            },
+        });
+
+    }
 
 
     function getRandomColor() {

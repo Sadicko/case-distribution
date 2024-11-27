@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class Docket extends Model
 {
@@ -92,6 +94,23 @@ class Docket extends Model
                 }
             }
         });
+    }
+
+
+    public static function getDockets()
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
+            $query = static::query();
+        }else{
+            $query = static::query()->whereHas('courts', function ($query) use ($user){
+                $query->where('registry_id', $user->registry_id);
+            });
+        }
+
+        return $query;
+
     }
 
 }
