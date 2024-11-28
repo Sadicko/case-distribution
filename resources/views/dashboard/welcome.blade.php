@@ -214,7 +214,16 @@
             </div>
 
         @else
-            <div style="height: 30vh;">
+            <div class="body">
+                <div class="container">
+                    <div class="card mb-3">
+                        <div class="card-body text-center p-5">
+                            <h5>Welcome to your Dashboard.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 60vh;">
 
             </div>
         @endcanany
