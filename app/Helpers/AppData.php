@@ -45,14 +45,18 @@ function user_status(){
 }
 
 
+//all user access levels. Limited levels are added below this
 function access_level(){
 
     return [
+        'Court Staff' => "Court Staff",
         'Filing Clerk' => "Filing Clerk",
-        'Staff' => "Staff",
+        'Docket Clerk' => "Docket Clerk",
+        'Process Clerk' => "Process Clerk",
         'Registrar' => "Registrar",
         'Court Manager' => "Court Manager",
         'Director' => "Director",
+        'Judge' => "Judge",
         'Management' => "Management",
         'Developer' => "Developer",
         'General Admin' => "General Admin",
@@ -60,6 +64,28 @@ function access_level(){
         'Super Admin' => 'Super Admin',
     ];
 }
+
+
+function access_level(){
+
+    return [
+        'Court Staff' => "Court Staff",
+        'Filing Clerk' => "Filing Clerk",
+        'Docket Clerk' => "Docket Clerk",
+        'Process Clerk' => "Process Clerk",
+        'Registrar' => "Registrar",
+        'Court Manager' => "Court Manager",
+        'Director' => "Director",
+        'Judge' => "Judge",
+        'Management' => "Management",
+        'Developer' => "Developer",
+        'General Admin' => "General Admin",
+        'System Admin' => "System Admin",
+        'Super Admin' => 'Super Admin',
+    ];
+}
+
+
 
 function role_status(){
 
@@ -185,36 +211,7 @@ function subcategories($category)
 }
 
 
-function furnitureMaterials()
-{
-    return  [
-        'Wood',
-        'Metal',
-        'Plastic',
-    ];
-}
 
-function fuelType()
-{
-    return  [
-        'Diesel',
-        'Petrol',
-        'Electric',
-        'Plug-in Hybrid',
-        'Biodiesel',
-        'LPG',
-        'CNG',
-        'Ethanol',
-        'Hydrogen',
-    ];
-}
-
-
-function generateAssetId($category = null)
-{
-    //generate asset id
-    return 'JSG/'.getInitials($category). '/' . date('y') . '/' . Str::random(6);
-}
 
 function getInitials($name)
 {

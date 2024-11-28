@@ -33,9 +33,19 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/dashboard');
 
 
-// Route::get('/', function () {
-//     return view('front-end.welcome');
-// })->middleware(['auth']);
+
+//Route::get('/bulk-updates', function () {
+////    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
+//    $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->get();
+//
+//    foreach ($dockets as $docket) {
+//        $docket->judge_id = $docket->courts->currentJudge[0]->id;
+//        $docket->save();
+//    }
+//
+//    return 'success';
+//
+//})->middleware(['auth']);
 
 Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // home

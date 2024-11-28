@@ -24,6 +24,11 @@ class Docket extends Model
         return $this->belongsTo(Court::class, 'court_id');
     }
 
+    public function judges()
+    {
+        return $this->belongsTo(Judge::class, 'judge_id');
+    }
+
     public function categories()
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -103,6 +108,10 @@ class Docket extends Model
 
         if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
             $query = static::query();
+        }elseif(Gate::any(['judge', 'court_staff'])){
+            $query = static::query()->whereHas('courts', function ($query) use ($user){
+                $query->where('court_id', $user->court_id);
+            });
         }else{
             $query = static::query()->whereHas('courts', function ($query) use ($user){
                 $query->where('registry_id', $user->registry_id);

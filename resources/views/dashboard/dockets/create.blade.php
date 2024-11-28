@@ -84,13 +84,13 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="form-group col-6 mb-3">
-                                            <label for="date_filed" class="form-label">Date filed*</label>
-                                            <input class="form-control date" type="text" required name="date_filed" id="date_filed" value="{{ old('date_filed') }}" placeholder="d/m/Y" autocomplete="off">
-                                            @error('date_filed')
-                                            <small class="invalid-feedback">{{ $message }}</small>
-                                            @enderror
-                                        </div>
+                                        {{--                                        <div class="form-group col-6 mb-3">--}}
+                                        {{--                                            <label for="date_filed" class="form-label">Date filed*</label>--}}
+                                        {{--                                            <input class="form-control date" type="text" required name="date_filed" id="date_filed" value="{{ old('date_filed') }}" placeholder="d/m/Y" autocomplete="off">--}}
+                                        {{--                                            @error('date_filed')--}}
+                                        {{--                                            <small class="invalid-feedback">{{ $message }}</small>--}}
+                                        {{--                                            @enderror--}}
+                                        {{--                                        </div>--}}
                                         <div class="form-group col-6 mb-3 @cannot('Set case as urgent') d-none @endcannot">
                                             <label for="priority_level" class="form-label">Case priority*</label>
                                             <select name="priority_level" class="form-control select2" id="priority_level">
@@ -144,8 +144,8 @@
         $(function(){
 
             $(document).on("click", ".assignBtn", function () {
-
-                if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#cat').val() == '' || $('#case_category').val() == '' || $('#date_filed').val() == '' || $('#location').val() == ''){
+                //|| $('#date_filed').val() == ''
+                if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#cat').val() == '' || $('#case_category').val() == ''  || $('#location').val() == ''){
 
                     toastr.error('All fields are required.');
 

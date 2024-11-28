@@ -18,6 +18,7 @@ class CaseDistributionService
     {
         // Step 1: Fetch all eligible courts
         $eligibleCourts = Court::query()
+            ->with('currentJudge')
             ->where('location_id', $docket->location_id) // Restrict to docket's location
             ->where('availability', 1) // Ensure court is available
             ->whereHas('categories', function ($query) use ($docket) {
@@ -57,8 +58,8 @@ class CaseDistributionService
         $selectedCourt->increment('case_count');
 
         // Step 6: Assign court and judge to docket
-        $assignedJudge = $selectedCourt->judges->firstWhere('pivot.unassigned_at', null);
         $docket->court_id = $selectedCourt->id;
+        $docket->judge_id = $selectedCourt->currentJudge[0]->id;
         $docket->assigned_date = now();
         $docket->is_assigned = 1;
         $docket->status = 'Assigned';

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Comment\Doc;
 
 class Judge extends Model
 {
@@ -11,6 +12,11 @@ class Judge extends Model
 
     protected $guarded = [];
 
+
+    public function dockets()
+    {
+        return $this->hasMany(Docket::class, 'judge_id');
+    }
     public function courts()
     {
         return $this->belongsToMany(Court::class, 'court_judges')

@@ -81,7 +81,7 @@
                                     <th>Case category</th>
                                     <th>Court</th>
                                     <th>Judge</th>
-                                    <th>Date Filed</th>
+                                    {{--                                    <th>Date Filed</th>--}}
                                     <th>Date assigned</th>
                                     <th>Status</th>
                                     <th  class="text-nowrap w-auto">Action</th>
@@ -96,9 +96,9 @@
                                             <td>{{ $docket->case_title }}</td>
                                             <td>{{ $docket->categories->name }}</td>
                                             <td>{{ $docket->courts?->name ?? '-' }}</td>
-                                            <td>{{ $docket->courts?->currentJudge[0]?->name ?? '-' }}</td>
-                                            <td>{{ $docket->date_filed->format('d-m-Y') }}</td>
-                                            <td>{{ $docket->assigned_date?->format('d-m-Y') ?? '-' }}</td>
+                                            <td>{{ $docket->judges?->name ?? '-' }}</td>
+                                            {{--                                            <td>{{ $docket->date_filed->format('d-m-Y') }}</td>--}}
+                                            <td>{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}</td>
                                             <td>{{ $docket->status }}</td>
                                             <td class="text-center">
                                                 @canany(['Update cases', 'Re-assign cases', 'Print cases'])

@@ -148,20 +148,20 @@
                     {{ $docket->categories->name }}
                 </div>
             </div>
+            {{--            <div class="row mt-2">--}}
+            {{--                <div class="col-md-2">--}}
+            {{--                    Date filed:--}}
+            {{--                </div>--}}
+            {{--                <div class="col-md-10  text-uppercase">--}}
+            {{--                    {{ $docket->date_filed->format('d-m-Y') }}--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <div class="row mt-2">
                 <div class="col-md-2">
-                    Date filed:
+                    Date of allocation:
                 </div>
-                <div class="col-md-10  text-uppercase">
-                    {{ $docket->date_filed->format('d-m-Y') }}
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Date allocated:
-                </div>
-                <div class="col-md-10  text-uppercase">
-                    {{ $docket->assigned_date->format('d-m-Y') }}
+                <div class="col-md-10">
+                    {{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}
                 </div>
             </div>
         </div>

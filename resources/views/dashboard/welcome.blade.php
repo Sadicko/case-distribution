@@ -135,15 +135,84 @@
         </div>
 
     @else
-        <div class="body">
-            <div class="container">
-                <div class="card mb-3">
-                    <div class="card-body text-center p-5">
-                        <h5>Welcome to your Dashboard.</h5>
+        @canany(['court_staff', 'judge'])
+            <div class="body">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="border-0 mb-4">
+                            <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                                <h3 class="h4 mb-0 text-uppercase"><i class="fas fa-home"></i> Dashboard</h3>
+
+                                <div class="col-auto d-flex w-sm-100  mt-sm-0">
+                                    <a href="{{ route('cases') }}" class="btn btn-primary text-white w-sm-100"><i class="fas fa-chevron-right me-2"></i>View Case list</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row end  -->
+
+                    <div class="card mb-3 mt-5">
+                        <div class="card-body text-center p-5">
+
+                            <div class="accordion mb-5" id="accordionCases">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="caseHeadingOne">
+                                        <button class="accordion-button bg-teal text-white" type="button" data-bs-toggle="collapse" >
+                                            <i class="fas fa-folder-open me-2"></i>This weeks allocation
+                                        </button>
+                                    </h2>
+                                    <div id="caseCollapseOne" class="accordion-collapse collapse show" >
+                                        <div class="accordion-body">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table id="initTable" class="table table-striped table-hover display">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>##</th>
+                                                            <th>Suit number</th>
+                                                            <th>Case title</th>
+                                                            <th>Case category</th>
+                                                            <th>Court</th>
+                                                            <th>Judge</th>
+                                                            <th>Date assigned</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {{--                                                        @if($dockets->total() > 0)--}}
+                                                        {{--                                                            @foreach($dockets as $docket)--}}
+                                                        {{--                                                                <tr>--}}
+                                                        {{--                                                                    <td>{{ $loop->index + 1 }}</td>--}}
+                                                        {{--                                                                    <td>{{ $docket->suit_number }}</td>--}}
+                                                        {{--                                                                    <td>{{ $docket->case_title }}</td>--}}
+                                                        {{--                                                                    <td>{{ $docket->categories->name }}</td>--}}
+                                                        {{--                                                                    <td>{{ $docket->courts?->name ?? '-' }}</td>--}}
+                                                        {{--                                                                    <td>{{ $docket->judges?->name ?? '-' }}</td>--}}
+                                                        {{--                                            <td>{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}</td>--}}
+                                                        {{--                                                                    <td>{{ $docket->status }}</td>--}}
+                                                        {{--                                                                </tr>--}}
+                                                        {{--                                                            @endforeach--}}
+                                                        {{--                                                        @else--}}
+                                                        {{--                                                            <td colspan="9">--}}
+                                                        {{--                                                                <h5 class="text-muted text-center">No records found</h5>--}}
+                                                        {{--                                                            </td>--}}
+                                                        {{--                                                        @endif--}}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="mt-3">
+                                                    {{--                                                    {{ $dockets->links() }}--}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endcanany
     @endcan
 
 @endsection

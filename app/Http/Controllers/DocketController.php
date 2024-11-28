@@ -110,7 +110,7 @@ class DocketController extends Controller
             'case_title' => strtoupper($request->case_title),
             'category_id' => $request->case_category,
             'location_id' => $request->location,
-            'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
+//            'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
             'priority_level' => $request->priority_level,
             'status' => 'Filed',
             'created_by' => Auth::id(),
