@@ -106,13 +106,18 @@ class Docket extends Model
     {
         $user = Auth::user();
 
-        if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
+        if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
+
             $query = static::query();
-        }elseif(Gate::any(['judge', 'court_staff'])){
+
+        }elseif(Gate::any(court_room_access_level())){
+
             $query = static::query()->whereHas('courts', function ($query) use ($user){
                 $query->where('court_id', $user->court_id);
             });
+
         }else{
+
             $query = static::query()->whereHas('courts', function ($query) use ($user){
                 $query->where('registry_id', $user->registry_id);
             });

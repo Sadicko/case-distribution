@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class Location extends Model
 {
@@ -32,6 +34,28 @@ class Location extends Model
     public function assets()
     {
         return $this->hasMany(Asset::class, 'location_id');
+    }
+
+    public static function fetchLocationsWithCourt()
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
+
+            $query = static::query()->whereHas('courts', function ($qeury){
+                $qeury->where('availability', 1);
+            });
+
+        }else{
+
+            $query = static::query()->whereHas('courts', function ($locationQeury)use ($user){
+                $locationQeury->where('registry_id', $user->registry_id)
+                    ->where('availability', 1);
+            });
+        }
+
+        return $query;
+
     }
 
 }

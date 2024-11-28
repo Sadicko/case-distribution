@@ -26,14 +26,14 @@ class DashboardChart extends Component
         switch ($this->status) {
             case 'monthly':
                 if (getenv('DB_CONNECTION') == 'mysql') {
-                    $assignment = Docket::query()
+                    $assignment = Docket::getDockets()
                         ->selectRaw('monthname(assigned_date) period, count(*) as case_count')
                         ->groupBy('period')
                         ->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])
                         ->orderBy('period', 'desc')
                         ->get()->toArray();
                 } else {
-                    $assignment = Docket::query()
+                    $assignment = Docket::getDockets()
                         ->selectRaw("datename(month, assigned_date) as period, count(*) as case_count")
                         ->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])
                         ->groupByRaw("datename(month, assigned_date)")
@@ -44,14 +44,14 @@ class DashboardChart extends Component
 
             case 'yearly':
                 if (getenv('DB_CONNECTION') == 'mysql') {
-                    $assignment = Docket::query()
+                    $assignment = Docket::getDockets()
                         ->selectRaw('DATE_FORMAT(assigned_date, "%Y") period, count(*) as case_count')
                         ->groupBy('period')
                         ->whereYear('assigned_date', '>', now()->subYears(5))
                         ->orderBy('period', 'asc')
                         ->get()->toArray();
                 } else {
-                    $assignment = Docket::query()
+                    $assignment = Docket::getDockets()
                         ->selectRaw("FORMAT(assigned_date, 'yyyy') as period, count(*) as case_count")
                         ->whereYear('assigned_date', '>', now()->subYears(5)->format('Y'))
                         ->groupByRaw("FORMAT(assigned_date, 'yyyy')")
@@ -66,14 +66,14 @@ class DashboardChart extends Component
                 $day2 = Carbon::parse('next friday')->endOfDay();
 
                 if (getenv('DB_CONNECTION') == 'mysql') {
-                    $assignment = Docket::query()
+                    $assignment = Docket::getDockets()
                         ->selectRaw('DATE_FORMAT(assigned_date, "%d-%m-%Y") as period, count(*) as case_count')
                         ->whereBetween('assigned_date', [$day1, $day2])
                         ->groupBy('period')
                         ->orderBy('period', 'desc')
                         ->get()->toArray();
                 } else {
-                    $assignment = Docket::query()
+                    $assignment = Docket::getDockets()
                         ->selectRaw("CONVERT(varchar, assigned_date, 105) as period, count(*) as case_count")
                         ->whereBetween('assigned_date', [$day1, $day2])
                         ->groupByRaw("CONVERT(varchar, assigned_date, 105)")

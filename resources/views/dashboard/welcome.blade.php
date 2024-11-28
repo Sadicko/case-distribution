@@ -212,6 +212,11 @@
                     </div>
                 </div>
             </div>
+
+        @else
+            <div style="height: 30vh;">
+
+            </div>
         @endcanany
     @endcan
 

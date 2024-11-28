@@ -65,23 +65,33 @@ function access_level(){
     ];
 }
 
+function limited_access_level()
+{
+    return [
+        'docket_clerk',
+        'process_clerk',
+        'filing_clerk',
+        'court_registrar',
+        'judge',
+        'court_staff',
+    ];
+}
 
-function access_level(){
+function registry_access_level(){
 
     return [
-        'Court Staff' => "Court Staff",
-        'Filing Clerk' => "Filing Clerk",
-        'Docket Clerk' => "Docket Clerk",
-        'Process Clerk' => "Process Clerk",
-        'Registrar' => "Registrar",
-        'Court Manager' => "Court Manager",
-        'Director' => "Director",
-        'Judge' => "Judge",
-        'Management' => "Management",
-        'Developer' => "Developer",
-        'General Admin' => "General Admin",
-        'System Admin' => "System Admin",
-        'Super Admin' => 'Super Admin',
+        'docket_clerk',
+        'process_clerk',
+        'filing_clerk',
+        'court_registrar',
+    ];
+}
+
+function court_room_access_level(){
+
+    return [
+        'judge',
+        'court_staff',
     ];
 }
 

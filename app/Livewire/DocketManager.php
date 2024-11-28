@@ -50,7 +50,7 @@ class DocketManager extends Component
 
 //        dd($this->searchTerm. '-' .$this->selectedCategory.'-' .$this->selectedCourt. '-' .$this->startDate. '-' .$this->endDate);
 
-        $query = Docket::query()->with('categories', 'courts', 'courts.currentJudge');
+        $query = Docket::getDockets()->with('categories', 'courts', 'courts.currentJudge');
 
         if (!empty($this->searchTerm)){
             //$query->searchFullText(trim($this->searchTerm));

@@ -64,11 +64,6 @@ class AppServiceProvider extends ServiceProvider
             return $user->access_type === "Management";
         });
 
-        // Should return TRUE or FALSE if Registrar
-        Gate::define('court_registrar', function(User $user) {
-            return $user->access_type === "Registrar";
-        });
-
         // Should return TRUE or FALSE if Director
         Gate::define('director', function(User $user) {
             return $user->access_type === "Director";
@@ -79,9 +74,9 @@ class AppServiceProvider extends ServiceProvider
             return $user->access_type === "Court Manager";
         });
 
-        // Should return TRUE or FALSE if Court Staff
-        Gate::define('court_staff', function(User $user) {
-            return $user->access_type === "Court Staff";
+        // Should return TRUE or FALSE if Registrar
+        Gate::define('court_registrar', function(User $user) {
+            return $user->access_type === "Registrar";
         });
 
         // Should return TRUE or FALSE if Filing Staff
@@ -97,6 +92,11 @@ class AppServiceProvider extends ServiceProvider
         // Should return TRUE or FALSE if Process clerk
         Gate::define('docket_clerk', function(User $user) {
             return $user->access_type === "Docket Clerk";
+        });
+
+        // Should return TRUE or FALSE if Court Staff
+        Gate::define('court_staff', function(User $user) {
+            return $user->access_type === "Court Staff";
         });
 
         // Should return TRUE or FALSE if Judge

@@ -50,34 +50,11 @@ class DocketController extends Controller
         }
 
         //get user
-        $user = Auth::user();
-        if ($user->hasRole('Super Admin') || !Gate::any(['court_registrar', 'court_staff', 'filing_clerk'])) {
-            //show categories that have courts
-            $categories = Category::query()->whereHas('courts', function ($qeury){
-                $qeury->where('availability', 1);
-            })->orderBy('name', 'asc')->get();
+        //show categories that have courts
+        $categories = Category::fetchCategoriesWithCourt()->orderBy('name', 'asc')->get();
 
-            //show locations that have courts and has been assigned categories
-            $locations = Location::query()->whereHas('courts', function ($qeury){
-                $qeury->where('availability', 1);
-            })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
-
-
-        }else{
-            //show categories that have courts
-            $categories = Category::query()->whereHas('courts', function ($query) use ($user){
-                $query->where('registry_id', $user->registry_id)
-                    ->where('availability', 1);
-            })->get();
-
-            //show locations that have courts and has been assigned categories
-            $locations = Location::query()->whereHas('courts', function ($locationQeury)use ($user){
-                $locationQeury->where('registry_id', $user->registry_id)
-                    ->where('availability', 1);
-            })->whereHas('courts.categories')->orderBy('name', 'asc')->get();
-
-        }
-
+        //show locations that have courts and has been assigned categories
+        $locations = Location::fetchLocationsWithCourt()->whereHas('courts.categories')->orderBy('name', 'asc')->get();
 
         // create audit
         $this->createAuditTrail('Visited case creation page.');
