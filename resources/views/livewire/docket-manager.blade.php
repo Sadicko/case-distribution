@@ -11,10 +11,10 @@
                 <div class="accordion-body">
                     <form id="filterForm"  wire:submit="search">
                         <div class="row mb-2">
-                            <div class="form-group col-5 mb-2">
+                            <div class="form-group col-5 mb-2" wire:ignore>
                                 <label for="case_category">Case category</label>
                                 <select name="category" id="case_category" wire:model.live="selectedCategory" class="form-control select2">
-                                    <option value="">---Select---</option>
+                                    <option></option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}
                                         </option>
@@ -24,7 +24,7 @@
                             <div class="form-group col-3 mb-2">
                                 <label for="case_court">Court</label>
                                 <select name="court" id="case_court" wire:model="selectedCourt" wire:key="{{ $selectedCategory }}" @if(!$selectedCategory) disabled @endif class="form-control">
-                                    <option value="">---Select---</option>
+                                    <option></option>
                                     @foreach ($courts as $court)
                                         <option value="{{ $court->id }}">{{ $court->name }}</option>
                                     @endforeach
@@ -81,7 +81,6 @@
                                     <th>Case category</th>
                                     <th>Court</th>
                                     <th>Judge</th>
-                                    {{--                                    <th>Date Filed</th>--}}
                                     <th>Date assigned</th>
                                     <th>Status</th>
                                     <th  class="text-nowrap w-auto">Action</th>
@@ -97,7 +96,6 @@
                                             <td>{{ $docket->categories->name }}</td>
                                             <td>{{ $docket->courts?->name ?? '-' }}</td>
                                             <td>{{ $docket->judges?->name ?? '-' }}</td>
-                                            {{--                                            <td>{{ $docket->date_filed->format('d-m-Y') }}</td>--}}
                                             <td>{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}</td>
                                             <td>{{ $docket->status }}</td>
                                             <td class="text-center">
@@ -120,9 +118,11 @@
                                         </tr>
                                     @endforeach
                                 @else
-                                    <td colspan="9">
-                                        <h5 class="text-muted text-center">No records found</h5>
-                                    </td>
+                                    <tr>
+                                        <td colspan="9">
+                                            <h5 class="text-muted text-center">No records found</h5>
+                                        </td>
+                                    </tr>
                                 @endif
                                 </tbody>
                             </table>
@@ -135,77 +135,83 @@
             </div>
         </div>
     </div>
+</div>
 
-    @script
-    <script>
+@script
+<script>
 
-        $(function (){
-            $('#case_category').select2({
-                placeholder: 'Choose case category',
-            });
+    $(function (){
 
-            $('#case_category').on('change', function (e) {
-                var selectData = $(this).select2("val");
-            @this.set('selectedCategory', selectData);
-            });
-            $('#case_court').select2({
-                placeholder: 'Choose court',
-            });
+        $('#case_category').on('change', function (e) {
+            var selectData = $(this).select2("val");
+        @this.set('selectedCategory', selectData);
+        });
+        $('#case_court').select2({
+            placeholder: 'Choose court',
+        });
 
-            // Gets today's date in YYYY-MM-DD format
+        // Gets today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').setAttribute('max', today);
+        document.getElementById('endDate').setAttribute('max', today);
+
+        document.getElementById('startDate').addEventListener('change', function () {
+            $('#endDate').attr('required', 'required');
+        });
+
+        //events
+        $wire.on('search-completed', () => {
+
+            //set dates
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('startDate').setAttribute('max', today);
-            document.getElementById('endDate').setAttribute('max', today);
 
-            document.getElementById('startDate').addEventListener('change', function () {
-                $('#endDate').attr('required', 'required');
-            });
+            setTimeout(() => {
+                const startDate = document.getElementById('startDate');
+                const endDate = document.getElementById('endDate');
 
-            //events
-            $wire.on('search-completed', () => {
+                if (startDate) {
+                    startDate.setAttribute('max', today);
+                }
 
-                //set dates
-                const today = new Date().toISOString().split('T')[0];
+                if (endDate) {
+                    endDate.setAttribute('max', today);
+                }
 
-                setTimeout(() => {
-                    $('#case_category').select2({
-                        placeholder: 'Choose case category',
-                    });
-                    $('#case_court').select2({
-                        placeholder: 'Choose court',
-                    });
+                $('#case_court').select2({
+                    placeholder: 'Choose court',
+                });
 
-                    const startDate = document.getElementById('startDate');
-                    const endDate = document.getElementById('endDate');
-
-                    if (startDate) {
-                        startDate.setAttribute('max', today);
-                    }
-
-                    if (endDate) {
-                        endDate.setAttribute('max', today);
-                    }
-                }, 100); // Delay to ensure DOM is updated
-            });
+            }, 100); // Delay to ensure DOM is updated
+        });
 
 
-            $('#filterForm').submit(function (){
-                let selectedCourt = $('#case_court').val();
+        $('#filterForm').submit(function (event) {
+            event.preventDefault(); // Prevent form submission if necessary
+
+            let selectedCourt = $('#case_court').val();
+            if (selectedCourt) {
             @this.set('selectedCourt', selectedCourt);
+            }
 
-                let searchTerm = $('#searchTerm').val();
+            let searchTerm = $('#searchTerm').val();
+            if (searchTerm) {
             @this.set('searchTerm', searchTerm);
+            }
 
-                let startDate = $('#startDate').val();
+            let startDate = $('#startDate').val();
+            if (startDate) {
             @this.set('startDate', startDate);
+            }
 
-                let endDate = $('#endDate').val();
+            let endDate = $('#endDate').val();
+            if (endDate) {
             @this.set('endDate', endDate);
+            }
 
+        @this.call('search'); // Trigger the Livewire method
+        });
 
-            })
-
-        })
-    </script>
-    @endscript
+    })
+</script>
+@endscript
 

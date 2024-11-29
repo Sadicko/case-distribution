@@ -106,9 +106,12 @@ class Docket extends Model
     public function scopeSearchFullText(Builder $query, $searchTerm)
     {
         return $query->whereRaw(
-            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE)",  ["$searchTerm"]
-        )->orderByRaw("suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC", [$searchTerm]);
+            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$searchTerm]
+        )->orderByRaw(
+            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC", [$searchTerm]
+        );
     }
+
 
 
     public static function getDockets()
