@@ -63,7 +63,7 @@
                                         <select name="case_category" class="form-control select2" id="case_category">
                                             <option value=""></option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('case_category')
@@ -75,7 +75,7 @@
                                         <select name="location" class="form-control select2" id="location">
                                             <option value=""></option>
                                             @foreach($locations as $location)
-                                                <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
+                                                <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : (count($locations) ==  1 ? 'selected' : '')}}>{{ $location->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('location')

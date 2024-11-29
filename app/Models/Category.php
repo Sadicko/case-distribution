@@ -36,8 +36,14 @@ class Category extends Model
 
         if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
 
-            $query = static::query()->whereHas('courts', function ($qeury){
+            $query = static::query()->whereHas('courts', function ($qeury) {
                 $qeury->where('availability', 1);
+            });
+
+        }elseif(Gate::any(court_room_access_level())){
+
+            $query = static::query()->whereHas('courts', function ($query) use ($user){
+                $query->where('court_id', $user->court_id);
             });
 
         }else{

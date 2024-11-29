@@ -51,7 +51,7 @@ class DocketController extends Controller
 
         //get user
         //show categories that have courts
-        $categories = Category::fetchCategoriesWithCourt()->orderBy('name', 'asc')->get();
+        $categories = Category::fetchCategoriesWithCourt()->with('courts')->orderBy('name', 'asc')->get();
 
         //show locations that have courts and has been assigned categories
         $locations = Location::fetchLocationsWithCourt()->whereHas('courts.categories')->orderBy('name', 'asc')->get();
