@@ -54,7 +54,7 @@ class DocketManager extends Component
 
         if (!empty($this->searchTerm)){
             //$query->searchFullText(trim($this->searchTerm));
-            $query->whereLike([ 'suit_number', 'case_title', 'date_filed'], trim(strtoupper($this->searchTerm)));
+            $query->whereLike([ 'suit_number', 'case_title', 'assigned_date'], trim(strtoupper($this->searchTerm)));
         }
 
         //filter by category
@@ -71,7 +71,7 @@ class DocketManager extends Component
             $startDate = date('Y-m-d', strtotime($this->startDate));
             $endDate = date('Y-m-d', strtotime($this->endDate));
 
-            $query->whereBetween('date_filed', [$startDate, $endDate]);
+            $query->whereBetween('assigned_date', [$startDate, $endDate]);
         }
 
         $this->dispatch('search-completed');

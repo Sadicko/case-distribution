@@ -27,7 +27,7 @@ class UserController extends Controller
             return back()->with(['error' => 'You are not authorized to Manage users.']);
         }
 
-        $users = User::latest()->get();
+        $users = User::query()->with('courts', 'registries')->latest()->get();
 
         $this->createAuditTrail('Visited User list page.');
 
@@ -76,11 +76,17 @@ class UserController extends Controller
             'expire_date' => ['nullable'],
             'location' => ['required', 'integer'],
             'registry' => ['nullable', 'integer'],
+            'court' => ['nullable', 'integer'],
         ]);
 
-
-        if (count(array_diff($request->roles, ["Super Admin", "Administrator", 'Court Manager', 'Director', 'Management'])) > 0 && empty($request->registry)) {
+        //check if access level means user must belong to a registry and ensure registry is selected
+        if (in_array($request->access_level, registry_level()) > 0 && empty($request->registry)) {
             return back()->withInput()->withErrors(['registry' => 'The registry field is required.']);
+        }
+
+        //check if access level means user must belong to a court and ensure the court is selected
+        if (in_array($request->access_level, court_room_level()) > 0 && empty($request->court)) {
+            return back()->withInput()->withErrors(['court' => 'The court field is required.']);
         }
 
         $user = User::query()->create([
@@ -100,6 +106,7 @@ class UserController extends Controller
             'status' => $request->status,
             'location_id' => $request->location,
             'registry_id' => $request->registry,
+            'court_id' => $request->court,
             'is_approved' => $request->status == 'Active' ? 1 : 0,
         ]);
 
@@ -158,7 +165,10 @@ class UserController extends Controller
             'expire_date' => ['nullable'],
             'location' => ['required', 'integer'],
             'registry' => ['nullable', 'integer'],
+            'court' => ['nullable', 'integer'],
         ]);
+
+//        return  $request;
 
         if($this->emailExist()){
             return back()->withInput()->withErrors(['email' => 'The email has already been taken.']);
@@ -172,6 +182,18 @@ class UserController extends Controller
             return back()->withInput()->withErrors(['phone' => 'The phone has already been taken.']);
         }
 
+
+        //check if access level means user must belong to a registry and ensure registry is selected
+        if (in_array($request->access_level, registry_level()) > 0 && empty($request->registry)) {
+            return back()->withInput()->withErrors(['registry' => 'The registry field is required.']);
+        }
+
+        //check if access level means user must belong to a court and ensure the court is selected
+        if (in_array($request->access_level, court_room_level()) > 0 && empty($request->court)) {
+            return back()->withInput()->withErrors(['court' => 'The court field is required.']);
+        }
+
+        //update user
         $user = User::whereslug($slug)->firstOrfail();
 
         $user->update([
@@ -188,6 +210,7 @@ class UserController extends Controller
             'block' => $request->status == 'Active' ? 0 : 1,
             'location_id' => $request->location,
             'registry_id' => $request->registry,
+            'court_id' => $request->court,
             'is_approved' => $request->status == 'Active' ? 1 : 0,
         ]);
 
@@ -210,7 +233,7 @@ class UserController extends Controller
     public function  phoneExist()
     {
 
-        return User::where('slug', '!=', request()->slug)
+        return User::query()->where('slug', '!=', request()->slug)
             ->where('phone', request()->phone)
             ->exists();
 

@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-warning text-white mb-4">
-                            <div class="card-body">Total manuel allocation</div>
+                            <div class="card-body">Total manual allocation</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
                                 <i class="fas fa-list-alt"></i>
                                 <span class="badge bg-white text-dark">{{ $manualCasesAllocated }}</span>

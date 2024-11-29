@@ -12,6 +12,11 @@ class Registry extends Model
 
     protected $guarded = [];
 
+    public function users()
+    {
+        return $this->hasMany(User::class, 'registry_id');
+    }
+
     public function  locations()
     {
         return $this->belongsTo(Location::class, 'location_id');

@@ -105,6 +105,20 @@
                                 <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="form-group  col-md-6 mb-3">
+                                <label for="court"  class="form-label">Court</label>
+                                <select class="form-control select2" name="court"  id="court">
+                                    <option value=""></option>
+                                    @if(old('location'))
+                                        @foreach(fetch_courts(old('registry')) as $court)
+                                            <option value="{{ $court->id }}" {{ old('court') == $court->id ? 'selected' : '' }} >{{ $court->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                                @error('court')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
 
                         <hr>
@@ -213,4 +227,14 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    @if($errors->any())
+        <script>
+            $(function (){
+                toastr.error('Some required input fields are  missing. Kindly ensure it is not empty.')
+            })
+        </script>
+    @endif
 @endsection

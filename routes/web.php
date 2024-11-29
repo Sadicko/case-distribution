@@ -102,6 +102,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/courts', [CourtController::class, 'index'])->name('courts');
     Route::get('/courts/create', [CourtController::class, 'create'])->name('courts.create');
     Route::post('/courts/create', [CourtController::class, 'store'])->name('courts.create');
+    Route::post('/courts/fetch', [CourtController::class, 'fetchCourts']);
     Route::get('/courts/{slug}/edit', [CourtController::class, 'edit'])->name('courts.edit');
     Route::post('/courts/{slug}/edit', [CourtController::class, 'update'])->name('courts.edit');
     Route::get('/courts/assign/{slug}/categories', [CourtController::class, 'assignCategories'])->name('courts.assign-categories');

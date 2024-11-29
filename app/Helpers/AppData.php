@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Court;
 use App\Models\Location;
 use App\Models\Registry;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 function status(){
 
@@ -65,15 +65,37 @@ function access_level(){
     ];
 }
 
+//used when creating users that belongs to registries
+function registry_level(){
+
+    return [
+        'Court Staff',
+        'Filing Clerk',
+        'Docket Clerk',
+        'Process Clerk',
+        'Registrar',
+        'Judge',
+    ];
+}
+
+//used when creating users for court rooms
+function court_room_level(){
+
+    return [
+        'Court Staff',
+        'Judge',
+    ];
+}
+
 function limited_access_level()
 {
     return [
+        'court_staff',
+        'filing_clerk',
         'docket_clerk',
         'process_clerk',
-        'filing_clerk',
         'court_registrar',
         'judge',
-        'court_staff',
     ];
 }
 
@@ -134,6 +156,11 @@ function fetch_locations($id){
 function fetch_registries($id){
 
     return Registry::query()->where('location_id', $id)->get();
+}
+
+function fetch_courts($id){
+
+    return Court::query()->where('registry_id', $id)->get();
 }
 
 

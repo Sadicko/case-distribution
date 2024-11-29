@@ -26,11 +26,11 @@ class HomeController extends Controller
         $legalYearStart = legalYear()['legalYearStart'];
         $legalYearEnd = legalYear()['legalYearEnd'];
 
-        $cases = Docket::getDockets()->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])->count();
-        $casesAllocated = Docket::getDockets()->where('status', 'Assigned')->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])->count();
-        $casesNotAllocated = Docket::getDockets()->where('status', 'Filed')->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])->count();
-        $casesAutoAllocated = Docket::getDockets()->where('assign_type', 'auto')->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])->count();
-        $manualCasesAllocated = Docket::getDockets()->where('assign_type', 'auto')->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])->count();
+        $cases = Docket::getDockets()->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])->count();
+        $casesAllocated = Docket::getDockets()->where('status', 'Assigned')->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])->count();
+        $casesNotAllocated = Docket::getDockets()->where('status', 'Filed')->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])->count();
+        $casesAutoAllocated = Docket::getDockets()->where('assign_type', 'auto')->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])->count();
+        $manualCasesAllocated = Docket::getDockets()->where('assign_type', 'manual')->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])->count();
         $disposed_cases = Docket::getDockets()->whereNotNull('disposed_at')->whereBetween('disposed_at', [$legalYearStart, $legalYearEnd])->count();
         $judges = Judge::query()->count();
 
@@ -41,29 +41,4 @@ class HomeController extends Controller
         return view('dashboard.welcome', compact(  'legalYearStart', 'legalYearEnd', 'judges', 'cases', 'casesAllocated', 'casesNotAllocated', 'manualCasesAllocated', 'casesAutoAllocated', 'disposed_cases'));
     }
 
-
-    public function showWorkflow()
-    {
-        // Get the current date
-        $currentDate = legalYear()['currentDate'];
-        $currentYear = legalYear()['currentYear'];
-        $legalYearStart = legalYear()['legalYearStart'];
-        $legalYearEnd = legalYear()['legalYearEnd'];
-
-        $bails = Bail::with(['sureties' => function($query){
-            $query->whereNull('document_verified_at');
-        }])->whereHas('sureties', function($query) {
-            $query->whereNull('document_verified_at');
-        })->get();
-
-
-        $pendingBails = Bail::getBail()->whereHas('sureties', function($query) {
-            $query->whereNotNull('document_verified_at');
-        })->where('status', 'Pending')->get();
-
-
-        $this->createAuditTrail('Visited workflow page.');
-
-        return view('dashboard.workflow', compact('legalYearStart', 'legalYearEnd', 'pendingBails', 'bails'));
-    }
 }

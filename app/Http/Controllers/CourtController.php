@@ -222,4 +222,17 @@ class CourtController extends Controller
 
     }
 
+    public function fetchCourts(Request $request)
+    {
+        if($request->wantsJson()){
+
+            $courts = Court::query()->where('registry_id', $request->registry)->get();
+
+            return response()->json($courts);
+        }
+
+        abort(404);
+
+    }
+
 }

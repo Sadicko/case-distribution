@@ -29,13 +29,13 @@ class DashboardChart extends Component
                     $assignment = Docket::getDockets()
                         ->selectRaw('monthname(assigned_date) period, count(*) as case_count')
                         ->groupBy('period')
-                        ->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])
+                        ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
                         ->orderBy('period', 'desc')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
                         ->selectRaw("datename(month, assigned_date) as period, count(*) as case_count")
-                        ->whereBetween('date_filed', [$legalYearStart, $legalYearEnd])
+                        ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
                         ->groupByRaw("datename(month, assigned_date)")
                         ->orderByRaw("datename(month, assigned_date) DESC")
                         ->get()->toArray();

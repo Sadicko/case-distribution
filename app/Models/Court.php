@@ -25,6 +25,11 @@ class Court extends Model
         return $this->belongsTo(Registry::class, 'registry_id');
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class, 'court_id');
+    }
+
     public function locations()
     {
         return $this->belongsTo(Location::class, 'location_id');

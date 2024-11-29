@@ -156,6 +156,28 @@ $(function(){
         });
     })
 
+    $(document).on('change', '#registry', function() {
+        let options = ['<option></option>'];
+        $.ajax({
+            url: "/courts/fetch",
+            type: "POST",
+            dataType:"json",
+            data: { registry: $(this).val() },
+            success: function (response) {
+                $.each(response, function(index, item){
+                    let option = '<option value="'+item.id+'">'+item.name+'</option>';
+
+                    options.push(option);
+                })
+
+                $('#court').empty().append(options);
+            },
+            error: function () {
+                toastr.error('An error occurred during request.');
+            }
+        });
+    })
+
 
     $(document).on('click', '#releaseBail', function(){
 

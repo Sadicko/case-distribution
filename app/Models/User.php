@@ -49,6 +49,7 @@ class User extends Authenticatable
 
         'location_id',
         'registry_id',
+        'court_id',
     ];
 
     /**
@@ -91,5 +92,15 @@ class User extends Authenticatable
     public function courttypes()
     {
         return $this->belongsTo(Courttype::class, 'created_by');
+    }
+
+    public function courts()
+    {
+        return $this->belongsTo(Court::class, 'court_id');
+    }
+
+    public function registries()
+    {
+        return $this->belongsTo(Registry::class, 'registry_id');
     }
 }
