@@ -18,9 +18,9 @@ class UserSeeder extends Seeder
     {
 
         $users = [
-            'first_name' => 'ECDS',
-            'last_name' => 'Admin',
-            'username' => 'admin.ecds',
+            'first_name' => 'Sadick',
+            'last_name' => 'Sessah-Odai',
+            'username' => 'sadick.sessah-odai',
             'email' => 'sadick.sessah-odai@jsg.gov.gh',
             'phone' => '0200000000',
             'email_verified_at' => now(),
