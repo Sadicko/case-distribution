@@ -48,12 +48,12 @@ class DocketManager extends Component
     public function search()
     {
 
-//        dd($this->searchTerm. '-' .$this->selectedCategory.'-' .$this->selectedCourt. '-' .$this->startDate. '-' .$this->endDate);
+        dd($this->searchTerm. '-' .$this->selectedCategory.'-' .$this->selectedCourt. '-' .$this->startDate. '-' .$this->endDate);
 
         $query = Docket::getDockets()->with('categories', 'courts', 'courts.currentJudge');
 
         if (!empty($this->searchTerm)){
-            //$query->searchFullText(trim($this->searchTerm));
+//            $query->searchFullText(trim($this->searchTerm));
             $query->whereLike([ 'suit_number', 'case_title', 'assigned_date'], trim(strtoupper($this->searchTerm)));
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -99,6 +100,14 @@ class Docket extends Model
                 }
             }
         });
+    }
+
+
+    public function scopeSearchFullText(Builder $query, $searchTerm)
+    {
+        return $query->whereRaw(
+            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE)",  ["$searchTerm"]
+        )->orderByRaw("suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC", [$searchTerm]);
     }
 
 
