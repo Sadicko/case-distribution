@@ -104,5 +104,11 @@ class AppServiceProvider extends ServiceProvider
             return $user->access_type === "Judge";
         });
 
+
+        //custom
+        Gate::define('view-action-column', function (User $user) {
+            return !in_array($user->access_type, court_room_level());
+        });
+
     }
 }

@@ -83,7 +83,9 @@
                                     <th>Judge</th>
                                     <th>Date assigned</th>
                                     <th>Status</th>
-                                    <th  class="text-nowrap w-auto">Action</th>
+                                    @can('view-action-column')
+                                        <th  class="text-nowrap w-auto">Action</th>
+                                    @endcan
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -98,23 +100,25 @@
                                             <td>{{ $docket->judges?->name ?? '-' }}</td>
                                             <td>{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}</td>
                                             <td>{{ $docket->status }}</td>
-                                            <td class="text-center">
-                                                @canany(['Update cases', 'Re-assign cases', 'Print cases'])
-                                                    @can('Update cases')
-                                                        <a href="{{ route('courts.edit', $docket->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil"></i></a>
-                                                    @endcan
-                                                    {{--                                                    @can('Re-assign cases')--}}
-                                                    {{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
-                                                    {{--                                                    @endcan--}}
-                                                    @if(!empty($docket->assigned_date))
-                                                        @can('Print cases')
-                                                            <a href="{{ route('cases.print', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
+                                            @can('view-action-column')
+                                                <td class="text-center">
+                                                    @canany(['Update cases', 'Re-assign cases', 'Print cases'])
+                                                        @can('Update cases')
+                                                            <a href="{{ route('courts.edit', $docket->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil"></i></a>
                                                         @endcan
-                                                    @endif
-                                                @else
-                                                    <span>-</span>
-                                                @endcanany
-                                            </td>
+                                                        {{--                                                    @can('Re-assign cases')--}}
+                                                        {{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
+                                                        {{--                                                    @endcan--}}
+                                                        @if(!empty($docket->assigned_date))
+                                                            @can('Print cases')
+                                                                <a href="{{ route('cases.print', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
+                                                            @endcan
+                                                        @endif
+                                                    @else
+                                                        <span>-</span>
+                                                    @endcanany
+                                                </td>
+                                            @endcan
                                         </tr>
                                     @endforeach
                                 @else

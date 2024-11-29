@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
-use App\Models\Bail;
+
 use App\Models\Category;
 use App\Models\Docket;
 use App\Models\Judge;
-use App\Models\Region;
 use App\Traits\AuditTrailLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -34,11 +33,18 @@ class HomeController extends Controller
         $disposed_cases = Docket::getDockets()->whereNotNull('disposed_at')->whereBetween('disposed_at', [$legalYearStart, $legalYearEnd])->count();
         $judges = Judge::query()->count();
 
+        if (Gate::any(['court_staff', 'judge'])){
+            $dockets = Docket::getDockets()->with('categories', 'courts', 'courts.currentJudge')
+                ->whereBetween('assigned_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->get();
+        }else{
+            $dockets = collect([]);
+        }
 
 
         $this->createAuditTrail('Visited Dashboard.');
 
-        return view('dashboard.welcome', compact(  'legalYearStart', 'legalYearEnd', 'judges', 'cases', 'casesAllocated', 'casesNotAllocated', 'manualCasesAllocated', 'casesAutoAllocated', 'disposed_cases'));
+        return view('dashboard.welcome', compact(  'legalYearStart', 'legalYearEnd', 'judges', 'cases', 'casesAllocated', 'casesNotAllocated', 'manualCasesAllocated', 'casesAutoAllocated', 'disposed_cases', 'dockets'));
     }
 
 }

@@ -150,65 +150,84 @@
                         </div>
                     </div> <!-- Row end  -->
 
-                    <div class="card mb-3 mt-5">
-                        <div class="card-body text-center p-5">
+                    <div class="row">
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">Total allocation this week</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span class="badge bg-white text-dark">{{ $casesAllocated }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body">Total cases allocated</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span class="badge bg-white text-dark">{{ count($dockets) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card bg-danger text-white mb-4">
+                                <div class="card-body">Disposed cases</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <i class="fas fa-list-alt"></i>
+                                    <span class="badge bg-white text-dark">{{ $disposed_cases }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                            <div class="accordion mb-5" id="accordionCases">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="caseHeadingOne">
-                                        <button class="accordion-button bg-teal text-white" type="button" data-bs-toggle="collapse" >
-                                            <i class="fas fa-folder-open me-2"></i>This weeks allocation
-                                        </button>
-                                    </h2>
-                                    <div id="caseCollapseOne" class="accordion-collapse collapse show" >
-                                        <div class="accordion-body">
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table id="initTable" class="table table-striped table-hover display">
-                                                        <thead>
+                    <div class="card mb-3 mt-5">
+                        <div class="accordion mb-5" id="accordionCases">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="caseHeadingOne">
+                                    <button class="accordion-button bg-teal text-white" type="button" data-bs-toggle="collapse" >
+                                        <i class="fas fa-folder-open me-2"></i>This weeks allocation for {{ Auth::user()->courts?->name }}, {{  Auth::user()->courts?->registries?->name }} - {{  Auth::user()->courts?->locations?->name }}
+                                    </button>
+                                </h2>
+                                <div id="caseCollapseOne" class="accordion-collapse collapse show" >
+                                    <div class="accordion-body">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table id="initTable" class="table table-striped table-hover display">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>##</th>
+                                                        <th>Suit number</th>
+                                                        <th>Case title</th>
+                                                        <th>Case category</th>
+                                                        <th>Court</th>
+                                                        <th>Judge</th>
+                                                        <th>Date assigned</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($dockets as $docket)
                                                         <tr>
-                                                            <th>##</th>
-                                                            <th>Suit number</th>
-                                                            <th>Case title</th>
-                                                            <th>Case category</th>
-                                                            <th>Court</th>
-                                                            <th>Judge</th>
-                                                            <th>Date assigned</th>
-                                                            <th>Status</th>
+                                                            <td>{{ $loop->index + 1 }}</td>
+                                                            <td>{{ $docket->suit_number }}</td>
+                                                            <td>{{ $docket->case_title }}</td>
+                                                            <td>{{ $docket->categories->name }}</td>
+                                                            <td>{{ $docket->courts?->name ?? '-' }}</td>
+                                                            <td>{{ $docket->judges?->name ?? '-' }}</td>
+                                                            <td>{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}</td>
+                                                            <td>{{ $docket->status }}</td>
                                                         </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {{--                                                        @if($dockets->total() > 0)--}}
-                                                        {{--                                                            @foreach($dockets as $docket)--}}
-                                                        {{--                                                                <tr>--}}
-                                                        {{--                                                                    <td>{{ $loop->index + 1 }}</td>--}}
-                                                        {{--                                                                    <td>{{ $docket->suit_number }}</td>--}}
-                                                        {{--                                                                    <td>{{ $docket->case_title }}</td>--}}
-                                                        {{--                                                                    <td>{{ $docket->categories->name }}</td>--}}
-                                                        {{--                                                                    <td>{{ $docket->courts?->name ?? '-' }}</td>--}}
-                                                        {{--                                                                    <td>{{ $docket->judges?->name ?? '-' }}</td>--}}
-                                                        {{--                                            <td>{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-' }}</td>--}}
-                                                        {{--                                                                    <td>{{ $docket->status }}</td>--}}
-                                                        {{--                                                                </tr>--}}
-                                                        {{--                                                            @endforeach--}}
-                                                        {{--                                                        @else--}}
-                                                        {{--                                                            <td colspan="9">--}}
-                                                        {{--                                                                <h5 class="text-muted text-center">No records found</h5>--}}
-                                                        {{--                                                            </td>--}}
-                                                        {{--                                                        @endif--}}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="mt-3">
-                                                    {{--                                                    {{ $dockets->links() }}--}}
-                                                </div>
+                                                    @endforeach
+
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
