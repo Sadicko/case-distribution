@@ -46,7 +46,7 @@ class Categories extends Component
         $this->validate();
         Category::query()->create([
             'slug' => uniqid(),
-            'name' => strtolower($this->categoryName),
+            'name' => strtoupper($this->categoryName),
             'status' => $this->status,
             'courttype_id' => $this->courtType,
             'created_by' => Auth::id(),
