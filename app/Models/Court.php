@@ -62,6 +62,70 @@ class Court extends Model
             ->withTimestamps();
     }
 
+    public function courtlogs()
+    {
+        return $this->hasMany(CourtLog::class, 'court_id', 'id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Log the initial creation of the will
+        static::created(function ($court) {
+            $fields = [
+                'name',
+                'code',
+                'registry_id',
+                'courttype_id',
+                'location_id',
+                'region_id',
+                'case_count',
+                'availability',
+                'status'
+            ];
+
+            foreach ($fields as $field) {
+                Docketlog::query()->create([
+                    'slug' => uniqid(),
+                    'court_id' => $court->id,
+                    'user_id' => $court->created_by,
+                    'activity' => 'Created',
+                    'comment' => "Initial value for ".$field. " : " .$court->$field ?? " not_set"
+                ]);
+            }
+        });
+
+        // Log any updates to specific fields after the will has been created
+        static::updated(function ($court) {
+            $fieldsToCheck = [
+                'name',
+                'code',
+                'registry_id',
+                'courttype_id',
+                'location_id',
+                'region_id',
+                'case_count',
+                'availability',
+                'status'
+            ];
+
+            foreach ($fieldsToCheck as $field) {
+                // Check if the specific field was modified
+                if ($court->isDirty($field)) {
+                    Docketlog::query()->create([
+                        'slug' => uniqid(),
+                        'court_id' => $court->id,
+                        'user_id' => $court->created_by,
+                        'activity' => 'Updated',
+                        'comment' => "{$field} was changed from " . ($court->getOriginal($field) ?? 'not_set') . " to " . ($court->$field ?? 'not_set'),
+                    ]);
+                }
+            }
+        });
+    }
+
+
     public static function getCourts()
     {
         $user = Auth::user();

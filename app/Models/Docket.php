@@ -40,6 +40,12 @@ class Docket extends Model
         return $this->belongsTo(Location::class, 'location_id');
     }
 
+    public function docketlogs()
+    {
+        return $this->hasMany(Docketlog::class, 'docket_id', 'id');
+    }
+
+
     protected static function boot()
     {
         parent::boot();

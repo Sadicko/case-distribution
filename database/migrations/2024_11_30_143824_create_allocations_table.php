@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('allocations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('docket_id');
+            $table->foreignId('court_id');
+            $table->foreignId('judge_id');
+            $table->foreignId('assigned_by');
+            $table->text('assignment_reason')->nullable()->comment('Reason for the assignment');
             $table->timestamps();
         });
     }
