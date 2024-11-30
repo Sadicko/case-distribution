@@ -49,7 +49,6 @@ class DocketController extends Controller
             return back()->with(['error' => 'You are not authorized to Create cases.']);
         }
 
-        //get user
         //show categories that have courts
         $categories = Category::fetchCategoriesWithCourt()->with('courts')->orderBy('name', 'asc')->get();
 

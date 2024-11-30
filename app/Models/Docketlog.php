@@ -11,7 +11,7 @@ class Docketlog extends Model
 
     protected $guarded = [];
 
-    public function wills()
+    public function dockets()
     {
         return $this->belongsTo(Docket::class, 'docket_id');
     }

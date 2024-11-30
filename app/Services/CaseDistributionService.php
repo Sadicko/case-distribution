@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Allocation;
 use App\Models\Court;
 
 class CaseDistributionService
@@ -64,6 +65,15 @@ class CaseDistributionService
         $docket->is_assigned = 1;
         $docket->status = 'Assigned';
         $docket->save();
+
+        Allocation::query()->create([
+            'docket_id' => $docket->id,
+            'court_id' => $docket->court_id,
+            'judge_id' => $docket->judge_id,
+            'assigned_by' => $docket->created_by,
+            'assignment_reason' => 'New',
+            'date_assigned' => $docket->assigned_date,
+        ]);
 
         return $selectedCourt;
     }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('judge_id');
             $table->foreignId('assigned_by');
             $table->text('assignment_reason')->nullable()->comment('Reason for the assignment');
+            $table->dateTime('recused_at')->nullable()->comment('Recused date');
+            $table->dateTime('date_assigned')->nullable()->comment('Recused date');
             $table->timestamps();
         });
     }

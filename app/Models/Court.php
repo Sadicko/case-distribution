@@ -86,7 +86,7 @@ class Court extends Model
             ];
 
             foreach ($fields as $field) {
-                Docketlog::query()->create([
+                CourtLog::query()->create([
                     'slug' => uniqid(),
                     'court_id' => $court->id,
                     'user_id' => $court->created_by,
@@ -113,7 +113,7 @@ class Court extends Model
             foreach ($fieldsToCheck as $field) {
                 // Check if the specific field was modified
                 if ($court->isDirty($field)) {
-                    Docketlog::query()->create([
+                    CourtLog::query()->create([
                         'slug' => uniqid(),
                         'court_id' => $court->id,
                         'user_id' => $court->created_by,
