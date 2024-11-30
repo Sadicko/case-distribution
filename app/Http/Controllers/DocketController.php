@@ -40,6 +40,13 @@ class DocketController extends Controller
         return view('dashboard.dockets.index');
     }
 
+    public function showCase($slug)
+    {
+        $docket = Docket::query()->with('docketlogs', 'docketlogs.users')->where('slug', $slug)->firstOrFail();
+
+        return view('dashboard.dockets.show', compact('docket'));
+    }
+
     public function createCase()
     {
         if(Gate::denies('Create cases')){

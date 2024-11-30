@@ -34,7 +34,7 @@ class CourtController extends Controller
 
     public function showCourt($slug)
     {
-        $court = Court::query()->where('slug', $slug)->firstOrFail();
+        $court = Court::query()->with('courtlogs', 'courtlogs.users')->where('slug', $slug)->firstOrFail();
 
         return view('dashboard.courts.show', compact('court'));
     }

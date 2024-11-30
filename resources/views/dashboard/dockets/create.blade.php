@@ -58,7 +58,7 @@
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
+                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) && count($categories) > 0 )  @endif>
                                         <label for="case_category" class="form-label">Case category*</label>
                                         <select name="case_category" class="form-control select2" id="case_category">
                                             <option value=""></option>
@@ -70,7 +70,7 @@
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
+                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) && count($locations) > 0 )  @endif>
                                         <label for="location" class="form-label">Location*</label>
                                         <select name="location" class="form-control select2" id="location">
                                             <option value=""></option>
@@ -145,7 +145,7 @@
 
             $(document).on("click", ".assignBtn", function () {
                 //|| $('#date_filed').val() == ''
-                if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#cat').val() == '' || $('#case_category').val() == ''  || $('#location').val() == ''){
+                if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#case_category').val() == ''  || $('#location').val() == ''){
 
                     toastr.error('All fields are required.');
 

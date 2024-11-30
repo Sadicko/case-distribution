@@ -55,8 +55,10 @@ class CaseDistributionService
         // Step 4: Perform weighted randomization
         $selectedCourt = $this->selectCourtByWeight($eligibleCourts);
 
+
         // Step 5: Update court workload and log assignment
         $selectedCourt->increment('case_count');
+
 
         // Step 6: Assign court and judge to docket
         $docket->court_id = $selectedCourt->id;

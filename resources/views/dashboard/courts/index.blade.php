@@ -48,7 +48,13 @@
                                     @foreach($courts as $court)
                                         <tr>
                                             <th scope="row">{{ $loop->index + 1 }}</th>
-                                            <td>{{ $court->name }}</td>
+                                            <td>
+                                                @can('Read court logs')
+                                                    <a href="{{ route('courts.show', $court->slug) }}" class="text-info">{{ $court->name }}</a>
+                                                @else
+                                                    {{ $court->name }}
+                                                @endcan
+                                            </td>
                                             <td>{{ $court->currentJudge[0]?->name ?? '-'}}</td>
                                             <td >{{ $court->case_count ?? 0 }} Cases</td>
                                             <td class="text-center">

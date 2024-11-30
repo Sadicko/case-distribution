@@ -122,7 +122,14 @@
                                     @foreach($dockets as $docket)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $docket->suit_number }}</td>
+                                            <td>
+
+                                                @can('Read docket logs')
+                                                    <a href="{{ route('cases.show', $docket->slug) }}" class="text-info"> {{ $docket->suit_number }}</a>
+                                                @else
+                                                    {{ $docket->suit_number }}
+                                                @endcan
+                                            </td>
                                             <td>{{ $docket->case_title }}</td>
                                             <td>{{ $docket->categories->name }}</td>
                                             <td>{{ $docket->courts?->name ?? '-' }}</td>
