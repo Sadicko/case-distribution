@@ -49,25 +49,24 @@
                             @csrf
                             <div class="row justify-content-center mb-5">
                                 <div class="col-6">
-
-                                    <div class="form-group mb-3 mt-5">
+                                    <div class="form-group mb-3 mt-5" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
                                         <label for="case_category" class="form-label">Case category*</label>
                                         <select name="case_category" class="form-control select2" id="case_category" required>
                                             <option value=""></option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('case_category')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3">
+                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
                                         <label for="location" class="form-label">Location*</label>
                                         <select name="location" class="form-control select2" id="location" required>
                                             <option value=""></option>
                                             @foreach($locations as $location)
-                                                <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
+                                                <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : (count($locations) ==  1 ? 'selected' : '') }}>{{ $location->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('location')

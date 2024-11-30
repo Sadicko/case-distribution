@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'New case')
+@section('title', 'New case allocation')
 
 @section('cases_collapse', 'show')
 @section('case_active', 'active')
@@ -13,7 +13,7 @@
             <div class="row align-items-center">
                 <div class="border-0 mb-4">
                     <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
-                        <h3 class="h4 mb-0 text-uppercase"><i class="fas fa-folder-open"></i> New case</h3>
+                        <h3 class="h4 mb-0 text-uppercase"><i class="fas fa-folder-open"></i> New case allocation</h3>
 
                         <div class="col-auto d-flex w-sm-100  mt-sm-0">
                             <a href="{{ route('cases') }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
@@ -26,7 +26,7 @@
                 <div class="card mb-5">
                     <div class="card-header bg-dark text-white">
                         <i class="fas fa-upload me-1"></i>
-                        File new case
+                        Allocate new case
                     </div>
                     <div class="card-body">
 
@@ -42,7 +42,7 @@
 
                         <form id="caseForm" method="POST" action="{{ route('cases.create') }}" enctype="multipart/form-data">
                             @csrf
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center  mt-5">
                                 <div class="col-6">
                                     <div class="form-group mb-3">
                                         <label for="suit_number" class="form-label">Suit number*</label>
@@ -58,7 +58,7 @@
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3">
+                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
                                         <label for="case_category" class="form-label">Case category*</label>
                                         <select name="case_category" class="form-control select2" id="case_category">
                                             <option value=""></option>
@@ -70,7 +70,7 @@
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3">
+                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
                                         <label for="location" class="form-label">Location*</label>
                                         <select name="location" class="form-control select2" id="location">
                                             <option value=""></option>
@@ -103,7 +103,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="row mt-4">
+                                    <div class="row mt-4 mb-5">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-primary bg-dark float-end assignBtn">Submit for allocation</button>
                                         </div>

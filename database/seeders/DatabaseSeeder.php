@@ -21,15 +21,15 @@ class DatabaseSeeder extends Seeder
 //        ]);
 
         $this->call([
-            CountrySeeder::class,
-            RegionSeeder::class,
-            CourttypeSeeder::class,
-            LocationSeeder::class,
-            RegistrySeeder::class,
-            CourtSeeder::class,
+//            CountrySeeder::class,
+//            RegionSeeder::class,
+//            CourttypeSeeder::class,
+//            LocationSeeder::class,
+//            RegistrySeeder::class,
+//            CourtSeeder::class,
             ModuleSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
+//            RoleSeeder::class,
+//            UserSeeder::class,
         ]);
 
     }

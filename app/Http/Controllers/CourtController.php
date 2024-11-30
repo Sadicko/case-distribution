@@ -31,6 +31,14 @@ class CourtController extends Controller
         return view('dashboard.courts.index', compact('courts'));
     }
 
+
+    public function showCourt($slug)
+    {
+        $court = Court::query()->where('slug', $slug)->firstOrFail();
+
+        return view('dashboard.courts.show', compact('court'));
+    }
+
     public function create()
     {
         if(Gate::denies('Create courts')){

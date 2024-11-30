@@ -18,11 +18,11 @@
                         @canany(['Create cases', 'Upload cases'])
                             <div class="col-auto d-flex w-sm-100  mt-sm-0">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                    New
+                                    <i class="fas fa-plus-circle me-2"></i> New
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
                                     @can('Create cases')
-                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Case filing</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('cases.create') }}">Case allocation</a></li>
                                     @endcan
                                     @can('Upload cases')
                                         <li><a class="dropdown-item" href="{{ route('upload-cases') }}">Case upload </a></li>

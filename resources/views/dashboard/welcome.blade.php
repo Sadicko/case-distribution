@@ -17,7 +17,7 @@
                             <div class="col-auto d-flex w-sm-100 mt-2 mt-sm-0">
                                 @can('Create cases')
                                     <a href="{{ route('cases.create') }}" class="btn btn-dark  w-sm-100 me-2">
-                                        <i class="icofont-edit me-2 fs-6"></i>File a Case</a>
+                                        <i class="fas fa-plus-circle me-2 fs-6"></i>Allocate a Case</a>
                                 @endcan
 
                                 @canany(['Create cases', 'Upload cases', 'Read reports', 'Filter reports'])
@@ -26,7 +26,7 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
                                         @can('Create cases')
-                                            <li><a class="dropdown-item" href="{{ route('cases.create') }}">File a Case</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('cases.create') }}">Allocate a Case</a></li>
                                         @endcan
                                         @can('Upload cases')
                                             <li><a class="dropdown-item" href="{{ route('upload-cases') }}">Upload Case</a></li>
