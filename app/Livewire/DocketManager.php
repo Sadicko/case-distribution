@@ -24,7 +24,7 @@ class DocketManager extends Component
 
     public function mount()
     {
-        $this->categories = Category::query()->get();
+        $this->categories = Category::fetchCategoriesWithCourt()->get();
         $this->selectedCategory = null;
         $this->selectedCourt = null;
     }
@@ -33,7 +33,7 @@ class DocketManager extends Component
     {
 
         // When the category changes, fetch related courts
-        $this->courts = Court::query()
+        $this->courts = Court::getCourts()
             ->whereHas('categories', function ($query) use ($categoryId) {
                 $query->where('categories.id', $categoryId);
             })

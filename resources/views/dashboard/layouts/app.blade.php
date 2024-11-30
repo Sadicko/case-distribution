@@ -33,7 +33,7 @@
     @include('dashboard.layouts.sidebar')
 
     <!-- main body area -->
-    <div class="main px-lg-4 px-md-4 position-relative">
+    <div class="main px-lg-4 px-md-4 position-relative d-flex flex-column">
 
         <!-- Body: Header -->
         @include('dashboard.layouts.header')
@@ -47,7 +47,7 @@
         <!-- Body: Body -->
         @yield('content')
 
-        <footer class="main-footer clearfix">
+        <footer class="main-footer clearfix mt-auto">
             <div class="float-right d-none d-sm-block">
                 <b>Powered by</b> Judicial Service ICT Department
             </div>

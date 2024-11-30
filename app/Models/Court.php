@@ -62,19 +62,24 @@ class Court extends Model
             ->withTimestamps();
     }
 
+    public static function getCourts()
+    {
+        $user = Auth::user();
 
-//    public static function getCourt()
-//    {
-//        if (Gate::any(['manage_system', 'general_admin'])) {
-//
-//            $bails =  static::query();
-//
-//        }elseif (Gate::any(['court_registrar', 'court_staff'])) {
-//
-//            $bails =  static::query()->where('registry_id', Auth::user()->registry_id);
-//
-//        }
-//
-//        return $bails;
-//    }
+        if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
+
+            $query = static::query()->where('availability', 1);
+
+        }elseif(Gate::any(court_room_access_level())){
+
+            $query = static::query()->where('id', $user->court_id)->where('availability', 1);
+
+        }else{
+
+            $query = static::query()->where('registry_id', $user->registry_id)->where('availability', 1);
+        }
+
+        return $query;
+
+    }
 }

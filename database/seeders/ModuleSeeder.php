@@ -47,7 +47,7 @@ class ModuleSeeder extends Seeder
                     'Re-assign cases',
                     'Track cases',
                     'Print cases',
-                    'Download cases'.
+                    'Download cases',
                     'Delete cases',
                 ]
             ],

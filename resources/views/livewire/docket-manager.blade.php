@@ -11,49 +11,78 @@
                 <div class="accordion-body">
                     <form id="filterForm"  wire:submit="search">
                         <div class="row mb-2">
-                            <div class="form-group col-5 mb-2" wire:ignore>
-                                <label for="case_category">Case category</label>
-                                <select name="category" id="case_category" wire:model.live="selectedCategory" class="form-control select2">
-                                    <option></option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-3 mb-2">
-                                <label for="case_court">Court</label>
-                                <select name="court" id="case_court" wire:model="selectedCourt" wire:key="{{ $selectedCategory }}" @if(!$selectedCategory) disabled @endif class="form-control">
-                                    <option></option>
-                                    @foreach ($courts as $court)
-                                        <option value="{{ $court->id }}">{{ $court->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-2 mb-2">
-                                <label for="from">From</label>
-                                <input type="date" name="startDate" id="startDate" class="form-control datepicker" placeholder="Start date"
-                                       autocomplete="off" wire:model="startDate">
-                            </div>
-                            <div class="form-group col-2 mb-2">
-                                <label for="to"> To</label>
-                                <input type="date" name="endDate" id="endDate" class="form-control datepicker" placeholder="End date"
-                                       autocomplete="off"  wire:model="endDate">
-                            </div>
-                            <div class="form-group col-9 mb-2">
-                                <label for="searchTerm"> Enter search</label>
-                                <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
-                            </div>
-                            <div class="form-group col-3 mb-2 mt-2">
-                                <div class="form-group btn-group  d-flex justify-content-end pt-3">
-                                    <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
-                                            class="fas fa-search"></i>
-                                        Search</button>
-                                    <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
-                                            class="fas fa-undo"></i>
-                                        Reset</button>
+                            @if(!in_array(Auth::user()->access_type, court_room_level()))
+                                <div class="form-group col-5 mb-2" wire:ignore>
+                                    <label for="case_category">Case category</label>
+                                    <select name="category" id="case_category" wire:model.live="selectedCategory" class="form-control select2">
+                                        <option></option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="form-group col-3 mb-2">
+                                    <label for="case_court">Court</label>
+                                    <select name="court" id="case_court" wire:model="selectedCourt" wire:key="{{ $selectedCategory }}" @if(!$selectedCategory) disabled @endif class="form-control">
+                                        <option></option>
+                                        @foreach ($courts as $court)
+                                            <option value="{{ $court->id }}">{{ $court->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-2 mb-2">
+                                    <label for="from">From</label>
+                                    <input type="date" name="startDate" id="startDate" class="form-control datepicker" placeholder="Start date"
+                                           autocomplete="off" wire:model="startDate">
+                                </div>
+                                <div class="form-group col-2 mb-2">
+                                    <label for="to"> To</label>
+                                    <input type="date" name="endDate" id="endDate" class="form-control datepicker" placeholder="End date"
+                                           autocomplete="off"  wire:model="endDate">
+                                </div>
+                                <div class="form-group col-9 mb-2">
+                                    <label for="searchTerm"> Enter search</label>
+                                    <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
+                                </div>
+                                <div class="form-group col-3 mb-2 mt-2">
+                                    <div class="form-group btn-group  d-flex justify-content-end pt-3">
+                                        <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
+                                                class="fas fa-search"></i>
+                                            Search</button>
+                                        <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
+                                                class="fas fa-undo"></i>
+                                            Reset</button>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="form-group col-8 mb-2">
+                                    <label for="searchTerm"> Enter search</label>
+                                    <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
+                                </div>
+
+                                <div class="form-group col-2 mb-2">
+                                    <label for="from">From</label>
+                                    <input type="date" name="startDate" id="startDate" class="form-control datepicker" placeholder="Start date"
+                                           autocomplete="off" wire:model="startDate">
+                                </div>
+                                <div class="form-group col-2 mb-2">
+                                    <label for="to"> To</label>
+                                    <input type="date" name="endDate" id="endDate" class="form-control datepicker" placeholder="End date"
+                                           autocomplete="off"  wire:model="endDate">
+                                </div>
+                                <div class="form-group d-flex justify-content-end  mb-2 mt-2">
+                                    <div class="form-group btn-group pt-3">
+                                        <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
+                                                class="fas fa-search"></i>
+                                            Search</button>
+                                        <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
+                                                class="fas fa-undo"></i>
+                                            Reset</button>
+                                    </div>
+                                </div>
+                            @endif
+
                         </div>
                     </form>
                 </div>
