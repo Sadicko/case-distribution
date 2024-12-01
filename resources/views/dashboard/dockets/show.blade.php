@@ -1,8 +1,8 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Will details')
+@section('title', 'Docket details')
 
-@section('title', 'Show court')
+@section('title', 'Show case')
 
 @section('setting_active', 'active')
 
@@ -29,138 +29,101 @@
             </div> <!-- Row end  -->
 
             <div class="card mb-4 show-asset">
-                {{--                <div class="card-header border-bottom pt-2 d-flex justify-content-between">--}}
-                {{--                    <div>--}}
-                {{--                        @if($will->status == 'Deposited')--}}
-                {{--                            <strong>Status: </strong><span class="badge bg-success text-uppercase p-2">{{ $will->status }}</span>--}}
-                {{--                        @elseif($will->status == 'Withdrawn')--}}
-                {{--                            <strong>Status: </strong><span class="badge bg-danger text-uppercase p-2">{{ $will->status }}</span>--}}
-                {{--                        @else--}}
-                {{--                            <strong>Status: </strong><span class="badge bg-info text-uppercase p-2">{{ $will->status }}</span>--}}
-                {{--                        @endif--}}
-                {{--                    </div>--}}
-                {{--                    @if($will->status !== 'Read')--}}
-                {{--                        <div>--}}
-                {{--                            @can('Update will')--}}
-                {{--                                <a href="{{ route('wills.edit', $will->slug) }}" class="btn btn-primary btn-sm"><i--}}
-                {{--                                        class="fas fa-pencil"></i> Edit will</a>--}}
-                {{--                            @endcan--}}
-                {{--                            @can('Upload will files')--}}
-                {{--                                <a href="{{ route('wills.attachments', $will->slug) }}" class="btn btn-primary btn-sm"><i--}}
-                {{--                                        class="fas fa-upload"></i> Add attachments</a>--}}
-                {{--                            @endcan--}}
-                {{--                        </div>--}}
-                {{--                    @endif--}}
-                {{--                </div>--}}
-                {{--                <div class="card-body">--}}
-                {{--                    <div class="row">--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="will_number" class="form-label">Will number</label>--}}
-                {{--                            <p class="form-control-plaintext" id="will_number">{{ $will->will_number }}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="testator_name" class="form-label">Testator Name</label>--}}
-                {{--                            <p class="form-control-plaintext" id="testator_name">{{ $will->testator_name }}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="$will->residential_address" class="form-label">Residential address</label>--}}
-                {{--                            <p class="form-control-plaintext" id="residential_address">{{ $will->residential_address ?? '-'}}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="deposited_by" class="form-label">Deposited By</label>--}}
-                {{--                            <p class="form-control-plaintext" id="deposited_by">{{ $will->deposited_by ?? '-' }}</p>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
+                <div class="card-header border-bottom pt-2 d-flex justify-content-between">
+                    <div>
+                        @if($docket->status == 'Assigned')
+                            <strong>Status: </strong><span class="badge bg-success text-uppercase p-2">{{ $docket->status }}</span>
+                        @else
+                            <strong>Status: </strong><span class="badge bg-info text-uppercase p-2">{{ $docket->status }}</span>
+                        @endif
+                    </div>
+                    <div>
+                        @can('Update cases')
+                            <a href="{{ route('cases.edit', $docket->slug) }}" class="btn btn-primary btn-sm"><i
+                                    class="fas fa-pencil"></i> Edit case</a>
+                        @endcan
+                        @can('Re-assign cases')
+                            <a href="{{ route('cases.edit', $docket->slug) }}" class="btn btn-primary btn-sm"><i
+                                    class="fas fa-sync-alt"></i> Re-assign case</a>
+                        @endcan
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="suit_number" class="form-label">Suit number</label>
+                            <p class="form-control-plaintext" id="suit_number">{{ $docket->suit_number }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="case_title" class="form-label">Case title</label>
+                            <p class="form-control-plaintext" id="case_title">{{ $docket->case_title }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="allocated_court" class="form-label">Allocated court</label>
+                            <p class="form-control-plaintext" id="allocated_court">{{ $docket->courts?->name ?? '-'}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="judge" class="form-label">Judge</label>
+                            <p class="form-control-plaintext" id="judge">{{ $docket->judges?->name ?? '-'}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <p class="form-control-plaintext" id="location">{{ $docket->locations?->name ?? '-'}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="categories" class="form-label">Case category</label>
+                            <p class="form-control-plaintext" id="categories">{{ $docket->categories?->name ?? '-'}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="categories" class="form-label">Date of allocation</label>
+                            <p class="form-control-plaintext" id="categories">{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-'  }}</p>
+                        </div>
+                    </div>
 
-                {{--                    <div class="row">--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="prepared_by" class="form-label">Prepared By</label>--}}
-                {{--                            <p class="form-control-plaintext" id="prepared_by">{{ $will->prepared_by ?? '-' }}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="date_deposited" class="form-label">Date Deposited</label>--}}
-                {{--                            <p class="form-control-plaintext" id="date_deposited">{{ $will->date_deposited?->format('d-m-Y') ?? '-' }}</p>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                    <hr>--}}
-                {{--                    <div class="row">--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="date_withdrawn" class="form-label">Date Withdrawn</label>--}}
-                {{--                            <p class="form-control-plaintext"--}}
-                {{--                               id="date_withdrawn">{{ $will->date_withdrawn?->format('d-m-Y') ?? '-'  }}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="withdrawn_by" class="form-label">Withdrawn By</label>--}}
-                {{--                            <p class="form-control-plaintext" id="withdrawn_by">{{ $will->withdrawn_by ?? '-' }}</p>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-
-                {{--                    <div class="row">--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="date_read" class="form-label">Date Read</label>--}}
-                {{--                            <p class="form-control-plaintext"--}}
-                {{--                               id="date_read">{{ $will->date_read?->format('d-m-Y') ?? '-'  }}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="read_by" class="form-label">Read By</label>--}}
-                {{--                            <p class="form-control-plaintext" id="read_by">{{ $will->read_by ?? '-' }}</p>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-6 mb-3">--}}
-                {{--                            <label for="processed_by" class="form-label">Processed By</label>--}}
-                {{--                            <p class="form-control-plaintext" id="processed_by">{{ $will->processed_by ?? '-' }}</p>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                    <hr>--}}
-                {{--                    <div class="row">--}}
-                {{--                        <div class="col-md-12 mb-3">--}}
-                {{--                            <label for="remarks" class="form-label">Remarks</label>--}}
-                {{--                            <p class="form-control-plaintext"--}}
-                {{--                               id="remarks">{{ $will->remarks ?? '-'  }}</p>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-
-
-                {{--                    @can('View will files')--}}
-                {{--                        @if(count($will->attachments) > 0)--}}
-                {{--                            <hr>--}}
-                {{--                            <!-- Attachments -->--}}
-                {{--                            <h3 class="mb-4">Attachments</h3>--}}
-                {{--                            <ol class="list-group list-group-numbered">--}}
-                {{--                                @foreach($will->attachments as $attachment)--}}
-                {{--                                    <li class="list-group-item d-flex justify-content-between align-items-start">--}}
-                {{--                                        <div class="ms-2 me-auto">--}}
-                {{--                                            <a href="{{ Storage::disk('local')->url($attachment->file_path) }}"--}}
-                {{--                                               class="text-info" target="_blank" data-bs-toggle="tooltip"--}}
-                {{--                                               data-bs-placement="bottom"--}}
-                {{--                                               data-bs-title="View File">{{ $attachment->file_name }} <i--}}
-                {{--                                                    class="fa-solid fa-external-link-alt"></i> </a>--}}
-                {{--                                            <div>--}}
-                {{--                                                <small class="text-muted">Uploaded on {{ $attachment->created_at?->format('d-m-Y') ?? '-'}}</small>--}}
-                {{--                                            </div>--}}
-                {{--                                        </div>--}}
-                {{--                                        <a href="{{ Storage::disk('local')->url($attachment->file_path) }}"--}}
-                {{--                                           class="text-info" target="_blank" data-bs-toggle="tooltip"--}}
-                {{--                                           data-bs-placement="bottom" data-bs-title="View File"> <i--}}
-                {{--                                                class="fa-solid fa-external-link-alt"></i></a>--}}
-                {{--                                        @can('Delete will files')--}}
-                {{--                                            <a href="#!" class="text-danger ms-4" data-bs-toggle="tooltip"--}}
-                {{--                                               data-bs-placement="bottom" data-bs-title="Remove file"> <i--}}
-                {{--                                                    class="fa-solid fa-trash-alt"></i></a>--}}
-                {{--                                        @endcan--}}
-                {{--                                    </li>--}}
-                {{--                                @endforeach--}}
-                {{--                            </ol>--}}
-                {{--                        @endif--}}
-                {{--                    @endcan--}}
-                {{--                </div>--}}
+                    <hr>
+                    <small>Metadata</small>
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <label for="assign_type" class="form-label">Mode of allocation</label>
+                            <p class="form-control-plaintext" id="assign_type">{{ ucfirst($docket->assign_type) }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="allocation_by" class="form-label">Allocation by</label>
+                            <p class="form-control-plaintext" id="allocation_by">{{ $docket->creators->full_name }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="created_on" class="form-label">Created on</label>
+                            <p class="form-control-plaintext" id="created_on">{{ !empty($docket->created_at) ? getCustomLocalTime($docket->created_at) : '-'  }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="updated_on" class="form-label">Last updated on</label>
+                            <p class="form-control-plaintext" id="updated_on">{{ !empty($docket->updated_at) ? getCustomLocalTime($docket->updated_at) : '-'  }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="disposed_at" class="form-label">Disposed status</label>
+                            <p class="form-control-plaintext" id="disposed_at">{{ !empty($docket->disposed_at) ? getCustomLocalTime($docket->disposed_at) : 'N/A'  }}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="priority" class="form-label">Priority</label>
+                            <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority) }}</p>
+                        </div>
+                        @if($docket->disposed_by)
+                            <div class="col-md-6 mb-3">
+                                <label for="disposed_by" class="form-label">Disposed by</label>
+                                <p class="form-control-plaintext" id="disposed_by">{{ $docket->disposers?->full_name ?? '-'  }}</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
+
 
             @can('Read court logs')
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                Docket Activity Logs
+                            <button class="accordion-button collapsed text-uppercase text-info fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Case Activity Logs
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">

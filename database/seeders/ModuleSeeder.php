@@ -43,6 +43,7 @@ class ModuleSeeder extends Seeder
                     'Manual case allocation',
 //                    'Read cases',
 //                    'Update cases',
+                    'Change case options',
 //                    'Set case as urgent',
 //                    'Set case location',
 //                    'Re-assign cases',

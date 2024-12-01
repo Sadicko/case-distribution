@@ -140,14 +140,14 @@
                                                 <td class="text-center">
                                                     @canany(['Update cases', 'Re-assign cases', 'Print cases'])
                                                         @can('Update cases')
-                                                            <a href="{{ route('courts.edit', $docket->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil"></i></a>
+                                                            <a href="{{ route('cases.edit', $docket->slug) }}" class="me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil" style="font-size: 11px;"></i></a>
                                                         @endcan
-                                                        {{--                                                    @can('Re-assign cases')--}}
-                                                        {{--                                                        <a href="{{ route('court-judge', $docket->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync"></i></a>--}}
-                                                        {{--                                                    @endcan--}}
+                                                        @can('Re-assign cases')
+                                                            <a href="{{ route('court-judge', $docket->slug) }}"  class="me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync" style="font-size: 11px;"></i></a>
+                                                        @endcan
                                                         @if(!empty($docket->assigned_date))
                                                             @can('Print cases')
-                                                                <a href="{{ route('cases.print', $docket->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print"></i></a>
+                                                                <a href="{{ route('cases.print', $docket->slug) }}" class="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print" style="font-size: 11px;"></i></a>
                                                             @endcan
                                                         @endif
                                                     @else

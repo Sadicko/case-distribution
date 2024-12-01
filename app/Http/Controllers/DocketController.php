@@ -44,7 +44,7 @@ class DocketController extends Controller
 
     public function showCase($slug)
     {
-        $docket = Docket::query()->with('docketlogs', 'docketlogs.users')->where('slug', $slug)->firstOrFail();
+        $docket = Docket::query()->with('courts', 'judges', 'categories', 'locations', 'creators', 'disposers', 'docketlogs', 'docketlogs.users')->where('slug', $slug)->firstOrFail();
 
         return view('dashboard.dockets.show', compact('docket'));
     }
@@ -227,6 +227,29 @@ class DocketController extends Controller
         return back()->with('success', 'Manual case created successfully!');
 
     }
+
+
+    public function showEditCase($slug)
+    {
+        if(Gate::denies('Update cases')){
+
+            $this->createAuditTrail("Denied access to  Update cases: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Update cases.']);
+        }
+
+        $docket = Docket::query()->with('categories', 'locations')->where('slug', $slug)->firstOrFail();
+
+        //show categories that have courts
+        $categories = Category::fetchCategoriesWithCourt()->with('courts')->orderBy('name', 'asc')->get();
+
+        //show locations that have courts and has been assigned categories
+        $locations = Location::fetchLocationsWithCourt()->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+
+
+        return view('dashboard.dockets.edit', compact('docket', 'categories', 'locations'));
+    }
+
 
     /**
      * @return bool

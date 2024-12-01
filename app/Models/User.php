@@ -103,4 +103,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Registry::class, 'registry_id');
     }
+
+    public function dockets()
+    {
+        return $this->hasMany(Docket::class, 'created_by', 'id');
+    }
+
 }

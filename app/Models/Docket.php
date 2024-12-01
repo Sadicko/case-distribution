@@ -46,6 +46,16 @@ class Docket extends Model
     }
 
 
+    public function creators()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function disposers()
+    {
+        return $this->belongsTo(User::class, 'disposed_by', 'id');
+    }
+
     protected static function boot()
     {
         parent::boot();
