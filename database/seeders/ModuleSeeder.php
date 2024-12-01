@@ -117,6 +117,14 @@ class ModuleSeeder extends Seeder
 //                    'Print judges',
 //                ]
 //            ],
+            [
+                'slug' => uniqid(),
+                'name' => 'Workloads',
+                'permissions' => [
+                    'Read workloads',
+                    'Reset workloads',
+                ]
+            ],
 //            [
 //                'slug' => uniqid(),
 //                'name' => 'Court type',

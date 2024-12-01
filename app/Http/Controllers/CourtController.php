@@ -148,6 +148,8 @@ class CourtController extends Controller
             'court_type' => ['required', 'integer'],
             'location' => ['required', 'integer'],
             'registry' => ['nullable', 'integer'],
+            'current_workload' => ['nullable', 'numeric'],
+            'new_workload' => ['nullable', 'numeric'],
         ]);
 
         if ($this->courtNameExist()) {
@@ -168,14 +170,20 @@ class CourtController extends Controller
             'availability' => $request->get('availability') ? 1 : 0,
         ]);
 
+        if ($request->new_workload){
+            $court->update([
+                'case_count' => $request->new_workload,
+            ]);
+        }
+
 
         if($request->status == 'Move to trash'){
 
             if(Gate::denies('Delete courts')){
 
-                $this->createAuditTrail("Denied access to  Update courts: Unauthorized");
+                $this->createAuditTrail("Denied access to  Delete courts: Unauthorized");
 
-                return back()->with(['error' => 'You are not authorized to Update courts.']);
+                return back()->with(['error' => 'You are not authorized to Delete courts.']);
             }
 
             $this->createAuditTrail("Moved the court #$court->name to trash");

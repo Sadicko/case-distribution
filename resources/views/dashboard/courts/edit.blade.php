@@ -107,6 +107,24 @@
                                         @endif
                                     </div>
 
+                                    @can('Reset workloads')
+                                        <hr>
+                                        <small class="text-info">WORKLOADS</small>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="current_workload"  class="form-label">Current workload</label>
+                                                <input type="text" class="form-control" name="current_workload" value="{{ old('current_workload', $court->case_count) }}" readonly>
+                                                <x-input-error :messages="$errors->get('current_workload')" class="mt-2 text-danger" />
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="new_workload"  class="form-label">Reset workload to</label>
+                                                <input type="number" class="form-control" name="new_workload" value="{{ old('new_workload') }}" min="1">
+                                                <x-input-error :messages="$errors->get('new_workload')" class="mt-2 text-danger" />
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    @endcan
+
                                     <div class="col-md-12 mb-3">
                                         <button type="submit" class="btn btn-primary bg-gradient-primary btn-sm mt-3"><i class="fas fa-save"></i> Save changes</button>
                                     </div>
