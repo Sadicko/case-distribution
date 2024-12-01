@@ -51,6 +51,9 @@
                         @can('Upload cases')
                             <li><a class="ms-link @yield('upload_case_active')" href="{{ route('upload-cases') }}"><span>Upload cases</span></a></li>
                         @endcan
+                        @can('Manual case allocation')
+                            <li><a class="ms-link @yield('manuel_case_active')" href="{{ route('cases.manuel') }}"><span>Manual allocation</span></a></li>
+                        @endcan
                     </ul>
                 </li>
             @endcanany

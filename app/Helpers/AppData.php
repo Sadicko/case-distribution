@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Court;
+use App\Models\Judge;
 use App\Models\Location;
 use App\Models\Registry;
 use Carbon\Carbon;
@@ -163,6 +164,13 @@ function fetch_courts($id){
     return Court::query()->where('registry_id', $id)->get();
 }
 
+
+function court_judges($court_id)
+{
+    return  $judges = Judge::query()->whereHas('courts', function ($query) use ($court_id) {
+        $query->where('court_id', $court_id);
+    })->orderBy('name', 'asc')->get();
+}
 
 /**
  * @param $date

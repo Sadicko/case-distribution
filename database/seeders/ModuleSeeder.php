@@ -40,6 +40,7 @@ class ModuleSeeder extends Seeder
 //                    'Manage cases',
 //                    'Create cases',
 //                    'Upload cases',
+                    'Manual case allocation',
 //                    'Read cases',
 //                    'Update cases',
 //                    'Set case as urgent',
