@@ -250,6 +250,39 @@ class DocketController extends Controller
         return view('dashboard.dockets.edit', compact('docket', 'categories', 'locations'));
     }
 
+    public function updateCase(Request $request, $slug)
+    {
+        $request->validate([
+            'suit_number' => ['required', 'string', 'regex:/^[aA-zZ]{2,5}\/\d{4,5}\/\d{4}$/'],
+            'case_title' => ['required', 'string'],
+            'case_category' => ['nullable', 'integer'],
+            'location' => ['nullable', 'integer'],
+            'priority_level' => ['nullable', 'string'],
+        ]);
+
+
+        // check if suit number exist
+        if($this->isCaseExist()){
+
+            // create audit
+            $this->createAuditTrail("Attempted to update a case with suit number $request->suit_number but already exists.");
+
+            return back()->withInput()->withErrors(['suit_number' => 'The suit number is already taken.']);
+        }
+
+        $docket = Docket::query()->where('slug', $slug)->firstOrFail();
+
+        $docket->update([
+            'suit_number' => strtoupper($request->suit_number),
+            'case_title' => strtoupper($request->case_title),
+            'category_id' => $request->case_category ?? $docket->category_id,
+            'location_id' => $request->location ?? $docket->location_id,
+        ]);
+
+        return back()->with('success', 'Case updated successfully!');
+
+    }
+
 
     /**
      * @return bool
@@ -257,6 +290,13 @@ class DocketController extends Controller
     public function isCaseRegistered(): bool
     {
         return Docket::query()->where(['suit_number' => request()->suit_number, 'category_id' => request()->case_category, 'location_id' => request()->location])->exists();
+    }
+
+    public function isCaseExist(): bool
+    {
+        //used when updating
+        return Docket::query()->where(['suit_number' => request()->suit_number, 'category_id' => request()->case_category, 'location_id' => request()->location])
+            ->where('slug', '!=', request()->slug)->exists();
     }
 
 

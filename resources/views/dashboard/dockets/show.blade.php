@@ -80,40 +80,42 @@
                         </div>
                     </div>
 
-                    <hr>
-                    <small>Metadata</small>
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-3">
-                            <label for="assign_type" class="form-label">Mode of allocation</label>
-                            <p class="form-control-plaintext" id="assign_type">{{ ucfirst($docket->assign_type) }}</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="allocation_by" class="form-label">Allocation by</label>
-                            <p class="form-control-plaintext" id="allocation_by">{{ $docket->creators->full_name }}</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="created_on" class="form-label">Created on</label>
-                            <p class="form-control-plaintext" id="created_on">{{ !empty($docket->created_at) ? getCustomLocalTime($docket->created_at) : '-'  }}</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="updated_on" class="form-label">Last updated on</label>
-                            <p class="form-control-plaintext" id="updated_on">{{ !empty($docket->updated_at) ? getCustomLocalTime($docket->updated_at) : '-'  }}</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="disposed_at" class="form-label">Disposed status</label>
-                            <p class="form-control-plaintext" id="disposed_at">{{ !empty($docket->disposed_at) ? getCustomLocalTime($docket->disposed_at) : 'N/A'  }}</p>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="priority" class="form-label">Priority</label>
-                            <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority) }}</p>
-                        </div>
-                        @if($docket->disposed_by)
+                    @can('Read case metadata')
+                        <hr>
+                        <small>Metadata</small>
+                        <div class="row mt-4">
                             <div class="col-md-6 mb-3">
-                                <label for="disposed_by" class="form-label">Disposed by</label>
-                                <p class="form-control-plaintext" id="disposed_by">{{ $docket->disposers?->full_name ?? '-'  }}</p>
+                                <label for="assign_type" class="form-label">Mode of allocation</label>
+                                <p class="form-control-plaintext" id="assign_type">{{ ucfirst($docket->assign_type) }}</p>
                             </div>
-                        @endif
-                    </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="allocation_by" class="form-label">Allocation by</label>
+                                <p class="form-control-plaintext" id="allocation_by">{{ $docket->creators->full_name }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="created_on" class="form-label">Created on</label>
+                                <p class="form-control-plaintext" id="created_on">{{ !empty($docket->created_at) ? getCustomLocalTime($docket->created_at) : '-'  }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="updated_on" class="form-label">Last updated on</label>
+                                <p class="form-control-plaintext" id="updated_on">{{ !empty($docket->updated_at) ? getCustomLocalTime($docket->updated_at) : '-'  }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="disposed_at" class="form-label">Disposed status</label>
+                                <p class="form-control-plaintext" id="disposed_at">{{ !empty($docket->disposed_at) ? getCustomLocalTime($docket->disposed_at) : 'N/A'  }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="priority" class="form-label">Priority</label>
+                                <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority) }}</p>
+                            </div>
+                            @if($docket->disposed_by)
+                                <div class="col-md-6 mb-3">
+                                    <label for="disposed_by" class="form-label">Disposed by</label>
+                                    <p class="form-control-plaintext" id="disposed_by">{{ $docket->disposers?->full_name ?? '-'  }}</p>
+                                </div>
+                            @endif
+                        </div>
+                    @endcan
                 </div>
             </div>
 

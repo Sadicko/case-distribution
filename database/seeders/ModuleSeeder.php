@@ -52,6 +52,7 @@ class ModuleSeeder extends Seeder
 //                    'Download cases',
 //                    'Delete cases',
                     'Read case logs',
+                    'Read case metadata',
                 ]
             ],
 //            [

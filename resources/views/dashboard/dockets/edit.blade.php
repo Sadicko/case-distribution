@@ -40,20 +40,20 @@
                             </div>
                         @endif
 
-                        <form id="caseForm" method="POST" action="{{ route('cases.create') }}" enctype="multipart/form-data">
+                        <form id="caseForm" method="POST" action="{{ route('cases.edit', $docket->slug) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="row justify-content-center  mt-5">
                                 <div class="col-6">
                                     <div class="form-group mb-3">
                                         <label for="suit_number" class="form-label">Suit number*</label>
-                                        <input class="form-control" type="text" required name="suit_number" id="suit_number" value="{{ old('suit_number') }}">
+                                        <input class="form-control" type="text" required name="suit_number" id="suit_number" value="{{ old('suit_number', $docket->suit_number) }}">
                                         @error('suit_number')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="case_title" class="form-label">Case title*</label>
-                                        <input class="form-control" type="text" required name="case_title" id="case_title" value="{{ old('case_title') }}">
+                                        <input class="form-control" type="text" required name="case_title" id="case_title" value="{{ old('case_title', $docket->case_title) }}">
                                         @error('case_title')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
@@ -64,7 +64,7 @@
                                             <select name="case_category" class="form-control select2" id="case_category">
                                                 <option value=""></option>
                                                 @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
+                                                    <option value="{{ $category->id }}" {{ old('case_category', $docket->category_id) == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('case_category')
@@ -76,7 +76,7 @@
                                             <select name="location" class="form-control select2" id="location">
                                                 <option value=""></option>
                                                 @foreach($locations as $location)
-                                                    <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : (count($locations) ==  1 ? 'selected' : '')}}>{{ $location->name }}</option>
+                                                    <option value="{{ $location->id }}" {{ old('location', $docket->location_id) == $location->id ? 'selected' : (count($locations) ==  1 ? 'selected' : '')}}>{{ $location->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('location')
@@ -101,7 +101,7 @@
 
                                     <div class="row mt-4 mb-5">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary bg-dark float-end assignBtn">Submit for allocation</button>
+                                            <button type="submit" class="btn btn-primary bg-dark float-end">Submit for allocation</button>
                                         </div>
                                     </div>
                                 </div>
@@ -109,24 +109,6 @@
                     </div>
                 </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="assignCaseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="assignCaseModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="assignCaseModalLabel">Case allocation Confirmation</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <h5><i class="fas fa-exclamation-circle text-danger"></i> Are you sure you want to submit this case for allocation?</h5>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary bg-dark proceedAssignment">Yes! Proceed.</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
