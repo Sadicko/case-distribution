@@ -18,10 +18,10 @@
                             >> {{ $docket->name }}</h3>
 
                         <div class="col-auto d-flex w-sm-100  mt-sm-0">
-                            @if (strpos(url()->previous(), '/courts?page=') !== false)
+                            @if (strpos(url()->previous(), '/cases?page=') !== false)
                                 <a href="{{ url()->previous() }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
                             @else
-                                <a href="{{ route('courts') }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
+                                <a href="{{ route('cases') }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
                             @endif
                         </div>
                     </div>

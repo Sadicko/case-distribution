@@ -25,11 +25,13 @@
 
 
 @assets
+{{--<script src="{{ asset('js/colors.js') }}"></script>--}}
 <script src="{{ asset('plugins/charts/chart.min.js') }}"></script>
 @endassets
 
 @script
 <script>
+
     //load chart on page load
     document.addEventListener('livewire:initialized', () => {
         renderChart()
@@ -42,16 +44,16 @@
 
     //chart function
     function renderChart(){
+
         //get data
         const caseDistributions = $wire.caseDistributions;
 
-        let labels = [];
-        let caseCounts = [];
-        let colors = [];
+        // Predefine the colors from the getColors() PHP helper
+        const colors = @json(getColors());
 
-        labels = caseDistributions.map(item => item.period.toUpperCase());
-        caseCounts =  caseDistributions.map(item => item.case_count);
-        colors = caseDistributions.map(item => getRandomColor());
+        let labels = caseDistributions.map(item => item.period.toUpperCase());
+        let caseCounts =  caseDistributions.map(item => item.case_count);
+        let mappedColors = caseDistributions.map((item, index) => colors[index]);
 
         //get chat id
         var ctx = document.getElementById("myBarChart");
@@ -68,8 +70,8 @@
                 datasets: [{
                     label: `${$wire.status.toUpperCase()} CASE DISTRIBUTION`,
                     data: caseCounts,
-                    backgroundColor: colors,
-                    borderColor: colors,
+                    backgroundColor: mappedColors,
+                    borderColor: mappedColors,
                     borderWidth: 1
                 }]
             },
@@ -95,10 +97,12 @@
 
     }
 
+    {{--const allColors = @json(getColors());--}}
 
-    function getRandomColor() {
-        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-    }
+    {{--function getRandomColor() {--}}
+    {{--    console.log(allColors);--}}
+    {{--    return allColors;--}}
+    {{--}--}}
 
 </script>
 @endscript
