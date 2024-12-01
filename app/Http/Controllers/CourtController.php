@@ -170,7 +170,7 @@ class CourtController extends Controller
             'availability' => $request->get('availability') ? 1 : 0,
         ]);
 
-        if ($request->new_workload){
+        if ($request->new_workload && Gate::allows('Reset workloads')){
             $court->update([
                 'case_count' => $request->new_workload,
             ]);
