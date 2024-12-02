@@ -212,6 +212,7 @@ class DocketController extends Controller
                     'docket_id' => $docket->id,
                     'court_id' => $docket->court_id,
                     'judge_id' => $docket->judge_id,
+                    'location_id' => $docket->location_id,
                     'assigned_by' => $docket->created_by,
                     'assignment_reason' => 'Manual assignment',
                     'assigned_date' => $docket->assigned_date,

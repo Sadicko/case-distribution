@@ -135,8 +135,32 @@
                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div class="table-responsive">
-                                <table>
-                                    <thead></thead>
+                                <table id="initTable" class="table table-bordered display">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Court</th>
+                                        <th>Judge</th>
+                                        <th>Location</th>
+                                        <th>Date of allocation</th>
+                                        <th>Stage</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    @foreach($docket->allocations as $allocation)
+                                        <tr>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ $allocation->courts?->name ?? ''  }}</td>
+                                            <td>{{ $allocation->judges?->name ?? ''  }}</td>
+                                            <td>{{ $allocation->locations?->name ?? ''  }}</td>
+                                            <td>{{ getCustomLocalTime($allocation->assigned_date ) }}</td>
+                                            <td>{{ $allocation->case_stage }}</td>
+                                            <td>{{ $allocation->assignment_reason }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
