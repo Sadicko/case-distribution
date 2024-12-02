@@ -94,7 +94,7 @@
                                     <div class="col mb-4">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="availability" @checked($court->availability)>
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">@if($judge->availability) Available @else Blocked @endif</label>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">@if($court->availability) Available @else Blocked @endif</label>
                                         </div>
                                         @if($court->availability)
                                             <small class="text-muted">
