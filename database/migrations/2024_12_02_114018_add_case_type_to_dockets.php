@@ -16,7 +16,7 @@ return new class extends Migration
                 'Pre-Trial',
                 'Motion',
                 'Trial'
-            ])->default('Trial');
+            ])->nullable()->default('Trial');
         });
     }
 

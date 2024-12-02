@@ -125,14 +125,14 @@
 
 
             {{--            @can('Read court logs')--}}
-            <div class="accordion mb-5" id="accordionExample">
+            <div class="accordion mb-5" id="accordionHistory">
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button collapsed text-uppercase text-info fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <h2 class="accordion-header" id="headingHistory">
+                        <button class="accordion-button collapsed text-uppercase text-info fw-bolder" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHistory" aria-expanded="false" aria-controls="collapseHistory">
                             Historical allocations
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div id="collapseHistory" class="accordion-collapse collapse" aria-labelledby="headingHistory" data-bs-parent="#accordionHistory">
                         <div class="accordion-body">
                             <div class="table-responsive">
                                 <table id="initTable" class="table table-bordered display">
