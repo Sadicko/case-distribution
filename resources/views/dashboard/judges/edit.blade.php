@@ -68,7 +68,7 @@
                                     <div class="col mb-4">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="availability" @checked($judge->availability)>
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">@if($judge->availability) Available @else Block @endif </label>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">@if($judge->availability) Available @else Blocked @endif </label>
                                         </div>
                                         <small class="text-muted">This judge is available to be assigned to a court. Unchecking will set to unavailable to be assigned.</small>
                                     </div>
