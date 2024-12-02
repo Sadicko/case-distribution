@@ -107,7 +107,7 @@ class DocketController extends Controller
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
-                    'case_type' => $request->commercial_type,
+                    'case_stage' => $request->commercial_type,
                     'location_id' => $request->location,
                     //'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
                     'priority_level' => $request->priority_level,
@@ -195,7 +195,7 @@ class DocketController extends Controller
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
-                    'case_type' => $request->commercial_type,
+                    'case_stage' => $request->commercial_type,
                     'location_id' => $request->location,
                     'court_id' => $request->court,
                     'judge_id' => $request->judge,
@@ -215,6 +215,7 @@ class DocketController extends Controller
                     'assigned_by' => $docket->created_by,
                     'assignment_reason' => 'Manual assignment',
                     'assigned_date' => $docket->assigned_date,
+                    'case_stage' => $docket->case_stage,
                 ]);
 
             });

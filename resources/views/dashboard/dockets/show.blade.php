@@ -75,6 +75,10 @@
                             <p class="form-control-plaintext" id="categories">{{ $docket->categories?->name ?? '-'}}</p>
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label for="categories" class="form-label">Case stage</label>
+                            <p class="form-control-plaintext" id="categories">{{ $docket->case_stage ?? '-'}}</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="categories" class="form-label">Date of allocation</label>
                             <p class="form-control-plaintext" id="categories">{{ !empty($docket->assigned_date) ? getCustomLocalTime($docket->assigned_date) : '-'  }}</p>
                         </div>

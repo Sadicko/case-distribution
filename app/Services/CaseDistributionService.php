@@ -75,6 +75,7 @@ class CaseDistributionService
             'assigned_by' => $docket->created_by,
             'assignment_reason' => 'New',
             'assigned_date' => $docket->assigned_date,
+            'case_stage' => $docket->case_stage,
         ]);
 
         return $selectedCourt;

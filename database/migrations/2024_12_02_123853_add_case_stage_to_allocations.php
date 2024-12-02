@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('dockets', function (Blueprint $table) {
+        Schema::table('allocations', function (Blueprint $table) {
             $table->enum('case_stage', [
                 'Pre-Trial',
                 'Motion',
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('dockets', function (Blueprint $table) {
+        Schema::table('allocations', function (Blueprint $table) {
             $table->dropColumn(['case_stage']);
         });
     }
