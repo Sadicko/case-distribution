@@ -101,7 +101,7 @@
 
                                     <div class="row mt-4 mb-5">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary bg-dark float-end">Submit for allocation</button>
+                                            <button type="submit" class="btn btn-primary bg-dark float-end">Submit</button>
                                         </div>
                                     </div>
                                 </div>

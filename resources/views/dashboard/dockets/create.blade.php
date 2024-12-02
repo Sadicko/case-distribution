@@ -63,10 +63,22 @@
                                         <select name="case_category" class="form-control select2" id="case_category">
                                             <option value=""></option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" data-name="{{ $category->name }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('case_category')
+                                        <small class="invalid-feedback">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-3 commercial_type_box" @if($errors->any() || (count($categories) == 1 && $categories[0]->name == "COMMERCIAL")) @else style="display: none;" @endif>
+                                        <label for="commercial_type" class="form-label">Type</label>
+                                        <select name="commercial_type" class="form-control select2" id="commercial_type" style="width: 100%">
+                                            <option value=""></option>
+                                            @foreach(commercial_type() as $type)
+                                                <option value="{{ $type }}" {{ old('commercial_type') == $type ? 'selected' : ''}}>{{ $type }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('commercial_type')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
@@ -162,6 +174,15 @@
                 $(".loader").show();
 
                 $('#caseForm').submit();
+            })
+
+            $(document).on("change", "#case_category", function () {
+                if($(this).find('option:selected').data('name') === "COMMERCIAL"){
+                    $('.commercial_type_box').show();
+                }else{
+                    $('.commercial_type_box').hide();
+                }
+
             })
 
 

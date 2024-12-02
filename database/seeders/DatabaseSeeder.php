@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
 //            LocationSeeder::class,
 //            RegistrySeeder::class,
 //            CourtSeeder::class,
+//            CategorySeeder::class,
             ModuleSeeder::class,
 //            RoleSeeder::class,
 //            UserSeeder::class,

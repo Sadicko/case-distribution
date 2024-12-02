@@ -12,7 +12,7 @@ class Allocation extends Model
 
     public function dockets()
     {
-        return $this->hasMany(Docket::class, 'docket_id');
+        return $this->belongsTo(Docket::class, 'docket_id');
     }
 
 }

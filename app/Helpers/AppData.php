@@ -269,3 +269,13 @@ function getInitials($name)
 
     return strtoupper($initials); // Convert to uppercase if desired
 }
+
+
+function commercial_type()
+{
+    return [
+        'Pre-Trial',
+        'Motion',
+        'Trial'
+    ];
+}

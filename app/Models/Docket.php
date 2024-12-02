@@ -45,11 +45,16 @@ class Docket extends Model
         return $this->hasMany(Docketlog::class, 'docket_id', 'id');
     }
 
+    public function allocations()
+    {
+        return $this->hasMany(Allocation::class, 'docket_id', 'id');
+    }
 
     public function creators()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
 
     public function disposers()
     {

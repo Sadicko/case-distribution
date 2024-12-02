@@ -13,6 +13,19 @@
             @enderror
         </div>
 
+        <div class="form-group col-6 mb-3 commercial_type_box" @if($errors->any() || (count($categories) == 1 && $categories[0]->name == "COMMERCIAL")) @else style="display: none;" @endif>
+            <label for="commercial_type" class="form-label">Type</label>
+            <select name="commercial_type" class="form-control select2" id="commercial_type" style="width: 100%">
+                <option value=""></option>
+                @foreach(commercial_type() as $type)
+                    <option value="{{ $type }}" {{ old('commercial_type') == $type ? 'selected' : ''}}>{{ $type }}</option>
+                @endforeach
+            </select>
+            @error('commercial_type')
+            <small class="invalid-feedback">{{ $message }}</small>
+            @enderror
+        </div>
+
         <div class="form-group col-6 mb-3" @if (in_array(Auth::user()->access_type, registry_level()) && count($locations) > 0 )  @endif>
             <label for="location" class="form-label">Location*</label>
             <select name="location" class="form-control select2" id="selectedLocation"  wire:model.live="selectedLocation">
@@ -56,6 +69,15 @@
 <script>
 
     $(function (){
+
+        $(document).on("change", "#case_category", function () {
+            if($(this).find('option:selected').data('name') === "COMMERCIAL"){
+                $('.commercial_type_box').show();
+            }else{
+                $('.commercial_type_box').hide();
+            }
+
+        })
 
         $('#selectedLocation').on('change', function (e) {
             var selectedLocation = $(this).select2("val");

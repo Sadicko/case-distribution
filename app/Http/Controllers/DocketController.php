@@ -44,7 +44,7 @@ class DocketController extends Controller
 
     public function showCase($slug)
     {
-        $docket = Docket::query()->with('courts', 'judges', 'categories', 'locations', 'creators', 'disposers', 'docketlogs', 'docketlogs.users')->where('slug', $slug)->firstOrFail();
+        $docket = Docket::query()->with('courts', 'judges', 'categories', 'locations', 'creators', 'disposers', 'docketlogs', 'docketlogs.users', 'allocations')->where('slug', $slug)->firstOrFail();
 
         return view('dashboard.dockets.show', compact('docket'));
     }
@@ -76,8 +76,11 @@ class DocketController extends Controller
             'suit_number' => ['required', 'string', 'regex:/^[aA-zZ]{2,5}\/\d{4,5}\/\d{4}$/'],
             'case_title' => ['required', 'string'],
             'case_category' => ['required', 'integer'],
+            'commercial_type' => ['required_if:case_category,1', 'nullable'],
             'location' => ['required', 'integer'],
             'priority_level' => ['required', 'string'],
+        ], [
+            'commercial_type.required_if' => 'The commercial type field is required when the case category is Commercial.',
         ]);
 
 
@@ -104,6 +107,7 @@ class DocketController extends Controller
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
+                    'case_type' => $request->commercial_type,
                     'location_id' => $request->location,
                     //'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
                     'priority_level' => $request->priority_level,
@@ -165,6 +169,7 @@ class DocketController extends Controller
             'suit_number' => ['required', 'string', 'regex:/^[A-Z]{2,5}\/\d{4,5}\/\d{4}$/'],
             'case_title' => ['required', 'string'],
             'case_category' => ['required', 'integer'],
+            'commercial_type' => ['required_if:case_category,1', 'nullable'],
             'location' => ['required', 'integer'],
             'court' => ['required', 'integer'],
             'judge' => ['required', 'integer'],
@@ -190,6 +195,7 @@ class DocketController extends Controller
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
+                    'case_type' => $request->commercial_type,
                     'location_id' => $request->location,
                     'court_id' => $request->court,
                     'judge_id' => $request->judge,
