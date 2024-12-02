@@ -66,8 +66,16 @@
                                             </td>
                                             <td>{{ $court->locations->name }}</td>
                                             <td>{{ $court->courttypes->name }}</td>
-                                            <td>{{ $court->registries?->name ?? '-' }}</td>
-                                            <td class="text-center">{{ count($court->categories)  }}</td>
+                                            <td>{{ !empty($court->registries?->name) ? Str::limit($court->registries?->name, 20) : '-' }}</td>
+                                            <td class="text-center">
+                                                @if(count($court->categories) > 0)
+                                                    @foreach($court->categories as $category)
+                                                        <small class="badge bg-dark">{{ $category->name }}</small>
+                                                    @endforeach
+                                                @else
+                                                    <span>-</span>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 @canany(['Update courts', 'Assign court judges', 'Assign categories courts'])
                                                     @can('Update courts')
