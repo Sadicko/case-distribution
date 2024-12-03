@@ -237,3 +237,6 @@
   2024-12-03 12:00:20 App\Mail\AccountCreationMail .............. 38.87ms FAIL
   2024-12-03 12:01:54 App\Mail\AccountCreationMail ................... RUNNING
   2024-12-03 12:01:54 App\Mail\AccountCreationMail .............. 40.73ms FAIL
+
+   INFO  Horizon started successfully.  
+

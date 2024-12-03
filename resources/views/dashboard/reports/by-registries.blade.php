@@ -4,7 +4,7 @@
 
 @section('report_collapse', 'show')
 @section('reports_active', 'active')
-@section('court_active', 'text-info')
+@section('registry_report_active', 'active')
 
 @section('content')
 <div class="body d-flex py-3">

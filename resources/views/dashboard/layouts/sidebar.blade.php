@@ -81,7 +81,7 @@
                 </li>
 
                 <li class="collapsed">
-                    <a class="m-link @yield('cases_active')" data-bs-toggle="collapse" data-bs-target="#general-report" href="#">
+                    <a class="m-link @yield('reports_active')" data-bs-toggle="collapse" data-bs-target="#general-report" href="#">
                         <i class="fas fa-folder-open"></i>
                         <div>
                             <h6 class="mb-0">General Reporting</h6>
@@ -106,7 +106,7 @@
                             </a>
                         </li> --}}
                         <li>
-                            <a class="m-link @yield('case_distribution_active')" href="{{  route('reports.registry') }}">
+                            <a class="m-link @yield('registry_report_active')" href="{{  route('reports.registry') }}">
                                 <i class="fas fa-area-chart"></i>
                                 <div>
                                     <h6 class="mb-0">Registry Report</h6>

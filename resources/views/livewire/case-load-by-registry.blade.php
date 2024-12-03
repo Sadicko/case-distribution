@@ -46,8 +46,8 @@
                 <label for="case_category">Case category</label>
                 <select name="category" id="case_category" wire:model="selectedCategory" class="form-control">
                     <option value="all">All</option>
-                    @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}
+                    @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}">{{ $cat->name }}
                     </option>
                     @endforeach
                 </select>
@@ -82,7 +82,7 @@
                     <h5 class="text-uppercase">ELECTRONIC CASE DISTRIBUTION SYSTEM</h5>
                     <img src="{{ asset('images/coat_of_arms.png') }}" alt="coat_of_arms" style="width: 150px">
                 </div>
-                <h5 class="text-info text-uppercase text-center">{{ $selectedCategory == 'all' ? $selectedCategory : '' }} Case load for {{ !empty($category) && ($selectedCategory != 'all') ? $category->name : 'All categories' }} from {{  Carbon\Carbon::parse($startDate)->format('d-m-Y') }} to {{  Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</h5>
+                <h5 class="text-info text-uppercase text-center">{{ $selectedCategory == 'all' ? $selectedCategory : '' }} Case load for {{ !empty($category) && ($selectedCategory != 'all') ? $category->name .' Courts' : 'All categories' }} from {{  Carbon\Carbon::parse($startDate)->format('d-m-Y') }} to {{  Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</h5>
             </div>
             <div class="card-body mb-5">
                 <table class="table table-stripe table-borded">
@@ -118,9 +118,11 @@
         </div>
     </div>
     
+    @if (count($dockets) != 0)
     <div class="d-flex justify-content-center mt-5">
         <button class="btn btn-primary btn-sm me-3 bg-gradient-primary print-button" id="print-button"><i class="fas fa-print"></i> Print</button>
     </div>
+    @endif
 </div>
 
 
