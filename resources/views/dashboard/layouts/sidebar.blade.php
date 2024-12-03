@@ -89,7 +89,7 @@
                     </a>
                     <!-- Menu: Sub menu ul -->
                     <ul class="sub-menu collapse @yield('report_collapse')" id="general-report">
-                        <li>
+                        {{-- <li>
                             <a class="m-link @yield('reports_active')" href="#!">
                                 <i class="fas fa-chart-pie"></i>
                                 <div>
@@ -104,7 +104,7 @@
                                     <h6 class="mb-0">Case summary report</h6>
                                 </div>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a class="m-link @yield('case_distribution_active')" href="{{  route('reports.registry') }}">
                                 <i class="fas fa-area-chart"></i>
