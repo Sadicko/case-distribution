@@ -41,7 +41,7 @@ class CaseLoadByRegistry extends Component
         $this->dockets = $query->selectRaw('court_id, judge_id, COUNT(*) as case_load')
             ->whereBetween('assigned_date', [$this->startDate, $this->endDate])
             ->groupBy('court_id', 'judge_id')
-            ->orderBy('case_load', 'asc')
+            ->orderBy('case_load', 'desc')
             ->get();
     }
 
