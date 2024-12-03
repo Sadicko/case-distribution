@@ -17,7 +17,7 @@ class CourtController extends Controller
 
     public function index()
     {
-        if(Gate::denies('Manage courts')){
+        if (Gate::denies('Manage courts')) {
 
             $this->createAuditTrail("Denied access to  Manage courts: Unauthorized");
 
@@ -41,7 +41,7 @@ class CourtController extends Controller
 
     public function create()
     {
-        if(Gate::denies('Create courts')){
+        if (Gate::denies('Create courts')) {
 
             $this->createAuditTrail("Denied access to  Create courts: Unauthorized");
 
@@ -61,7 +61,7 @@ class CourtController extends Controller
 
     public function store(Request $request)
     {
-        if(Gate::denies('Create courts')){
+        if (Gate::denies('Create courts')) {
 
             $this->createAuditTrail("Denied access to  Create courts: Unauthorized");
 
@@ -99,6 +99,7 @@ class CourtController extends Controller
             'availability' => 1,
             'slug' => str_shuffle(uniqid()),
             'created_by' => Auth::id(),
+            'case_count' => 0,
         ]);
 
         $this->createAuditTrail("Added a new court #$court->name");
@@ -108,22 +109,23 @@ class CourtController extends Controller
 
 
     // determine name exist
-    public function  courtNameExist()
+    public function courtNameExist()
     {
         return Court::query()->where('slug', '!=', request()->slug)->where('name', request()->court_name)->first();
     }
 
 
-    public function edit($slug){
+    public function edit($slug)
+    {
 
-        if(Gate::denies('Update courts')){
+        if (Gate::denies('Update courts')) {
 
             $this->createAuditTrail("Denied access to  Update courts: Unauthorized");
 
             return back()->with(['error' => 'You are not authorized to Update courts.']);
         }
 
-        $court =  Court::whereslug($slug)->firstOrfail();
+        $court = Court::whereslug($slug)->firstOrfail();
         $courttypes = Courttype::latest()->get();
 
         $this->createAuditTrail('Visited edit court page.');
@@ -132,9 +134,10 @@ class CourtController extends Controller
     }
 
 
-    public function update(Request $request, $slug){
+    public function update(Request $request, $slug)
+    {
 
-        if(Gate::denies('Update courts')){
+        if (Gate::denies('Update courts')) {
 
             $this->createAuditTrail("Denied access to  Update courts: Unauthorized");
 
@@ -156,7 +159,7 @@ class CourtController extends Controller
             return back()->withInput()->withErrors(['name' => 'The location name is already taken.']);
         }
 
-        $court =  Court::whereslug($slug)->firstOrfail();
+        $court = Court::whereslug($slug)->firstOrfail();
         $location = Location::query()->find($request->location);
 
         $court->update([
@@ -170,16 +173,16 @@ class CourtController extends Controller
             'availability' => $request->get('availability') ? 1 : 0,
         ]);
 
-        if ($request->new_workload && Gate::allows('Reset workloads')){
+        if ($request->new_workload && Gate::allows('Reset workloads')) {
             $court->update([
                 'case_count' => $request->new_workload,
             ]);
         }
 
 
-        if($request->status == 'Move to trash'){
+        if ($request->status == 'Move to trash') {
 
-            if(Gate::denies('Delete courts')){
+            if (Gate::denies('Delete courts')) {
 
                 $this->createAuditTrail("Denied access to  Delete courts: Unauthorized");
 
@@ -202,7 +205,7 @@ class CourtController extends Controller
 
     public function assignCategories($slug)
     {
-        if(Gate::denies('Assign categories courts')){
+        if (Gate::denies('Assign categories courts')) {
 
             $this->createAuditTrail("Denied access to  Assign categories courts: Unauthorized");
 
@@ -211,7 +214,7 @@ class CourtController extends Controller
 
         $court = Court::query()->with('categories')->where('slug', $slug)->firstOrfail();
 
-        $categories =  Category::query()->where('courttype_id', $court->courttype_id)->get();
+        $categories = Category::query()->where('courttype_id', $court->courttype_id)->get();
 
         $this->createAuditTrail('Visited categories assign page.');
 
@@ -220,7 +223,7 @@ class CourtController extends Controller
 
     public function saveCourtCategories(Request $request, $slug)
     {
-        if(Gate::denies('Assign categories courts')){
+        if (Gate::denies('Assign categories courts')) {
 
             $this->createAuditTrail("Denied access to  Assign categories courts: Unauthorized");
 
@@ -232,15 +235,15 @@ class CourtController extends Controller
         // Sync the categories
         $court->categories()->sync($request->categories);
 
-        $this->createAuditTrail('Assigned '. count($request->categories). "categories to the court #". $court->name);
+        $this->createAuditTrail('Assigned ' . count($request->categories) . "categories to the court #" . $court->name);
 
-        return to_route('courts')->with('success', count($request->categories).' categories assigned to '.$court->name.' successfully.');
+        return to_route('courts')->with('success', count($request->categories) . ' categories assigned to ' . $court->name . ' successfully.');
 
     }
 
     public function fetchCourts(Request $request)
     {
-        if($request->wantsJson()){
+        if ($request->wantsJson()) {
 
             $courts = Court::query()->where('registry_id', $request->registry)->get();
 
