@@ -11,9 +11,22 @@ class ReportController extends Controller
 {
   use AuditTrailLog;
 
+
+  public function caseLoadByRegistry()
+  {
+    // Get the current date
+    $currentDate = legalYear()['currentDate'];
+    $currentYear = legalYear()['currentYear'];
+    $legalYearStart = legalYear()['legalYearStart'];
+    $legalYearEnd = legalYear()['legalYearEnd'];
+
+    return view("dashboard.reports.by-registries", compact("legalYearStart", "legalYearEnd"));
+  }
+
+
   public function index(Request $request)
   {
-    if(Gate::denies('Read reports')){
+    if (Gate::denies('Read reports')) {
 
       $this->createAuditTrail("Denied access to  Read reports: Unauthorized");
 
@@ -31,29 +44,29 @@ class ReportController extends Controller
 
     switch ($q) {
       case "by-courts":
-      $view = "by-courts";
-      $title = "Reports by courts";
-      break;
+        $view = "by-courts";
+        $title = "Reports by courts";
+        break;
 
       case "by-registries":
-      $view = "by-registries";
-      $title = "Reports by registries";
-      break;
+        $view = "by-registries";
+        $title = "Reports by registries";
+        break;
 
       case "by-region":
-      $view = "by-regions";
-      $title = "Reports by regions";
-      break;
+        $view = "by-regions";
+        $title = "Reports by regions";
+        break;
 
       case "by-bail-type":
-      $view = "by-bail-type";
-      $title = "Reports by bail-types";
-      break;
+        $view = "by-bail-type";
+        $title = "Reports by bail-types";
+        break;
 
       default:
-      $view =  "index";
-      $title =  "Reports by status";
-      break;
+        $view = "index";
+        $title = "Reports by status";
+        break;
     }
 
     $this->createAuditTrail("Visited report page.");

@@ -2,6 +2,7 @@
 
 @section('title', 'Reports by registries')
 
+@section('report_collapse', 'show')
 @section('reports_active', 'active')
 @section('court_active', 'text-info')
 
@@ -29,7 +30,7 @@
         <div class="card mb-3">
             <div class="card-body basic-custome-color">
 
-                @livewire('bail-report-by-registry', ['legalYearStart' => $legalYearStart, 'legalYearEnd' => $legalYearEnd])
+                @livewire('case-load-by-registry', ['legalYearStart' => $legalYearStart, 'legalYearEnd' => $legalYearEnd])
                 
             </div>
         </div>

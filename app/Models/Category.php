@@ -11,7 +11,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected  $guarded = [];
+    protected $guarded = [];
 
     public function courttypes()
     {
@@ -21,7 +21,7 @@ class Category extends Model
     public function courts()
     {
         return $this->belongsToMany(Court::class, 'court_categories')
-            ->withPivot( 'created_by');
+            ->withPivot('created_by');
     }
 
     public function dockets()
@@ -40,17 +40,43 @@ class Category extends Model
                 $qeury->where('availability', 1);
             });
 
-        }elseif(Gate::any(court_room_access_level())){
+        } elseif (Gate::any(court_room_access_level())) {
 
-            $query = static::query()->whereHas('courts', function ($query) use ($user){
+            $query = static::query()->whereHas('courts', function ($query) use ($user) {
+                $query->where('court_id', $user->court_id)
+                    ->where('availability', 1);
+            });
+
+        } else {
+
+            $query = static::query()->whereHas('courts', function ($query) use ($user) {
+                $query->where('registry_id', $user->registry_id)
+                    ->where('availability', 1);
+            });
+        }
+
+        return $query;
+
+    }
+
+    public static function getCategories()
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
+
+            $query = static::query()->whereHas('courts');
+
+        } elseif (Gate::any(court_room_access_level())) {
+
+            $query = static::query()->whereHas('courts', function ($query) use ($user) {
                 $query->where('court_id', $user->court_id);
             });
 
-        }else{
+        } else {
 
-            $query = static::query()->whereHas('courts', function ($query) use ($user){
-                $query->where('registry_id', $user->registry_id)
-                    ->where('availability', 1);
+            $query = static::query()->whereHas('courts', function ($query) use ($user) {
+                $query->where('registry_id', $user->registry_id);
             });
         }
 

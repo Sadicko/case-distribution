@@ -88,7 +88,7 @@
                         </div><span class="arrow icofont-dotted-down ms-auto text-end fs-5"></span>
                     </a>
                     <!-- Menu: Sub menu ul -->
-                    <ul class="sub-menu collapse @yield('asset_collapse')" id="general-report">
+                    <ul class="sub-menu collapse @yield('report_collapse')" id="general-report">
                         <li>
                             <a class="m-link @yield('reports_active')" href="#!">
                                 <i class="fas fa-chart-pie"></i>
@@ -106,7 +106,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="m-link @yield('case_distribution_active')" href="#!">
+                            <a class="m-link @yield('case_distribution_active')" href="{{  route('reports.registry') }}">
                                 <i class="fas fa-area-chart"></i>
                                 <div>
                                     <h6 class="mb-0">Registry Report</h6>
