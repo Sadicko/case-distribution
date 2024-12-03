@@ -18,9 +18,10 @@ class UserController extends Controller
 {
     use AuditTrailLog;
 
-    public function showUsers(){
+    public function showUsers()
+    {
 
-        if(Gate::denies('Manage users')){
+        if (Gate::denies('Manage users')) {
 
             $this->createAuditTrail("Denied access to  Manage users: Unauthorized");
 
@@ -34,9 +35,10 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    public function showCreateUserPage(){
+    public function showCreateUserPage()
+    {
 
-        if(Gate::denies('Create users')){
+        if (Gate::denies('Create users')) {
 
             $this->createAuditTrail("Denied access to  Create users: Unauthorized");
 
@@ -52,10 +54,11 @@ class UserController extends Controller
         return view('admin.users.create', compact('roles', 'locations'));
     }
 
-    public function saveUser(Request $request){
+    public function saveUser(Request $request)
+    {
 
 
-        if(Gate::denies('Create users')){
+        if (Gate::denies('Create users')) {
 
             $this->createAuditTrail("Denied access to  Create users: Unauthorized");
 
@@ -112,7 +115,7 @@ class UserController extends Controller
 
         $user->syncRoles($request->roles);
 
-        if (getenv('SEND_ACCOUNT_NOTICE_MAIL')){
+        if (getenv('SEND_ACCOUNT_NOTICE_MAIL') == 'YES') {
             event(new AccountCreationEvent($user));
         }
 
@@ -122,9 +125,10 @@ class UserController extends Controller
     }
 
 
-    public function showEditUserPage($slug){
+    public function showEditUserPage($slug)
+    {
 
-        if(Gate::denies('Update users')){
+        if (Gate::denies('Update users')) {
 
             $this->createAuditTrail("Denied access to  Update users: Unauthorized");
 
@@ -143,9 +147,10 @@ class UserController extends Controller
     }
 
 
-    public function updateUser(Request $request, $slug){
+    public function updateUser(Request $request, $slug)
+    {
 
-        if(Gate::denies('Update users')){
+        if (Gate::denies('Update users')) {
 
             $this->createAuditTrail("Denied access to  Update users: Unauthorized");
 
@@ -168,17 +173,17 @@ class UserController extends Controller
             'court' => ['nullable', 'integer'],
         ]);
 
-//        return  $request;
+        //        return  $request;
 
-        if($this->emailExist()){
+        if ($this->emailExist()) {
             return back()->withInput()->withErrors(['email' => 'The email has already been taken.']);
         }
 
-        if($this->userNameExist()){
+        if ($this->userNameExist()) {
             return back()->withInput()->withErrors(['username' => 'The username has already been taken.']);
         }
 
-        if($this->phoneExist()){
+        if ($this->phoneExist()) {
             return back()->withInput()->withErrors(['phone' => 'The phone has already been taken.']);
         }
 
@@ -214,7 +219,7 @@ class UserController extends Controller
             'is_approved' => $request->status == 'Active' ? 1 : 0,
         ]);
 
-        if($request->require_password_reset == 'yes'){
+        if ($request->require_password_reset == 'yes') {
             $user->update([
                 'password' => Hash::make(config('ecds.default_password')),
             ]);
@@ -230,7 +235,7 @@ class UserController extends Controller
     }
 
     //determin if phone
-    public function  phoneExist()
+    public function phoneExist()
     {
 
         return User::query()->where('slug', '!=', request()->slug)

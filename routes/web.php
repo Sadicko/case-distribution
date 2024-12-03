@@ -34,18 +34,21 @@ Route::redirect('/', '/dashboard');
 
 
 
-//Route::get('/bulk-updates', function () {
-////    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
+Route::get('/bulk-updates', function () {
+
+    event(new \App\Events\AccountCreationEvent(Auth::user()));
+
+    //    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
 //    $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->get();
-//
-//    foreach ($dockets as $docket) {
+
+    //    foreach ($dockets as $docket) {
 //        $docket->judge_id = $docket->courts->currentJudge[0]->id;
 //        $docket->save();
 //    }
-//
-//    return 'success';
-//
-//})->middleware(['auth']);
+
+    return 'success';
+
+})->middleware(['auth']);
 
 Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // home
@@ -56,16 +59,16 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     //assets
-    Route::get('/cases', [ DocketController::class, 'showCases'])->name('cases');
-    Route::get('/cases/create', [ DocketController::class, 'createCase'])->name('cases.create');
-    Route::post('/cases/create', [ DocketController::class, 'saveCase'])->name('cases.create');
-    Route::get('/cases/manuel-allocation', [ DocketController::class, 'getManuelAllocationForm'])->name('cases.manuel');
-    Route::post('/cases/manuel-allocation', [ DocketController::class, 'saveManuelAllocation'])->name('cases.manuel');
-    Route::get('/cases/{slug}/show', [ DocketController::class, 'showCase'])->name('cases.show');
-    Route::get('/cases/{slug}/edit', [ DocketController::class, 'showEditCase'])->name('cases.edit');
-    Route::post('/cases/{slug}/edit', [ DocketController::class, 'updateCase'])->name('cases.edit');
-    Route::get('/cases/{slug}/print', [ DocketController::class, 'printCase'])->name('cases.print');
-    Route::get('/cases/{slug}/download', [ DocketController::class, 'downloadCase'])->name('cases.download');
+    Route::get('/cases', [DocketController::class, 'showCases'])->name('cases');
+    Route::get('/cases/create', [DocketController::class, 'createCase'])->name('cases.create');
+    Route::post('/cases/create', [DocketController::class, 'saveCase'])->name('cases.create');
+    Route::get('/cases/manuel-allocation', [DocketController::class, 'getManuelAllocationForm'])->name('cases.manuel');
+    Route::post('/cases/manuel-allocation', [DocketController::class, 'saveManuelAllocation'])->name('cases.manuel');
+    Route::get('/cases/{slug}/show', [DocketController::class, 'showCase'])->name('cases.show');
+    Route::get('/cases/{slug}/edit', [DocketController::class, 'showEditCase'])->name('cases.edit');
+    Route::post('/cases/{slug}/edit', [DocketController::class, 'updateCase'])->name('cases.edit');
+    Route::get('/cases/{slug}/print', [DocketController::class, 'printCase'])->name('cases.print');
+    Route::get('/cases/{slug}/download', [DocketController::class, 'downloadCase'])->name('cases.download');
 
     // download csv template
     Route::get('/download-template', [UploadController::class, 'downloadTemplate'])->name('download-template');
@@ -74,7 +77,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // upload file
     Route::post('/upload-cases/preview', [UploadController::class, 'previewUploadedFile'])->name('upload-file');
     //import
-    Route::post('/upload-cases/import', [UploadController::class, 'processImport'] )->name('upload-cases.import');
+    Route::post('/upload-cases/import', [UploadController::class, 'processImport'])->name('upload-cases.import');
 
 
 
@@ -145,7 +148,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/admin/system-users/{slug}/edit', [UserController::class, 'showEditUserPage'])->name('admin.users.edit');
     Route::post('/admin/system-users/{slug}/edit', [UserController::class, 'updateUser'])->name('admin.users.edit');
 
-//    Route::get('/admin/messages', [AdminController::class, 'showMessages'])->name('admin.messages');
+    //    Route::get('/admin/messages', [AdminController::class, 'showMessages'])->name('admin.messages');
 //    Route::get('/admin/messages/{slug}/show', [AdminController::class, 'messageDetails'])->name('admin.messages.show');
 
     //backup
