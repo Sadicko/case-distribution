@@ -34,21 +34,21 @@ Route::redirect('/', '/dashboard');
 
 
 
-Route::get('/bulk-updates', function () {
+// Route::get('/bulk-updates', function () {
 
-    event(new \App\Events\AccountCreationEvent(Auth::user()));
+// event(new \App\Events\AccountCreationEvent(Auth::user()));
 
-    //    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
+//    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
 //    $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->get();
 
-    //    foreach ($dockets as $docket) {
+//    foreach ($dockets as $docket) {
 //        $docket->judge_id = $docket->courts->currentJudge[0]->id;
 //        $docket->save();
 //    }
 
-    return 'success';
+//     return 'success';
 
-})->middleware(['auth']);
+// })->middleware(['auth']);
 
 Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // home
