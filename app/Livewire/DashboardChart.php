@@ -37,7 +37,7 @@ class DashboardChart extends Component
                         ->selectRaw("datename(month, assigned_date) as period, count(*) as case_count")
                         ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
                         ->groupByRaw("datename(month, assigned_date)")
-                        ->orderByRaw("datename(month, assigned_date) asc")
+                        ->orderByRaw("datename(month, assigned_date) ASC")
                         ->get()->toArray();
                 }
                 break;
@@ -55,7 +55,7 @@ class DashboardChart extends Component
                         ->selectRaw("FORMAT(assigned_date, 'yyyy') as period, count(*) as case_count")
                         ->whereYear('assigned_date', '>', now()->subYears(5)->format('Y'))
                         ->groupByRaw("FORMAT(assigned_date, 'yyyy')")
-                        ->orderByRaw("FORMAT(assigned_date, 'yyyy') asc")
+                        ->orderByRaw("FORMAT(assigned_date, 'yyyy') ASC")
                         ->get()->toArray();
                 }
                 break;
@@ -77,7 +77,7 @@ class DashboardChart extends Component
                         ->selectRaw("CONVERT(varchar, assigned_date, 105) as period, count(*) as case_count")
                         ->whereBetween('assigned_date', [$day1, $day2])
                         ->groupByRaw("CONVERT(varchar, assigned_date, 105)")
-                        ->orderByRaw("CONVERT(varchar, assigned_date, 105) asc")
+                        ->orderByRaw("CONVERT(varchar, assigned_date, 105) ASC")
                         ->get()->toArray();
                 }
                 break;
