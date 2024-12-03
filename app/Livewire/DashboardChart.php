@@ -25,35 +25,35 @@ class DashboardChart extends Component
 
         switch ($this->status) {
             case 'monthly':
-                if (getenv('DB_CONNECTION') == 'mysql') {
+                if (config('database.default') == 'mysql') {
                     $assignment = Docket::getDockets()
-                        ->selectRaw('monthname(assigned_date) period, count(*) as case_count')
-                        ->groupBy('period')
+                        ->selectRaw('MONTHNAME(assigned_date) as period, COUNT(*) as case_count')
                         ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
-                        ->orderBy('period', 'asc')
+                        ->groupByRaw('MONTH(assigned_date)')
+                        ->orderByRaw('MONTH(assigned_date) ASC')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
-                        ->selectRaw("datename(month, assigned_date) as period, count(*) as case_count")
+                        ->selectRaw("DATENAME(month, assigned_date) as period, COUNT(*) as case_count")
                         ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
-                        ->groupByRaw("datename(month, assigned_date)")
-                        ->orderByRaw("datename(month, assigned_date) ASC")
+                        ->groupByRaw("MONTH(assigned_date)")
+                        ->orderByRaw("MONTH(assigned_date) ASC")
                         ->get()->toArray();
                 }
                 break;
 
             case 'yearly':
-                if (getenv('DB_CONNECTION') == 'mysql') {
+                if (config('database.default') == 'mysql') {
                     $assignment = Docket::getDockets()
-                        ->selectRaw('DATE_FORMAT(assigned_date, "%Y") period, count(*) as case_count')
-                        ->groupBy('period')
-                        ->whereYear('assigned_date', '>', now()->subYears(5))
-                        ->orderBy('period', 'asc')
+                        ->selectRaw('YEAR(assigned_date) as period, COUNT(*) as case_count')
+                        ->whereYear('assigned_date', '>', now()->subYears(5)->year)
+                        ->groupByRaw('YEAR(assigned_date)')
+                        ->orderByRaw('YEAR(assigned_date) ASC')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
-                        ->selectRaw("FORMAT(assigned_date, 'yyyy') as period, count(*) as case_count")
-                        ->whereYear('assigned_date', '>', now()->subYears(5)->format('Y'))
+                        ->selectRaw("FORMAT(assigned_date, 'yyyy') as period, COUNT(*) as case_count")
+                        ->whereRaw("YEAR(assigned_date) > ?", [now()->subYears(5)->year])
                         ->groupByRaw("FORMAT(assigned_date, 'yyyy')")
                         ->orderByRaw("FORMAT(assigned_date, 'yyyy') ASC")
                         ->get()->toArray();
@@ -65,23 +65,24 @@ class DashboardChart extends Component
                 $day1 = Carbon::parse('last monday')->startOfDay();
                 $day2 = Carbon::parse('next friday')->endOfDay();
 
-                if (getenv('DB_CONNECTION') == 'mysql') {
+                if (config('database.default') == 'mysql') {
                     $assignment = Docket::getDockets()
-                        ->selectRaw('DATE_FORMAT(assigned_date, "%d-%m-%Y") as period, count(*) as case_count')
+                        ->selectRaw('DATE_FORMAT(assigned_date, "%d-%m-%Y") as period, COUNT(*) as case_count')
                         ->whereBetween('assigned_date', [$day1, $day2])
-                        ->groupBy('period')
-                        ->orderBy('period', 'asc')
+                        ->groupByRaw('DATE_FORMAT(assigned_date, "%d-%m-%Y")')
+                        ->orderByRaw('DATE_FORMAT(assigned_date, "%d-%m-%Y") ASC')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
-                        ->selectRaw("CONVERT(varchar, assigned_date, 105) as period, count(*) as case_count")
+                        ->selectRaw("FORMAT(assigned_date, 'dd-MM-yyyy') as period, COUNT(*) as case_count")
                         ->whereBetween('assigned_date', [$day1, $day2])
-                        ->groupByRaw("CONVERT(varchar, assigned_date, 105)")
-                        ->orderByRaw("CONVERT(varchar, assigned_date, 105) ASC")
+                        ->groupByRaw("FORMAT(assigned_date, 'dd-MM-yyyy')")
+                        ->orderByRaw("FORMAT(assigned_date, 'dd-MM-yyyy') ASC")
                         ->get()->toArray();
                 }
                 break;
         }
+
 
         $this->caseDistributions = $assignment;
 
