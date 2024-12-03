@@ -195,7 +195,7 @@ class DocketController extends Controller
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
-                    'case_stage' => $request->commercial_type,
+                    'case_stage' => $request->commercial_type ?? 'Trial',
                     'location_id' => $request->location,
                     'court_id' => $request->court,
                     'judge_id' => $request->judge,
@@ -216,7 +216,7 @@ class DocketController extends Controller
                     'assigned_by' => $docket->created_by,
                     'assignment_reason' => 'Manual assignment',
                     'assigned_date' => $docket->assigned_date,
-                    'case_stage' => $docket->case_stage,
+                    'case_stage' => $docket->case_stage ?? 'Trial',
                 ]);
 
             });
@@ -338,7 +338,7 @@ class DocketController extends Controller
         $this->createAuditTrail("Downloaded case with suit number $docket->suit_number");
 
         // Generate the PDF from the Blade view
-        $pdf = PDF::loadView('dashboard.dockets.download', compact('docket'))->setPaper('a4', 'portrait');
+        $pdf = PDF::loadView('dashboard.dockets.download', compact('docket'))->setPaper('a5', 'portrait');
 
         // Download the PDF
         return $pdf->download(Str::slug($docket->suit_number) . '.pdf');

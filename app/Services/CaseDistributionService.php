@@ -104,7 +104,7 @@ class CaseDistributionService
     }
 
 
-//    public function assignCase($docket)
+    //    public function assignCase($docket)
 //    {
 //        // Step 1: Fetch all eligible courts
 //        $eligibleCourts = Court::query()->where('location_id', $docket->location_id)

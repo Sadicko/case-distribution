@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Print case')
+@section('title', 'Print '. $docket->suit_number)
 
 @section('cases_collapse', 'show')
 @section('case_active', 'active')

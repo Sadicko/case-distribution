@@ -1,163 +1,133 @@
-@extends('dashboard.layouts.app')
-
-@section('title', 'Download case')
-
-@section('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Allocation</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 650px; /* Adjust width as needed */
+            margin: 0 auto; /* Centers the content */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content {
+            border: 1px solid black;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-uppercase {
+            text-transform: uppercase;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .col-2 {
+            flex: 0 0 20%;
+            max-width: 20%;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .col-10 {
+            flex: 0 0 80%;
+            max-width: 80%;
+            font-size: 12px;
+        }
+
+        img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #333;
+            position: fixed;
+            bottom: 10mm;
+            width: 100%;
+        }
+
         @media print {
             @page {
                 size: A5;
+                margin: 10mm; /* Equal margins on all sides */
             }
 
-            .print-button {
-                display: none;
+            .wrapper {
+                padding: 0;
+                margin: 0 auto;
             }
 
-            .print-area {
-                display: block !important;
+            .footer {
+                display: block;
             }
-
-            .non-printable {
-                display: none !important;
-            }
-            img{
-                width: 100px;
-                height: 100px;
-                object-fit: contain;
-            }
-            .col-md-2{
-                font-size: 10px;
-                font-weight: bolder !important;
-            }
-            .col-md-10, .col-md-9{
-                font-size: 11px;
-                font-weight: 400;
-            }
-
-            .custom-footer{
-                display: block !important;
-            }
-
         }
-
-        .invoice img{
-            width: 100px;
-            height: 100px
-        }
-        .invoice .col-md-10{
-            font-size: 13px;
-            font-weight: 400;
-        }
-
-        .invoice .col-md-2{
-            font-size: 13px;
-            font-weight: bolder;
-        }
-        .text-uppercase{
-            text-transform: uppercase;
-        }
-        .custom-footer {
-            position: fixed;
-            bottom: 10mm;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 10pt;
-            color: #333;
-        }
-
     </style>
-@endsection
-
-
-@section('content')
-    <section class="content invoice" id="print-area">
-        <div class="border p-4 border-dark  print-area">
-            <div class="row justify-content-center text-center">
-                <h3 class="text-uppercase">JUDICIAL SERVICE OF GHANA</h3>
-                <h5 class="text-uppercase">ELECTRONIC CASE DISTRIBUTION SYSTEM</h5>
-                <img src="{{ asset('images/coat_of_arms.png') }}" alt="coat_of_arms">
+</head>
+<body>
+    <div class="wrapper">
+        <section class="content">
+            <div class="text-center">
+                <h3 class="text-uppercase">Judicial Service of Ghana</h3>
+                <h5 class="text-uppercase">Electronic Case Distribution System</h5>
+                <img src="images/coat_of_arms.png" alt="Coat of Arms">
             </div>
 
+            <h3 class="text-uppercase text-center">Case Allocation</h3>
 
-            <h3 class="text-uppercase mb-3 fw-bolder">Case Allocation</h3>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Case Title:
-                </div>
-                <div class="col-md-9  text-uppercase">
-                    {{ $docket->case_title }}
-                </div>
+            <div class="row">
+                <div class="col-2">Case Title:</div>
+                <div class="col-10 text-uppercase">Tenetur Vitae Fugit Distinctio Atque Aliquid.</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Suit number:
-                </div>
-                <div class="col-md-10  text-uppercase">
-                    {{ $docket->suit_number ?? '-'}}
-                </div>
+            <div class="row">
+                <div class="col-2">Suit Number:</div>
+                <div class="col-10 text-uppercase">MM/0005/2020</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Allocated court
-                </div>
-                <div class="col-md-10 text-uppercase">
-                    {{ $docket->courts->name }}
-                </div>
+            <div class="row">
+                <div class="col-2">Allocated Court:</div>
+                <div class="col-10 text-uppercase">Commercial Court 1</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Location
-                </div>
-                <div class="col-md-10 text-uppercase">
-                    {{ $docket->locations->name }}
-                </div>
+            <div class="row">
+                <div class="col-2">Location:</div>
+                <div class="col-10 text-uppercase">Accra - The Law Court Complex</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Judge name:
-                </div>
-                <div class="col-md-10 text-uppercase">
-                    {{ $docket->courts?->currentJudge[0]?->name ?? '-' }}
-                </div>
+            <div class="row">
+                <div class="col-2">Judge Name:</div>
+                <div class="col-10 text-uppercase">John Doe</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Case category:
-                </div>
-                <div class="col-md-10  text-uppercase">
-                    {{ $docket->categories->name }}
-                </div>
+            <div class="row">
+                <div class="col-2">Case Category:</div>
+                <div class="col-10 text-uppercase">Commercial</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Date filed:
-                </div>
-                <div class="col-md-10  text-uppercase">
-                    {{ $docket->date_filed->format('d-m-Y') }}
-                </div>
+            <div class="row">
+                <div class="col-2">Date of Allocation:</div>
+                <div class="col-10 text-uppercase">02 Dec, 2024 at 12:59 PM</div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-2">
-                    Date allocated:
-                </div>
-                <div class="col-md-10  text-uppercase">
-                    {{ $docket->assigned_date->format('d-m-Y') }}
-                </div>
-            </div>
+        </section>
+
+        <div class="footer">
+            Powered by Judicial Service ICT
         </div>
-
-        <div class="custom-footer " style="display: none">
-            <p style="font-size: 9px;">Powered by Judicial Service ICT</p>
-        </div>
-    </section>
-
-
-
-    <div class="mt-4 mb-5 d-flex justify-content-center">
-        <button class="btn btn-primary btn-sm me-3 bg-gradient-primary print-button" onclick="printContent()"><i class="fas fa-print"></i> Print Confirmation</button>
-        @can('Download cases')
-            <a href="{{ route('cases.download', $docket->slug) }}" class="btn btn-primary btn-sm bg-gradient-primary print-button"><i class="fas fa-download"></i> Download Confirmation</a>
-        @endcan
     </div>
-@endsection
+</body>
+</html>

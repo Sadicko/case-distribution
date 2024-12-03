@@ -30,14 +30,14 @@ class DashboardChart extends Component
                         ->selectRaw('monthname(assigned_date) period, count(*) as case_count')
                         ->groupBy('period')
                         ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
-                        ->orderBy('period', 'desc')
+                        ->orderBy('period', 'ASC')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
                         ->selectRaw("datename(month, assigned_date) as period, count(*) as case_count")
                         ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
                         ->groupByRaw("datename(month, assigned_date)")
-                        ->orderByRaw("datename(month, assigned_date) DESC")
+                        ->orderByRaw("datename(month, assigned_date) ASC")
                         ->get()->toArray();
                 }
                 break;
@@ -48,7 +48,7 @@ class DashboardChart extends Component
                         ->selectRaw('DATE_FORMAT(assigned_date, "%Y") period, count(*) as case_count')
                         ->groupBy('period')
                         ->whereYear('assigned_date', '>', now()->subYears(5))
-                        ->orderBy('period', 'asc')
+                        ->orderBy('period', 'ASC')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
@@ -70,14 +70,14 @@ class DashboardChart extends Component
                         ->selectRaw('DATE_FORMAT(assigned_date, "%d-%m-%Y") as period, count(*) as case_count')
                         ->whereBetween('assigned_date', [$day1, $day2])
                         ->groupBy('period')
-                        ->orderBy('period', 'desc')
+                        ->orderBy('period', 'ASC')
                         ->get()->toArray();
                 } else {
                     $assignment = Docket::getDockets()
                         ->selectRaw("CONVERT(varchar, assigned_date, 105) as period, count(*) as case_count")
                         ->whereBetween('assigned_date', [$day1, $day2])
                         ->groupByRaw("CONVERT(varchar, assigned_date, 105)")
-                        ->orderByRaw("CONVERT(varchar, assigned_date, 105) DESC")
+                        ->orderByRaw("CONVERT(varchar, assigned_date, 105) ASC")
                         ->get()->toArray();
                 }
                 break;
@@ -86,7 +86,7 @@ class DashboardChart extends Component
         $this->caseDistributions = $assignment;
 
         // Emit event to the frontend
-        $this->dispatch('caseDistributionsUpdated', ['caseDistributions' => $this->caseDistributions, 'status' => $this->status] );
+        $this->dispatch('caseDistributionsUpdated', ['caseDistributions' => $this->caseDistributions, 'status' => $this->status]);
     }
 
     // Fetch data when component mounts
