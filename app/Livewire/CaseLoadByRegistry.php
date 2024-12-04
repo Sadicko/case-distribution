@@ -38,8 +38,12 @@ class CaseLoadByRegistry extends Component
             $this->category = Category::find($this->selectedCategory);
         }
 
+        // Adjust the end date to be inclusive of the whole day
+        $endDate = date('Y-m-d', strtotime($this->endDate . ' +1 day'));
+
+
         $this->dockets = $query->selectRaw('court_id, judge_id, COUNT(*) as case_load')
-            ->whereBetween('assigned_date', [$this->startDate, $this->endDate])
+            ->whereBetween('assigned_date', [$this->startDate . ' 00:00:00', $endDate . ' 00:00:00'])
             ->groupBy('court_id', 'judge_id')
             ->orderBy('case_load', 'desc')
             ->get();

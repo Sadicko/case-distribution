@@ -53,26 +53,30 @@ class DocketManager extends Component
 
         $query = Docket::getDockets()->with('categories', 'courts', 'courts.currentJudge');
 
-        if (!empty($this->searchTerm)){
+        if (!empty($this->searchTerm)) {
             $query->searchFullText(trim($this->searchTerm));
             //$query->whereLike([ 'suit_number', 'case_title'], trim(strtoupper($this->searchTerm)));
         }
 
         //filter by category
-        if (!empty($this->selectedCategory)){
+        if (!empty($this->selectedCategory)) {
             $query->where('dockets.category_id', $this->selectedCategory);
         }
 
         //filter by court
-        if (!empty($this->selectedCourt)){
+        if (!empty($this->selectedCourt)) {
             $query->where('court_id', $this->selectedCourt);
         }
 
         if (!empty($this->startDate) && !empty($this->endDate)) {
-            $startDate = date('Y-m-d', strtotime($this->startDate));
-            $endDate = date('Y-m-d', strtotime($this->endDate));
 
-            $query->whereBetween('assigned_date', [$startDate, $endDate]);
+            $startDate = date('Y-m-d', strtotime($this->startDate));
+
+            // Adjust the end date to be inclusive of the whole day
+            $endDate = date('Y-m-d', strtotime($this->endDate . ' +1 day'));
+
+            $query->whereBetween('assigned_date', [$startDate . ' 00:00:00', $endDate . ' 00:00:00']);
+
         }
 
         $this->dispatch('search-completed');
