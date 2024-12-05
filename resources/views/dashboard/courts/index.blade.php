@@ -69,8 +69,13 @@
                                             <td>{{ !empty($court->registries?->name) ? Str::limit($court->registries?->name, 20) : '-' }}</td>
                                             <td class="text-center">
                                                 @if(count($court->categories) > 0)
-                                                    @foreach($court->categories as $category)
+                                                    @foreach($court->categories as $index => $category)
+                                                    @if($index < 3)
                                                         <small class="badge bg-dark">{{ $category->name }}</small>
+                                                    @elseif($index === 3)
+                                                        <small class="badge bg-dark">...</small>
+                                                        @break
+                                                    @endif
                                                     @endforeach
                                                 @else
                                                     <span>-</span>

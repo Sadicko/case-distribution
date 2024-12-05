@@ -30,6 +30,11 @@ class Court extends Model
         return $this->hasMany(User::class, 'court_id');
     }
 
+    public function dockets()
+    {
+        return $this->hasMany(Docket::class, 'court_id');
+    }
+
     public function locations()
     {
         return $this->belongsTo(Location::class, 'location_id');
@@ -91,7 +96,7 @@ class Court extends Model
                     'court_id' => $court->id,
                     'user_id' => $court->created_by,
                     'activity' => 'Created',
-                    'comment' => "Initial value for ".$field. " : " .$court->$field ?? " not_set"
+                    'comment' => "Initial value for " . $field . " : " . $court->$field ?? " not_set"
                 ]);
             }
         });
@@ -134,11 +139,11 @@ class Court extends Model
 
             $query = static::query()->where('availability', 1);
 
-        }elseif(Gate::any(court_room_access_level())){
+        } elseif (Gate::any(court_room_access_level())) {
 
             $query = static::query()->where('id', $user->court_id)->where('availability', 1);
 
-        }else{
+        } else {
 
             $query = static::query()->where('registry_id', $user->registry_id)->where('availability', 1);
         }

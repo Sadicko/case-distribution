@@ -203,7 +203,8 @@ class ModuleSeeder extends Seeder
                     'slug' => $module['slug'],
                     'created_at' => now(),
                     'updated_at' => now(),
-                ]);
+                ]
+            );
 
             foreach ($module['permissions'] as $permission) {
                 \Spatie\Permission\Models\Permission::query()->updateOrcreate(
@@ -215,7 +216,8 @@ class ModuleSeeder extends Seeder
                         'guard_name' => 'web',
                         'created_at' => now(),
                         'updated_at' => now(),
-                    ]);
+                    ]
+                );
             }
         }
     }

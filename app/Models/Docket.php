@@ -83,7 +83,7 @@ class Docket extends Model
                     'docket_id' => $docket->id,
                     'user_id' => $docket->created_by,
                     'activity' => 'Created',
-                    'comment' => "Initial value for ".$field. " : " .$docket->$field ?? " not_set"
+                    'comment' => "Initial value for " . $field . " : " . $docket->$field ?? " not_set"
                 ]);
             }
         });
@@ -127,10 +127,12 @@ class Docket extends Model
     public function scopeSearchFullText(Builder $query, $searchTerm)
     {
         return $query->whereRaw(
-            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE)", [$searchTerm]
+            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE)",
+            [$searchTerm]
         )->orderByRaw(
-            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC", [$searchTerm]
-        );
+                "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC",
+                [$searchTerm]
+            );
     }
 
 
@@ -143,15 +145,15 @@ class Docket extends Model
 
             $query = static::query();
 
-        }elseif(Gate::any(court_room_access_level())){
+        } elseif (Gate::any(court_room_access_level())) {
 
-            $query = static::query()->whereHas('courts', function ($query) use ($user){
+            $query = static::query()->whereHas('courts', function ($query) use ($user) {
                 $query->where('court_id', $user->court_id);
             });
 
-        }else{
+        } else {
 
-            $query = static::query()->whereHas('courts', function ($query) use ($user){
+            $query = static::query()->whereHas('courts', function ($query) use ($user) {
                 $query->where('registry_id', $user->registry_id);
             });
         }

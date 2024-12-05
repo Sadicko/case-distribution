@@ -34,8 +34,32 @@ class CourtController extends Controller
 
     public function showCourt($slug)
     {
-        $court = Court::query()->with('courtlogs', 'courtlogs.users')->where('slug', $slug)->firstOrFail();
+        if (Gate::denies('Read courts')) {
 
+            $this->createAuditTrail("Denied access to  Read courts: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Read courts.']);
+        }
+
+        $court = Court::query()
+            ->with([
+                'courttypes',
+                'currentJudge',
+                'locations',
+                'registries',
+                'categories',
+                'judges',
+                'judges.courttypes',
+                'dockets' => function ($query) {
+                    $query->latest()->limit(100);
+                },
+                'courtlogs',
+                'courtlogs.users' => function ($query2) {
+                    $query2->select('id', 'first_name', 'last_name', 'username');
+                },
+            ])
+            ->where('slug', $slug)
+            ->firstOrFail();
         return view('dashboard.courts.show', compact('court'));
     }
 

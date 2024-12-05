@@ -124,7 +124,7 @@
                                             <td>{{ $loop->index + 1 }}</td>
                                             <td>
 
-                                                @can('Read docket logs')
+                                                @can('Read cases')
                                                     <a href="{{ route('cases.show', $docket->slug) }}" class="text-info"> {{ $docket->suit_number }}</a>
                                                 @else
                                                     {{ $docket->suit_number }}

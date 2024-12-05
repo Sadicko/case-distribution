@@ -9,8 +9,11 @@ class CourtJudge extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        "assigned_at" => "datetime",
+    ];
 
-//    public function courts()
+    //    public function courts()
 //    {
 //        return $this->belongsTo(Court::class, 'court_id');
 //    }
