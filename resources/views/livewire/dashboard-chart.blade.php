@@ -55,8 +55,6 @@
         let caseCounts =  caseDistributions.map(item => item.case_count);
         let mappedColors = caseDistributions.map((item, index) => colors[index]);
 
-        console.log(labels);
-        console.log(caseCounts);
         //get chat id
         var ctx = document.getElementById("myBarChart");
 
