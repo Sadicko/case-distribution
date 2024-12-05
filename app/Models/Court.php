@@ -94,7 +94,7 @@ class Court extends Model
                 CourtLog::query()->create([
                     'slug' => uniqid(),
                     'court_id' => $court->id,
-                    'user_id' => $court->created_by,
+                    'user_id' => Auth::id(),
                     'activity' => 'Created',
                     'comment' => "Initial value for " . $field . " : " . $court->$field ?? " not_set"
                 ]);
@@ -121,7 +121,7 @@ class Court extends Model
                     CourtLog::query()->create([
                         'slug' => uniqid(),
                         'court_id' => $court->id,
-                        'user_id' => $court->created_by,
+                        'user_id' => Auth::id(),
                         'activity' => 'Updated',
                         'comment' => "{$field} was changed from " . ($court->getOriginal($field) ?? 'not_set') . " to " . ($court->$field ?? 'not_set'),
                     ]);
