@@ -123,7 +123,7 @@
                                             {{ $docket->suit_number }}
                                             @endcan
                                         </td>
-                                        <td>{{ $docket->case_title }}</td>
+                                        <td>{{ Str::limit($docket->case_title, 50) }}</td>
                                         <td>{{ $docket->categories->name }}</td>
                                         <td>{{ $docket->courts?->name ?? '-' }}</td>
                                         <td>{{ $docket->judges?->name ?? '-' }}</td>

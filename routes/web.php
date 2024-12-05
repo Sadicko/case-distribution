@@ -34,36 +34,39 @@ Route::redirect('/', '/dashboard');
 
 
 
-Route::get('/bulk-updates', function () {
+// Route::get('/bulk-updates', function () {
 
-    // event(new \App\Events\AccountCreationEvent(Auth::user()));
+//     // event(new \App\Events\AccountCreationEvent(Auth::user()));
 
-    //    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
-    $courts = \App\Models\Court::query()->whereHas('dockets')->with([
-        'dockets',
-        'courtlogs' => function ($query) {
-            // Ensure the date comparison is dynamic and correct
-            $query->whereDate('created_at', '>=', '2024-12-02')->where('activity', 'Updated');
-        }
-    ])->get();
+//     //    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
+//     $courts = \App\Models\Court::query()->whereHas('dockets')->with([
+//         'dockets',
+//         'courtlogs' => function ($query) {
+//             // Ensure the date comparison is dynamic and correct
+//             $query->whereDate('created_at', '>=', '2024-12-02')->where('activity', 'Updated');
+//         }
+//     ])->get();
 
-    $updated = [];
-    foreach ($courts as $court) {
-        foreach ($court->dockets as $docket) {
-            foreach ($court->courtlogs as $log) {
+//     $updated = [];
+//     foreach ($courts as $court) {
+//         foreach ($court->dockets as $docket) {
+//             foreach ($court->courtlogs as $log) {
 
-                if ($docket->assigned_date->format('Y-m-d H:i') == $log->created_at->format('Y-m-d H:i')) {
-                    $log->user_id = $docket->created_by;
-                    $log->save();
-                    $updated[] = $log;
-                }
-            }
-        }
-    }
+//                 if ($docket->assigned_date->format('Y-m-d H:i') == $log->created_at->format('Y-m-d H:i')) {
+//                     $log->user_id = $docket->created_by;
+//                     $log->save();
+//                     $updated[] = $log;
+//                 }
+//             }
+//         }
+//     }
 
-    return count($updated);
+//     return count($updated);
 
-})->middleware(['auth']);
+// })->middleware(['auth']);
+
+
+
 
 Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // home
