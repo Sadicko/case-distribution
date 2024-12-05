@@ -92,6 +92,7 @@ class Court extends Model
 
             foreach ($fields as $field) {
                 CourtLog::query()->create([
+
                     'slug' => uniqid(),
                     'court_id' => $court->id,
                     'user_id' => Auth::id(),
@@ -117,6 +118,7 @@ class Court extends Model
 
             foreach ($fieldsToCheck as $field) {
                 // Check if the specific field was modified
+
                 if ($court->isDirty($field)) {
                     CourtLog::query()->create([
                         'slug' => uniqid(),
