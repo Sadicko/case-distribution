@@ -101,7 +101,7 @@
                 <div class="accordion-body" wire:loading.class="opacity-25">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover display">
+                            <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
                                     <th>##</th>
