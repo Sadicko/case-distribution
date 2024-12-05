@@ -91,7 +91,7 @@
                             <th>##</th>
                             <th>Court</th>
                             <th>Judge</th>
-                            <th>Case load</th>
+                            <th class="text-center">Case load</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,7 +101,7 @@
                             <td>{{ $loop->index + 1 }}</td>
                             <td>{{ $docket->courts?->name }}</td>
                             <td>{{ $docket->judges?->name ?? 'N/A' }}</td>
-                            <td>{{ $docket->case_load }}</td>
+                            <td class="text-center">{{ $docket->case_load }}</td>
                         </tr>
                         @endforeach
                         @else
@@ -110,6 +110,13 @@
                         </tr>
                         @endif
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th>Total</th>
+                            <th class="text-center">{{ $dockets->sum('case_load') }}</th>
+                        </tr>
+                    </tfoot>
                 </table>                
             </div>
             <div class="custom-footer text-center mt-5" style="display: none">
