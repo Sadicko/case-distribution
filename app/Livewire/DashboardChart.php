@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\Docket;
 use Carbon\Carbon;
 use Livewire\Component;
-
+use Illuminate\Support\Facades\DB;
 class DashboardChart extends Component
 {
 
@@ -27,11 +27,13 @@ class DashboardChart extends Component
             case 'monthly':
                 if (config('database.default') == 'mysql') {
                     $assignment = Docket::getDockets()
-                        ->selectRaw('MONTHNAME(assigned_date) as period, COUNT(*) as case_count')
+                        ->selectRaw('MONTHNAME(assigned_date) as period, MONTH(assigned_date) as month_num, COUNT(*) as case_count')
                         ->whereBetween('assigned_date', [$legalYearStart, $legalYearEnd])
-                        ->groupByRaw('MONTH(assigned_date)')
-                        ->orderByRaw('MONTH(assigned_date) ASC')
-                        ->get()->toArray();
+                        ->groupByRaw('MONTH(assigned_date), MONTHNAME(assigned_date)')
+                        ->orderByRaw('month_num ASC')
+                        ->get()
+                        ->toArray();
+
                 } else {
                     $assignment = Docket::getDockets()
                         ->selectRaw("DATENAME(month, assigned_date) as period, COUNT(*) as case_count")
@@ -43,6 +45,7 @@ class DashboardChart extends Component
                 break;
 
             case 'yearly':
+
                 if (config('database.default') == 'mysql') {
                     $assignment = Docket::getDockets()
                         ->selectRaw('YEAR(assigned_date) as period, COUNT(*) as case_count')
@@ -58,6 +61,7 @@ class DashboardChart extends Component
                         ->orderByRaw("FORMAT(assigned_date, 'yyyy') ASC")
                         ->get()->toArray();
                 }
+
                 break;
 
             default:
@@ -82,6 +86,7 @@ class DashboardChart extends Component
                 }
                 break;
         }
+
 
 
         $this->caseDistributions = $assignment;

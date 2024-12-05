@@ -51,10 +51,12 @@
         // Predefine the colors from the getColors() PHP helper
         const colors = @json(getColors());
 
-        let labels = caseDistributions.map(item => item.period.toUpperCase());
+        let labels = caseDistributions.map(item => typeof item.period === 'string' ? item.period.toUpperCase() : item.period);
         let caseCounts =  caseDistributions.map(item => item.case_count);
         let mappedColors = caseDistributions.map((item, index) => colors[index]);
 
+        console.log(labels);
+        console.log(caseCounts);
         //get chat id
         var ctx = document.getElementById("myBarChart");
 
