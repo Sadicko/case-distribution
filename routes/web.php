@@ -34,21 +34,36 @@ Route::redirect('/', '/dashboard');
 
 
 
-// Route::get('/bulk-updates', function () {
+Route::get('/bulk-updates', function () {
 
-// event(new \App\Events\AccountCreationEvent(Auth::user()));
+    // event(new \App\Events\AccountCreationEvent(Auth::user()));
 
-//    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
-//    $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->get();
+    //    return $dockets =  \App\Models\Docket::query()->with('courts', 'courts.currentJudge')->limit(5)->get();
+    $courts = \App\Models\Court::query()->whereHas('dockets')->with([
+        'dockets',
+        'courtlogs' => function ($query) {
+            // Ensure the date comparison is dynamic and correct
+            $query->whereDate('created_at', '>=', '2024-12-02')->where('activity', 'Updated');
+        }
+    ])->get();
 
-//    foreach ($dockets as $docket) {
-//        $docket->judge_id = $docket->courts->currentJudge[0]->id;
-//        $docket->save();
-//    }
+    $updated = [];
+    foreach ($courts as $court) {
+        foreach ($court->dockets as $docket) {
+            foreach ($court->courtlogs as $log) {
 
-//     return 'success';
+                if ($docket->assigned_date->format('Y-m-d H:i') == $log->created_at->format('Y-m-d H:i')) {
+                    $log->user_id = $docket->created_by;
+                    $log->save();
+                    $updated[] = $log;
+                }
+            }
+        }
+    }
 
-// })->middleware(['auth']);
+    return count($updated);
+
+})->middleware(['auth']);
 
 Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // home
@@ -150,7 +165,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::post('/admin/system-users/{slug}/edit', [UserController::class, 'updateUser'])->name('admin.users.edit');
 
     //    Route::get('/admin/messages', [AdminController::class, 'showMessages'])->name('admin.messages');
-//    Route::get('/admin/messages/{slug}/show', [AdminController::class, 'messageDetails'])->name('admin.messages.show');
+    //    Route::get('/admin/messages/{slug}/show', [AdminController::class, 'messageDetails'])->name('admin.messages.show');
 
     //backup
     Route::get('/admin/backups', [BackupController::class, 'index'])->name('admin.backups');
