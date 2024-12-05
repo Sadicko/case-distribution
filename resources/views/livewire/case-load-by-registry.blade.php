@@ -82,7 +82,7 @@
                     <h5 class="text-uppercase">ELECTRONIC CASE DISTRIBUTION SYSTEM</h5>
                     <img src="{{ asset('images/coat_of_arms.png') }}" alt="coat_of_arms" style="width: 150px">
                 </div>
-                <h5 class="text-info text-uppercase text-center">{{ $selectedCategory == 'all' ? $selectedCategory : '' }} Case load for {{ !empty($category) && ($selectedCategory != 'all') ? $category->name .' Courts' : 'All categories' }} from {{  Carbon\Carbon::parse($startDate)->format('d-m-Y') }} to {{  Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</h5>
+                <h5 class="text-info text-uppercase text-center">{{ $selectedCategory == 'all' ? $selectedCategory : '' }} Case load for {{ !empty($category) && ($selectedCategory != 'all') ? $category->name .' Courts' : 'All categories' }} <br> from {{  getCustomLocalDate($startDate) }} to {{  getCustomLocalDate($endDate) }}</h5>
             </div>
             <div class="card-body mb-5">
                 <table class="table table-stripe table-borded">

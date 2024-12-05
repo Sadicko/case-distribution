@@ -17,8 +17,12 @@ class ReportController extends Controller
     // Get the current date
     $currentDate = legalYear()['currentDate'];
     $currentYear = legalYear()['currentYear'];
-    $legalYearStart = legalYear()['legalYearStart'];
-    $legalYearEnd = legalYear()['legalYearEnd'];
+    // $legalYearStart = legalYear()['legalYearStart'];
+    // $legalYearEnd = legalYear()['legalYearEnd'];
+    // Get the current date
+    $today = Carbon::today();
+    $legalYearStart = $today->copy()->startOfWeek(Carbon::MONDAY);
+    $legalYearEnd = $legalYearStart->copy()->addDays(4); // Monday + 4 days = Friday
 
     return view("dashboard.reports.by-registries", compact("legalYearStart", "legalYearEnd"));
   }

@@ -7,7 +7,8 @@ use App\Models\Location;
 use App\Models\Registry;
 use Carbon\Carbon;
 
-function status(){
+function status()
+{
 
     return [
         'Published',
@@ -16,17 +17,18 @@ function status(){
     ];
 }
 
-function editStatus(){
+function editStatus()
+{
 
     return [
         'Published',
         'Archived',
         'Draft',
-//        'Move to trash',
+        //        'Move to trash',
     ];
 }
 
-function  priority_level()
+function priority_level()
 {
     return [
         "normal",
@@ -36,7 +38,8 @@ function  priority_level()
 
 
 
-function user_status(){
+function user_status()
+{
 
     return [
         'Active' => "Active",
@@ -47,7 +50,8 @@ function user_status(){
 
 
 //all user access levels. Limited levels are added below this
-function access_level(){
+function access_level()
+{
 
     return [
         'Court Staff' => "Court Staff",
@@ -67,7 +71,8 @@ function access_level(){
 }
 
 //used when creating users that belongs to registries
-function registry_level(){
+function registry_level()
+{
 
     return [
         'Court Staff',
@@ -80,7 +85,8 @@ function registry_level(){
 }
 
 //used when creating users for court rooms
-function court_room_level(){
+function court_room_level()
+{
 
     return [
         'Court Staff',
@@ -100,7 +106,8 @@ function limited_access_level()
     ];
 }
 
-function registry_access_level(){
+function registry_access_level()
+{
 
     return [
         'docket_clerk',
@@ -110,7 +117,8 @@ function registry_access_level(){
     ];
 }
 
-function court_room_access_level(){
+function court_room_access_level()
+{
 
     return [
         'judge',
@@ -120,7 +128,8 @@ function court_room_access_level(){
 
 
 
-function role_status(){
+function role_status()
+{
 
     return [
         'Active' => "Active",
@@ -128,8 +137,9 @@ function role_status(){
     ];
 }
 
-function regions(){
-    return[
+function regions()
+{
+    return [
         'AF',
         'AH',
         'BO',
@@ -149,17 +159,20 @@ function regions(){
     ];
 }
 
-function fetch_locations($id){
+function fetch_locations($id)
+{
 
     return Location::query()->where('courttype_id', $id)->get();
 }
 
-function fetch_registries($id){
+function fetch_registries($id)
+{
 
     return Registry::query()->where('location_id', $id)->get();
 }
 
-function fetch_courts($id){
+function fetch_courts($id)
+{
 
     return Court::query()->where('registry_id', $id)->get();
 }
@@ -167,7 +180,7 @@ function fetch_courts($id){
 
 function court_judges($court_id)
 {
-    return  $judges = Judge::query()->whereHas('courts', function ($query) use ($court_id) {
+    return $judges = Judge::query()->whereHas('courts', function ($query) use ($court_id) {
         $query->where('court_id', $court_id);
     })->orderBy('name', 'asc')->get();
 }
@@ -176,19 +189,21 @@ function court_judges($court_id)
  * @param $date
  * @return string
  */
-function getCustomLocalTime($date){
+function getCustomLocalTime($date)
+{
 
     $newDateTime = date('g:i A', strtotime($date));
 
-    $new_date =  $date->format('d M, Y') .' at '. $newDateTime;
+    $new_date = $date->format('d M, Y') . ' at ' . $newDateTime;
 
     return $new_date;
 }
 
 
-function getCustomLocalDate($date){
+function getCustomLocalDate($date)
+{
 
-    $new_date =  Carbon::parse($date)->format('d M, Y');
+    $new_date = Carbon::parse($date)->format('jS F Y');
 
     return $new_date;
 }
@@ -213,7 +228,8 @@ function getCustomLocalDate($date){
 
 
 
-function legalYear(){
+function legalYear()
+{
 
     // Get the current date
     $currentDate = Carbon::now();
@@ -244,7 +260,7 @@ function subcategories($category)
 {
     $subCategory = [];
 
-    if ($category){
+    if ($category) {
 
         $category = Category::query()->with('children')->where('name', $category)->first();
 
