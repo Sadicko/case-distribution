@@ -3,7 +3,7 @@ if (typeof jQuery === "undefined") {
 }
 
 
-$(function(){
+$(function () {
 
     $.ajaxSetup({
         headers: {
@@ -13,6 +13,16 @@ $(function(){
 
     $(document).ready(function () {
         $("#initTable")
+            .addClass("nowrap")
+            .dataTable({
+                responsive: false,
+                stateSave: true,
+                columnDefs: [{ targets: [-1, -3], className: "dt-body-right" }],
+            });
+    });
+
+    $(document).ready(function () {
+        $("table.display")
             .addClass("nowrap")
             .dataTable({
                 responsive: false,
@@ -62,41 +72,41 @@ $(function(){
 
     // datetime
     $('.datetime').datetimepicker({
-        format:'d/m/Y H:i',
+        format: 'd/m/Y H:i',
         maxDate: new Date(),
     });
 
     $('.date').datetimepicker({
-        timepicker:false,
-        format:'d/m/Y',
+        timepicker: false,
+        format: 'd/m/Y',
         maxDate: new Date(),
     });
 
     $('.year').datetimepicker({
-        timepicker:false,
-        format:'Y',
+        timepicker: false,
+        format: 'Y',
     });
 
     // Tooltip
     $('[data-bs-toggle="tooltip"]').tooltip();
 
 
-    $(document).on('change', "#status", function(){
+    $(document).on('change', "#status", function () {
 
-        if($(this).val() == 'Move to trash'){
+        if ($(this).val() == 'Move to trash') {
             $('.status-info').show();
-        }else{
+        } else {
             $('.status-info').hide();
         }
     })
 
 
-// check image upload
-    function checkFile(val){
+    // check image upload
+    function checkFile(val) {
         let valid;
-        switch(val.substring(val.lastIndexOf('.') + 1).toLowerCase()){
+        switch (val.substring(val.lastIndexOf('.') + 1).toLowerCase()) {
             case 'jpeg': case 'jpg': case 'png': case 'pdf':
-                valid =  true;
+                valid = true;
                 break;
 
             default:
@@ -108,20 +118,19 @@ $(function(){
     }
 
 
-    $(document).on('change', '#court_type', function()
-    {
+    $(document).on('change', '#court_type', function () {
 
         let options = ['<option></option>'];
 
         $.ajax({
             url: "/locations/fetch",
             type: "POST",
-            dataType:"json",
+            dataType: "json",
             data: { court_type: $('#court_type').val() },
             success: function (response) {
-                $.each(response, function(index, item){
+                $.each(response, function (index, item) {
 
-                    let option = '<option value="'+item.id+'">'+item.name+'</option>';
+                    let option = '<option value="' + item.id + '">' + item.name + '</option>';
 
                     options.push(option);
                 })
@@ -134,16 +143,16 @@ $(function(){
         });
     })
 
-    $(document).on('change', '#location', function() {
+    $(document).on('change', '#location', function () {
         let options = ['<option></option>'];
         $.ajax({
             url: "/registry/fetch",
             type: "POST",
-            dataType:"json",
+            dataType: "json",
             data: { location: $(this).val() },
             success: function (response) {
-                $.each(response, function(index, item){
-                    let option = '<option value="'+item.id+'">'+item.name+'</option>';
+                $.each(response, function (index, item) {
+                    let option = '<option value="' + item.id + '">' + item.name + '</option>';
 
                     options.push(option);
                 })
@@ -156,16 +165,16 @@ $(function(){
         });
     })
 
-    $(document).on('change', '#registry', function() {
+    $(document).on('change', '#registry', function () {
         let options = ['<option></option>'];
         $.ajax({
             url: "/courts/fetch",
             type: "POST",
-            dataType:"json",
+            dataType: "json",
             data: { registry: $(this).val() },
             success: function (response) {
-                $.each(response, function(index, item){
-                    let option = '<option value="'+item.id+'">'+item.name+'</option>';
+                $.each(response, function (index, item) {
+                    let option = '<option value="' + item.id + '">' + item.name + '</option>';
 
                     options.push(option);
                 })
@@ -179,7 +188,7 @@ $(function(){
     })
 
 
-    $(document).on('click', '#releaseBail', function(){
+    $(document).on('click', '#releaseBail', function () {
 
         if (confirm('Are you sure you want to RELEASE this bail?')) {
             let btn = $(this);
@@ -188,7 +197,7 @@ $(function(){
 
             btn.html('<i class="fas fa-spin fa-spinner"></i> Releasing...');
 
-            $.post('/bail/release', {slug: slug}, function (data) {
+            $.post('/bail/release', { slug: slug }, function (data) {
 
                 if (data.success) {
                     btn.hide();
@@ -208,7 +217,7 @@ $(function(){
     })
 
 
-    $(document).on('click', '#releaseSurety', function(){
+    $(document).on('click', '#releaseSurety', function () {
 
         if (confirm('Are you sure you want to RELEASE this surety document?')) {
             let btn = $(this);
@@ -217,7 +226,7 @@ $(function(){
 
             btn.html('<i class="fas fa-spin fa-spinner"></i> Releasing...');
 
-            $.post('/surety/release', {slug: slug}, function (data) {
+            $.post('/surety/release', { slug: slug }, function (data) {
 
                 if (data.success) {
                     toastr.success(data.success);
@@ -232,27 +241,27 @@ $(function(){
     })
 
 
-    $(document).on('click', '#checkAll', function(){
+    $(document).on('click', '#checkAll', function () {
         if ($(this).is(':checked')) {
             $('.singleCheck').prop('checked', true);
-        }else{
+        } else {
             $('.singleCheck').prop('checked', false);
         }
     })
 
-    $(document).on('click', '.singleCheck', function(){
+    $(document).on('click', '.singleCheck', function () {
         enableCheckAll();
     })
 
 
-    function getCheckedItemCount(){
+    function getCheckedItemCount() {
 
         let checkboxes = $('.singleCheck');
 
         let totalChecked = 0;
-        $.each(checkboxes, function(index, item){
+        $.each(checkboxes, function (index, item) {
             // console.log()
-            if(item.checked == true){
+            if (item.checked == true) {
                 totalChecked++
             }
         })
@@ -262,17 +271,17 @@ $(function(){
 
     enableCheckAll();
 
-    function enableCheckAll(){
+    function enableCheckAll() {
 
         if (getCheckedItemCount() == $('.singleCheck').length) {
             $('#checkAll').prop('checked', true);
-        }else{
+        } else {
             $('#checkAll').prop('checked', false);
         }
     }
 
 
-//clear input on audit trail page
+    //clear input on audit trail page
     $(document).on("click", ".clear-search", function (e) {
         e.preventDefault();
 
@@ -290,10 +299,10 @@ $(function(){
 
 
     $(document).on("click", "#is_expire", function (e) {
-        if($(this).is(":checked")){
+        if ($(this).is(":checked")) {
             $('.expire_date').show();
             $('#expire_date').attr('required', 'required');
-        }else{
+        } else {
             $('.expire_date').hide();
             $('#expire_date').removeAttr('required');
         }
@@ -301,7 +310,7 @@ $(function(){
 
 
 
-    $(document).on('keydown', '#suit_number', function(event){
+    $(document).on('keydown', '#suit_number', function (event) {
 
         var allowedCharacters = /^[a-zA-Z0-9\/]*$/;
         var key = event.key;
@@ -318,7 +327,7 @@ $(function(){
     })
 
     // Gets today's date in YYYY-MM-DD format
-    if ($('.date').length > 0){
+    if ($('.date').length > 0) {
         const today = new Date().toISOString().split('T')[0];
         document.querySelector('.date').setAttribute('max', today);
     }

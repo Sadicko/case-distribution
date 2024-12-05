@@ -149,7 +149,7 @@
                 <div id="collapseHistory" class="accordion-collapse collapse" aria-labelledby="headingHistory" data-bs-parent="#accordionHistory">
                     <div class="accordion-body">
                         <div class="table-responsive">
-                            <table id="initTable" class="table table-bordered display">
+                            <table class="table table-bordered display">
                                 <thead>
                                     <tr>
                                         <th>#</th>
