@@ -135,7 +135,7 @@
                         <tr>
                             <th colspan="2"></th>
                             <th>Total</th>
-                            <th class="text-center">{{ $courts->sum('case_load') }}</th>
+                            <th class="text-center">{{ $courts->sum('case_count') }}</th>
                         </tr>
                     </tfoot>
                 </table>
