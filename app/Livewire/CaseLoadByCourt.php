@@ -65,7 +65,7 @@ class CaseLoadByCourt extends Component
 
         if (!empty($this->selectedCategory) && $this->selectedCategory != 'all') {
             $query->whereHas('categories', function ($subQuery) {
-                $subQuery->where('id', $this->selectedCategory);
+                $subQuery->where('categories.id', $this->selectedCategory);
             });
             $this->courtCategory = Category::find($this->selectedCategory);
         }
