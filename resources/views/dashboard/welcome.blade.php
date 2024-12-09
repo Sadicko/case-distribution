@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Asset Dashboard')
+@section('title', 'Dashboard')
 
 @section('home_active', 'active')
 

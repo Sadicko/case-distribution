@@ -45,7 +45,7 @@
                				@foreach ($registries as $registry)
                				<tr>
                					<td>{{ $loop->index + 1 }}</td>
-               					<td>{{ $registry->code. ' - ' .$registry->name }}</td>
+               					<td>{{ $registry->name. ' - ' .$registry->code }}</td>
                					<td>{{ $registry->email }}</td>
                					<td>{{ $registry->locations->name }}</td>
                					<td>{{ $registry->locations->regions?->name }}</td>
@@ -56,7 +56,7 @@
                				</tr>
                				@endforeach
                			</tfoot>
-               		</table>	
+               		</table>
                	</div>
                </div>
           </div>
