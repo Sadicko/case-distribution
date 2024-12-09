@@ -113,6 +113,14 @@
                                 </div>
                             </a>
                         </li>
+                        <li>
+                            <a class="m-link @yield('court_report_active')" href="{{  route('reports.courts') }}">
+                                <i class="fas fa-bar-chart"></i>
+                                <div>
+                                    <h6 class="mb-0">Workload Report</h6>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             @endcanany

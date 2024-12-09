@@ -31,7 +31,7 @@
             <div class="card-body basic-custome-color">
 
                 @livewire('case-load-by-registry', ['legalYearStart' => $legalYearStart, 'legalYearEnd' => $legalYearEnd])
-                
+
             </div>
         </div>
     </div>

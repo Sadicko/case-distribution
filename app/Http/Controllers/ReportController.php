@@ -14,6 +14,14 @@ class ReportController extends Controller
 
     public function caseLoadByRegistry()
     {
+
+        if (Gate::denies('Read reports')) {
+
+            $this->createAuditTrail("Denied access to  Read reports: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Read reports.']);
+        }
+
         // Get the current date
         $currentDate = legalYear()['currentDate'];
         $currentYear = legalYear()['currentYear'];
@@ -24,7 +32,34 @@ class ReportController extends Controller
         $legalYearStart = $today->copy()->startOfWeek(Carbon::MONDAY);
         $legalYearEnd = $legalYearStart->copy()->addDays(4); // Monday + 4 days = Friday
 
+        $this->createAuditTrail("Visited report page: Case load by registries.");
+
         return view("dashboard.reports.by-registries", compact("legalYearStart", "legalYearEnd"));
+    }
+
+
+    public function caseLoadByCourts()
+    {
+        if (Gate::denies('Read reports')) {
+
+            $this->createAuditTrail("Denied access to  Read reports: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Read reports.']);
+        }
+
+        // Get the current date
+        $currentDate = legalYear()['currentDate'];
+        $currentYear = legalYear()['currentYear'];
+        // $legalYearStart = legalYear()['legalYearStart'];
+        // $legalYearEnd = legalYear()['legalYearEnd'];
+        // Get the current date
+        $today = Carbon::today();
+        $legalYearStart = $today->copy()->startOfWeek(Carbon::MONDAY);
+        $legalYearEnd = $legalYearStart->copy()->addDays(4); // Monday + 4 days = Friday
+
+        $this->createAuditTrail("Visited report page: Case load by courts.");
+
+        return view("dashboard.reports.by-courts", compact("legalYearStart", "legalYearEnd"));
     }
 
 

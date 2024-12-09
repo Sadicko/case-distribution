@@ -1,9 +1,10 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Reports by Courts')
+@section('title', 'Workload  by courts')
 
+@section('report_collapse', 'show')
 @section('reports_active', 'active')
-@section('court_active', 'text-info')
+@section('court_report_active', 'active')
 
 @section('content')
 <div class="body d-flex py-3">
@@ -11,7 +12,7 @@
         <div class="row align-items-center">
             <div class="border-0 mb-4">
                 <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
-                    <h3 class="h4 mb-0"><i class="fas fa-chart-pie"></i> Reports: By Courts</h3>
+                    <h3 class="h4 mb-0"><i class="fas fa-chart-pie"></i> Workload by courts</h3>
                 </div>
             </div>
         </div>
@@ -29,8 +30,8 @@
         <div class="card mb-3">
             <div class="card-body basic-custome-color">
 
-                @livewire('bail-report-by-court', ['legalYearStart' => $legalYearStart, 'legalYearEnd' => $legalYearEnd])
-                
+                @livewire('case-load-by-court', ['legalYearStart' => $legalYearStart, 'legalYearEnd' => $legalYearEnd])
+
             </div>
         </div>
     </div>
