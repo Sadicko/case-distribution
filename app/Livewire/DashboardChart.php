@@ -6,6 +6,7 @@ use App\Models\Docket;
 use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+
 class DashboardChart extends Component
 {
 
@@ -33,7 +34,6 @@ class DashboardChart extends Component
                         ->orderByRaw('month_num ASC')
                         ->get()
                         ->toArray();
-
                 } else {
                     $assignment = Docket::getDockets()
                         ->selectRaw("DATENAME(month, assigned_date) as period, COUNT(*) as case_count")
@@ -91,7 +91,7 @@ class DashboardChart extends Component
 
         $this->caseDistributions = $assignment;
 
-        // Emit event to the frontend
+        // dispatch event to the frontend
         $this->dispatch('caseDistributionsUpdated', ['caseDistributions' => $this->caseDistributions, 'status' => $this->status]);
     }
 

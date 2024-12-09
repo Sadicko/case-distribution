@@ -42,49 +42,44 @@
     <form id="filterForm" wire:submit.prevent="fetchReport">
 
         <div class="row justify-content-center">
-            <div class="col-md-3 form-group">
+            <div class="col form-group">
                 <label for="location"  class="form-label">Location*</label>
-                <select class="form-control select2" name="location"  id="location" required>
+                <select class="form-control select2" name="location"  id="location" required wire:model="selectedLocation">
                     <option value="all">All</option>
                     @foreach($locations as $location)
                     <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }} >{{ $location->name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-3 form-group">
-                <label for="registry"  class="form-label">Registry</label>
-                <select class="form-control select2" name="registry"  id="registry" required>
+            <div class="col form-group">
+                <label for="registry"  class="form-label">Registry*</label>
+                <select class="form-control select2" name="registry"  id="registry" required wire:model="selectedRegistry">
                     <option value="all">All</option>
                     @foreach($registries as $registry)
                     <option value="{{ $registry->id }}" {{ old('registry') == $registry->id ? 'selected' : '' }} >{{ $registry->name }}</option>
                     @endforeach
                 </select>
             </div>
-            {{-- <div class="col-md-4 form-group">
-                <label for="case_category">Case category</label>
-                <select name="category" id="case_category" wire:model="selectedCategory" class="form-control">
+            <div class="col form-group">
+                <label for="case_category" class="form-label">Case category</label>
+                <select name="category" class="form-control select2" id="case_category" wire:model="selectedCategory">
                     <option value="all">All</option>
                     @foreach($categories as $cat)
                     <option value="{{ $cat->id }}">{{ $cat->name }}
                     </option>
                     @endforeach
                 </select>
-            </div> --}}
-            <div class="col-md-3 form-group">
+            </div>
+            <div class="col form-group">
                 <label for="startDate"  class="form-label">Start date</label>
                 <input type="date" class="form-control" required wire:model.defer="startDate">
-                @error('startDate')
-                <span class="invalid-feedback">{{ $message }}</span>
-                @enderror
+
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col form-group">
                 <label for="endDate"  class="form-label">End date</label>
                 <input type="date" class="form-control" required wire:model.defer="endDate">
-                @error('endDate')
-                <span class="invalid-feedback">{{ $message }}</span>
-                @enderror
             </div>
-            <div class="col-md-12 form-group pt-4">
+            <div class="col-12 form-group pt-4">
                 <button type="button" class="btn btn-secondary float-end text-white" wire:click="clearFilter"><i class="fas fa-eraser"></i> clear</button>
                 <button type="submit" class="btn btn-primary float-end me-2" id="filterButton"><i class="fas fa-check"></i> Filter</button>
             </div>
@@ -101,7 +96,17 @@
                     <h5 class="text-uppercase">ELECTRONIC CASE DISTRIBUTION SYSTEM</h5>
                     <img src="{{ asset('images/coat_of_arms.png') }}" alt="coat_of_arms" style="width: 150px">
                 </div>
-                <h5 class="text-info text-uppercase text-center">{{ $selectedCategory == 'all' ? $selectedCategory : '' }} Case load for {{ !empty($category) && ($selectedCategory != 'all') ? $category->name .' Courts' : 'All categories' }} <br> from {{  getCustomLocalDate($startDate) }} to {{  getCustomLocalDate($endDate) }}</h5>
+                <h5 class="text-info text-uppercase text-center">
+                    Case load for
+                    {{ !empty($courtCategory) && ($selectedCategory != 'all') ? $courtCategory->name .' Courts' : ' For all courts' }}
+
+                    {{ !empty($courtRegistry) && ($selectedRegistry != 'all') ? ' under '. $courtRegistry->name : ' under All registries' }}
+
+                    {{ !empty($courtLocation) && ($selectedLocation != 'all') ? ' - '. $courtLocation->name : ' - All court locations' }}
+
+                    <br> from
+                    <br> {{  getCustomLocalDate($startDate) }} to {{  getCustomLocalDate($endDate) }}
+                </h5>
             </div>
             <div class="card-body mb-5">
                 <table class="table table-stripe table-borded">
@@ -154,6 +159,57 @@
 
 @script
 <script>
+    $(function (){
+
+        //events
+        $wire.on('search-completed', () => {
+
+
+            setTimeout(() => {
+
+                $('.select2').select2({
+                    placeholder: 'Choose option',
+                });
+
+            }, 100); // Delay to ensure DOM is updated
+        });
+
+
+        $('#filterForm').submit(function (event) {
+            // Prevent form submission if necessary
+            event.preventDefault();
+
+            let selectedLocation = $('#location').val();
+            if (selectedLocation) {
+                @this.set('selectedLocation', selectedLocation);
+            }
+
+            let selectedRegistry = $('#registry').val();
+            if (selectedRegistry) {
+                @this.set('selectedRegistry', selectedRegistry);
+            }
+
+            let selectedCategory = $('#case_category').val();
+            if (selectedCategory) {
+                @this.set('selectedCategory', selectedCategory);
+            }
+
+            let startDate = $('#startDate').val();
+            if (startDate) {
+                @this.set('startDate', startDate);
+            }
+
+            let endDate = $('#endDate').val();
+            if (endDate) {
+                @this.set('endDate', endDate);
+            }
+
+            // Trigger the Livewire method
+            @this.call('fetchReport');
+        });
+
+    })
+
     document.addEventListener('click', function (event) {
         // Check if the clicked element has the ID 'print-button'
         if (event.target.id === 'print-button') {
@@ -173,6 +229,7 @@
             window.location.reload();
         }
     });
+
 
 </script>
 @endscript
