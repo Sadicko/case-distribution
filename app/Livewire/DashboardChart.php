@@ -66,8 +66,8 @@ class DashboardChart extends Component
 
             default:
                 // Weekly data as default
-                $day1 = Carbon::parse('last monday')->startOfDay();
-                $day2 = Carbon::parse('next friday')->endOfDay();
+                $day1 = Carbon::now()->startOfWeek();
+                $day2 = Carbon::now()->endOfWeek();
 
                 if (config('database.default') == 'mysql') {
                     $assignment = Docket::getDockets()
