@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Docket;
+use App\Models\Location;
+use App\Models\Registry;
 use Livewire\Component;
 
 class CaseLoadByRegistry extends Component
@@ -15,6 +17,8 @@ class CaseLoadByRegistry extends Component
     public $categories;
     public $selectedCategory = 'all';
     public $category = null;
+    public $locations;
+    public $registries;
     public $dockets;
 
     public function mount($legalYearStart, $legalYearEnd)
@@ -25,8 +29,9 @@ class CaseLoadByRegistry extends Component
         $this->startDate = $legalYearStart->format('Y-m-d');
         $this->endDate = $legalYearEnd->format('Y-m-d');
         $this->categories = Category::getCategories()->get();
+        $this->locations = Location::fetchLocations()->get();
+        $this->registries = Registry::fetchRegistry()->get();
         $this->fetchReport();
-
     }
 
     public function fetchReport()
@@ -57,7 +62,6 @@ class CaseLoadByRegistry extends Component
         $this->endDate = $this->legalYearEnd->format('Y-m-d');
 
         $this->fetchReport();
-
     }
 
 

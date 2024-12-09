@@ -12,9 +12,10 @@ class RegistryController extends Controller
 {
     use AuditTrailLog;
 
-    public function index(){
+    public function index()
+    {
 
-        if(Gate::denies('Manage registries')){
+        if (Gate::denies('Manage registries')) {
 
             $this->createAuditTrail("Denied access to  Manage registries: Unauthorized");
 
@@ -28,9 +29,10 @@ class RegistryController extends Controller
         return view('dashboard.registries.index', compact('registries'));
     }
 
-    public function create(){
+    public function create()
+    {
 
-        if(Gate::denies('Create registries')){
+        if (Gate::denies('Create registries')) {
 
             $this->createAuditTrail("Denied access to  Manage registries: Unauthorized");
 
@@ -44,9 +46,10 @@ class RegistryController extends Controller
         return view('dashboard.registries.create', compact('locations'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        if(Gate::denies('Create registries')){
+        if (Gate::denies('Create registries')) {
 
             $this->createAuditTrail("Denied access to  Create registries: Unauthorized");
 
@@ -86,9 +89,10 @@ class RegistryController extends Controller
 
 
 
-    public function edit($slug){
+    public function edit($slug)
+    {
 
-        if(Gate::denies('Update registries')){
+        if (Gate::denies('Update registries')) {
 
             $this->createAuditTrail("Denied access to  Update registries: Unauthorized");
 
@@ -104,9 +108,10 @@ class RegistryController extends Controller
     }
 
 
-    public function update(Request $request, $slug){
+    public function update(Request $request, $slug)
+    {
 
-        if(Gate::denies('Update registries')){
+        if (Gate::denies('Update registries')) {
 
             $this->createAuditTrail("Denied access to  Update registries: Unauthorized");
 
@@ -142,9 +147,9 @@ class RegistryController extends Controller
             'region_id' => $region,
         ]);
 
-        if($request->status == 'Move to trash'){
+        if ($request->status == 'Move to trash') {
 
-            if(Gate::denies('Delete registries')){
+            if (Gate::denies('Delete registries')) {
 
                 $this->createAuditTrail("Denied access to  Delete registries: Unauthorized");
 
@@ -156,7 +161,7 @@ class RegistryController extends Controller
             $registry->delete();
 
             return to_route('registries')
-            ->with('warning', 'Location moved to trash successfully.');
+                ->with('warning', 'Location moved to trash successfully.');
         }
 
         $this->createAuditTrail("Udpated records for $registry->name registry");
@@ -178,18 +183,16 @@ class RegistryController extends Controller
     }
 
 
-    public function fetchRegistry(Request $request){
+    public function fetchRegistry(Request $request)
+    {
 
-        if($request->wantsJson()){
+        if ($request->wantsJson()) {
 
-            $registries = Registry::where('location_id', $request->location)->get();
+            $registries = Registry::fetchRegistry()->where('location_id', $request->location)->get();
 
             return response()->json($registries);
         }
 
         abort(404);
-
     }
-
-
 }

@@ -17,19 +17,16 @@ class Location extends Model
     public function regions()
     {
         return $this->belongsTo(Region::class, 'region_id');
-
     }
 
     public function courttypes()
     {
         return $this->belongsTo(Courttype::class, 'courttype_id');
-
     }
 
     public function courts()
     {
         return $this->hasMany(Court::class, 'location_id');
-
     }
     public function assets()
     {
@@ -42,20 +39,34 @@ class Location extends Model
 
         if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
 
-            $query = static::query()->whereHas('courts', function ($qeury){
+            $query = static::query()->whereHas('courts', function ($qeury) {
                 $qeury->where('availability', 1);
             });
+        } else {
 
-        }else{
-
-            $query = static::query()->whereHas('courts', function ($locationQeury)use ($user){
+            $query = static::query()->whereHas('courts', function ($locationQeury) use ($user) {
                 $locationQeury->where('registry_id', $user->registry_id)
                     ->where('availability', 1);
             });
         }
 
         return $query;
-
     }
 
+    public static function fetchLocations()
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
+
+            $query = static::query()->whereHas('courts');
+        } else {
+
+            $query = static::query()->whereHas('courts', function ($locationQeury) use ($user) {
+                $locationQeury->where('registry_id', $user->registry_id);
+            });
+        }
+
+        return $query;
+    }
 }

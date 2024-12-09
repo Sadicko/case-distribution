@@ -1,14 +1,14 @@
 <div>
-    
-    
-    
+
+
+
     @section('styles')
     <style>
         @media print {
             @page {
                 size: A4;
             }
-            
+
             .print-button {
                 display: none;
             }
@@ -16,11 +16,11 @@
             .top-header{
                 display: block !important;
             }
-            
+
             .print-area {
                 display: block !important;
             }
-            
+
             .non-printable {
                 display: none !important;
             }
@@ -29,20 +29,38 @@
                 height: 100px;
                 object-fit: contain;
             }
-            
+
             .custom-footer{
                 display: block !important;
             }
-            
+
         }
-        
+
     </style>
     @endsection
-    
+
     <form id="filterForm" wire:submit.prevent="fetchReport">
-        
+
         <div class="row justify-content-center">
-            <div class="col-md-4 form-group">
+            <div class="col-md-3 form-group">
+                <label for="location"  class="form-label">Location*</label>
+                <select class="form-control select2" name="location"  id="location" required>
+                    <option value="all">All</option>
+                    @foreach($locations as $location)
+                    <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }} >{{ $location->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3 form-group">
+                <label for="registry"  class="form-label">Registry</label>
+                <select class="form-control select2" name="registry"  id="registry" required>
+                    <option value="all">All</option>
+                    @foreach($registries as $registry)
+                    <option value="{{ $registry->id }}" {{ old('registry') == $registry->id ? 'selected' : '' }} >{{ $registry->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            {{-- <div class="col-md-4 form-group">
                 <label for="case_category">Case category</label>
                 <select name="category" id="case_category" wire:model="selectedCategory" class="form-control">
                     <option value="all">All</option>
@@ -51,29 +69,30 @@
                     </option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="col-md-3 form-group">
-                <label for="startDate">Start date</label>
+                <label for="startDate"  class="form-label">Start date</label>
                 <input type="date" class="form-control" required wire:model.defer="startDate">
                 @error('startDate')
                 <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
             </div>
             <div class="col-md-3 form-group">
-                <label for="endDate">End date</label>
+                <label for="endDate"  class="form-label">End date</label>
                 <input type="date" class="form-control" required wire:model.defer="endDate">
                 @error('endDate')
                 <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-2 form-group pt-4">
+            <div class="col-md-12 form-group pt-4">
                 <button type="button" class="btn btn-secondary float-end text-white" wire:click="clearFilter"><i class="fas fa-eraser"></i> clear</button>
                 <button type="submit" class="btn btn-primary float-end me-2" id="filterButton"><i class="fas fa-check"></i> Filter</button>
             </div>
         </div>
     </form>
-    
-    
+
+    <hr>
+
     <div id="print-area" class="table-card mt-5 print-area" wire:loading.class="opacity-25">
         <div class="card">
             <div class="card-header border-bottom pt-3">
@@ -117,14 +136,14 @@
                             <th class="text-center">{{ $dockets->sum('case_load') }}</th>
                         </tr>
                     </tfoot>
-                </table>                
+                </table>
             </div>
             <div class="custom-footer text-center mt-5" style="display: none">
                 <p style="font-size: 12px;">Powered by Judicial Service ICT</p>
             </div>
         </div>
     </div>
-    
+
     @if (count($dockets) != 0)
     <div class="d-flex justify-content-center mt-5">
         <button class="btn btn-primary btn-sm me-3 bg-gradient-primary print-button" id="print-button"><i class="fas fa-print"></i> Print</button>
@@ -140,20 +159,20 @@
         if (event.target.id === 'print-button') {
             const printArea = document.getElementById('print-area').innerHTML;
             const originalContent = document.body.innerHTML;
-            
+
             // Replace body content with the print area
             document.body.innerHTML = printArea;
-            
+
             // Trigger the print dialog
             window.print();
-            
+
             // Restore the original content
             document.body.innerHTML = originalContent;
-            
+
             // Reload the scripts (if needed)
             window.location.reload();
         }
     });
-    
+
 </script>
 @endscript
