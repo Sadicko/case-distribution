@@ -23,7 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function (Schedule $schedule) {
         //schedule commands
-        $schedule->command('sanctum:prune-expired --hours=24')->daily();
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->twiceDaily(12, 17);
     })->create();
