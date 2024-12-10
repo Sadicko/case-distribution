@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="case_title" class="form-label">Case title*</label>
-                                        <input class="form-control" type="text" required name="case_title" id="case_title" value="{{ old('case_title') }}">
+                                        <textarea class="form-control no-resize" type="text" required name="case_title" id="case_title" rows="4">{{ old('case_title') }}</textarea>
                                         @error('case_title')
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
@@ -130,11 +130,21 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="assignCaseModalLabel">Case allocation Confirmation</h5>
+                                <h5 class="modal-title  text-danger" id="assignCaseModalLabel"> <i class="fas fa-exclamation-circle"></i> Case allocation Confirmation</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h5><i class="fas fa-exclamation-circle text-danger"></i> Are you sure you want to submit this case for allocation?</h5>
+                                <h5>Are you sure you want to submit this case for allocation? Kindly confirm details below.</h5>
+                                <hr>
+                                <div class="text-uppercase mb-3  mt-4">
+                                    <strong>Selected Case Category: </strong> <span class="selected_category text-info"></span>
+                                </div>
+                                <div class="text-uppercase mb-3">
+                                    <strong>Suit number: </strong> <span class="selected_suit_number text-info"></span>
+                                </div>
+                                <div class="text-uppercase mb-3">
+                                    <strong>Case title: </strong> <span class="selected_case_title text-info"></span>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -156,7 +166,12 @@
         $(function(){
 
             $(document).on("click", ".assignBtn", function () {
+
+                $(".selected_suit_number").html( $('#suit_number').val())
+                $(".selected_case_title").html( $('#case_title').val())
+                $(".selected_category").html( $('#case_category').find('option:selected').data('name'))
                 //|| $('#date_filed').val() == ''
+
                 if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#case_category').val() == ''  || $('#location').val() == ''){
 
                     toastr.error('All fields are required.');
