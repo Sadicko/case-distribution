@@ -142,9 +142,9 @@
                                                         @can('Update cases')
                                                             <a href="{{ route('cases.edit', $docket->slug) }}" class="me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit case"><i class="fas fa-pencil" style="font-size: 11px;"></i></a>
                                                         @endcan
-                                                        @can('Re-assign cases')
+                                                        {{-- @can('Re-assign cases')
                                                             <a href="{{ route('court-judge', $docket->slug) }}"  class="me-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-assign case"><i class="fas fa-sync" style="font-size: 11px;"></i></a>
-                                                        @endcan
+                                                        @endcan --}}
                                                         @if(!empty($docket->assigned_date))
                                                             @can('Print cases')
                                                                 <a href="{{ route('cases.print', $docket->slug) }}" class="" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print case"><i class="fas fa-print" style="font-size: 11px;"></i></a>

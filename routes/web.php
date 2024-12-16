@@ -12,6 +12,7 @@ use App\Http\Controllers\JudgeController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReAllocationController;
 use App\Http\Controllers\RegistryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesController;
@@ -76,7 +77,8 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     //categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-    //assets
+
+    //cases
     Route::get('/cases', [DocketController::class, 'showCases'])->name('cases');
     Route::get('/cases/create', [DocketController::class, 'createCase'])->name('cases.create');
     Route::post('/cases/create', [DocketController::class, 'saveCase'])->name('cases.create');
@@ -87,6 +89,10 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::post('/cases/{slug}/edit', [DocketController::class, 'updateCase'])->name('cases.edit');
     Route::get('/cases/{slug}/print', [DocketController::class, 'printCase'])->name('cases.print');
     Route::get('/cases/{slug}/download', [DocketController::class, 'downloadCase'])->name('cases.download');
+
+    //re-allocation
+    Route::get('/cases/{slug}/reassign-by-category', [ReAllocationController::class, 'allocationByCategory'])->name('cases.reassign-by-category');
+    Route::post('/cases/{slug}/reassign-by-category', [ReAllocationController::class, 'saveAllocationByCategory'])->name('cases.reassign-by-category');
 
     // download csv template
     Route::get('/download-template', [UploadController::class, 'downloadTemplate'])->name('download-template');

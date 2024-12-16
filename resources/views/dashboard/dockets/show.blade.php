@@ -19,9 +19,9 @@
 
                         <div class="col-auto d-flex w-sm-100  mt-sm-0">
                             @if (strpos(url()->previous(), '/cases?page=') !== false)
-                                <a href="{{ url()->previous() }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
+                            <a href="{{ route('cases') }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
                             @else
-                                <a href="{{ route('cases') }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
+                            <a href="{{ url()->previous() }}" class="btn btn-info text-white w-sm-100"><i class="fas fa-chevron-left me-2"></i>Back</a>
                             @endif
                         </div>
                     </div>
@@ -42,10 +42,24 @@
                             <a href="{{ route('cases.edit', $docket->slug) }}" class="btn btn-primary btn-sm"><i
                                     class="fas fa-pencil"></i> Edit case</a>
                         @endcan
-                        @can('Re-assign cases')
+                        {{-- @can('Re-assign cases')
                             <a href="{{ route('cases.edit', $docket->slug) }}" class="btn btn-primary btn-sm"><i
                                     class="fas fa-sync-alt"></i> Re-assign case</a>
-                        @endcan
+                        @endcan --}}
+                        @canany(['Re-assign cases'])
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-sync-alt"></i> Re-assign
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+                                        {{-- @can('Create cases') --}}
+                                            <li><a class="dropdown-item" href="{{ route('cases.create') }}">Commercial Case</a></li>
+                                        {{-- @endcan --}}
+                                        @can('Re-assign cases')
+                                            <li><a class="dropdown-item" href="{{ route('cases.reassign-by-category', $docket->slug) }}">By Category change</a></li>
+                                            <li><a class="dropdown-item" href="#!">By Order</a></li>
+                                        @endcanany
+                                    </ul>
+                                @endcanany
                     </div>
                 </div>
                 <div class="card-body">
@@ -111,6 +125,10 @@
                             <div class="col-md-6 mb-3">
                                 <label for="priority" class="form-label">Priority</label>
                                 <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority) }}</p>
+                            </div>
+                             <div class="col-md-6 mb-3">
+                                <label for="priority" class="form-label">Reason</label>
+                                <p class="form-control-plaintext" id="priority">{{ $docket->reason_for_manual_assignment }}</p>
                             </div>
                             @if($docket->disposed_by)
                                 <div class="col-md-6 mb-3">

@@ -70,7 +70,7 @@
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3 commercial_type_box" @if($errors->any() || (count($categories) == 1 && $categories[0]->name == "COMMERCIAL")) @else style="display: none;" @endif>
+                                    <div class="form-group mb-3 commercial_type_box" @if((count($categories) == 1 && $categories[0]->name == "COMMERCIAL")) @else style="display: none;" @endif>
                                         <label for="commercial_type" class="form-label">Type</label>
                                         <select name="commercial_type" class="form-control select2" id="commercial_type" style="width: 100%">
                                             <option value=""></option>

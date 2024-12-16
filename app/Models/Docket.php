@@ -75,6 +75,8 @@ class Docket extends Model
                 'location_id',
                 'priority_level',
                 'date_filed',
+                'reason_for_manual_assignment',
+                'case_stage'
             ];
 
             foreach ($fields as $field) {
@@ -106,6 +108,8 @@ class Docket extends Model
                 'disposed_at',
                 'disposed_by',
                 'created_by',
+                'reason_for_manual_assignment',
+                'case_stage'
             ];
 
             foreach ($fieldsToCheck as $field) {
@@ -130,9 +134,9 @@ class Docket extends Model
             "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE)",
             [$searchTerm]
         )->orderByRaw(
-                "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC",
-                [$searchTerm]
-            );
+            "MATCH(suit_number, case_title) AGAINST(? IN NATURAL LANGUAGE MODE) DESC",
+            [$searchTerm]
+        );
     }
 
 
@@ -144,13 +148,11 @@ class Docket extends Model
         if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
 
             $query = static::query();
-
         } elseif (Gate::any(court_room_access_level())) {
 
             $query = static::query()->whereHas('courts', function ($query) use ($user) {
                 $query->where('court_id', $user->court_id);
             });
-
         } else {
 
             $query = static::query()->whereHas('courts', function ($query) use ($user) {
@@ -159,7 +161,5 @@ class Docket extends Model
         }
 
         return $query;
-
     }
-
 }

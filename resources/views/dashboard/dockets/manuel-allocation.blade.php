@@ -81,7 +81,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-12">
-                                <label for="reason" class="form-label">Reason for manual assignment*</label>
+                                <label for="reason" class="form-label">Reason for manual allocation*</label>
                                 <textarea name="reason" id="reason" class="form-control no-resize">{{  old('reason') }}</textarea>
                                 @error('reason')
                                 <small class="invalid-feedback">{{ $message }}</small>
@@ -107,6 +107,16 @@
                         </div>
                         <div class="modal-body">
                             <h5><i class="fas fa-exclamation-circle text-danger"></i> Are you sure you want to submit this case for allocation?</h5>
+                            <hr>
+                            <div class="text-uppercase mb-3  mt-4">
+                                <strong>Selected Case Category: </strong> <span class="selected_category text-info"></span>
+                            </div>
+                            <div class="text-uppercase mb-3">
+                                <strong>Suit number: </strong> <span class="selected_suit_number text-info"></span>
+                            </div>
+                            <div class="text-uppercase mb-3">
+                                <strong>Case title: </strong> <span class="selected_case_title text-info"></span>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -128,6 +138,12 @@
     $(function(){
 
         $(document).on("click", ".assignBtn", function () {
+
+            $(".selected_suit_number").html( $('#suit_number').val())
+                $(".selected_case_title").html( $('#case_title').val())
+                $(".selected_category").html( $('#case_category').find('option:selected').data('name'))
+                //|| $('#date_filed').val() == ''
+
             //|| $('#date_filed').val() == ''
             if($('#suit_number').val() == '' || $('#case_title').val() == '' || $('#case_category').val() == ''  || $('#location').val() == ''){
 

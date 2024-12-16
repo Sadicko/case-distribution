@@ -103,11 +103,12 @@ class DocketController extends Controller
             DB::transaction(function () use ($request, &$assignedCourt, &$docket) {
                 // Step 1: Create the docket
                 $docket = Docket::query()->create([
-                    'slug' => $slug = Str::slug($request->suit_number),
+                    'slug' => Str::slug($request->suit_number) . '-' .  uniqid(),
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
-                    'case_stage' => $request->commercial_type,
+                    'case_stage' => $request->commercial_type ?? 'Trial',
+                    'reason_for_manual_assignment' => 'New',
                     'location_id' => $request->location,
                     //'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
                     'priority_level' => $request->priority_level,
@@ -189,7 +190,7 @@ class DocketController extends Controller
             DB::transaction(function () use ($request, &$docket) {
                 //create manual docket
                 $docket = Docket::query()->create([
-                    'slug' => $slug = Str::slug($request->suit_number),
+                    'slug' => Str::slug($request->suit_number) . '-' . uniqid(),
                     'suit_number' => strtoupper($request->suit_number),
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
