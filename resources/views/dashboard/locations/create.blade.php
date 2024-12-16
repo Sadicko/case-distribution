@@ -50,7 +50,7 @@
 											</div>
 											<div class="col-md-6 mb-3">
 												<label for="court_type"  class="form-label">Court type</label>
-												<select class="form-control select2" name="court_type"  id="court_type">
+												<select class="form-control select2" name="court_type[]"  id="court_type" multiple>
 													<option value=""></option>
 													@foreach($courttypes as $court_type)
 													<option value="{{ $court_type->id }}" {{ old('court_type') == $court_type->id ? 'selected' : '' }} >{{ $court_type->name }}</option>

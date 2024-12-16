@@ -138,97 +138,99 @@ class DocketController extends Controller
     }
 
 
-    // public function getManuelAllocationForm()
-    // {
-    //     if (Gate::denies('Manual case allocation')) {
+    public function getManuelAllocationForm()
+    {
+        if (Gate::denies('Manual case allocation')) {
 
-    //         $this->createAuditTrail("Denied access to  Manual case allocation: Unauthorized");
+            $this->createAuditTrail("Denied access to  Manual case allocation: Unauthorized");
 
-    //         return back()->with(['error' => 'You are not authorized to Manual case allocation.']);
-    //     }
+            return back()->with(['error' => 'You are not authorized to Manual case allocation.']);
+        }
 
-    //     //show categories that have courts
-    //     $categories = Category::fetchCategoriesWithCourt()->with('courts')->orderBy('name', 'asc')->get();
+        //show categories that have courts
+        $categories = Category::fetchCategoriesWithCourt()->with('courts')->orderBy('name', 'asc')->get();
 
-    //     //show locations that have courts and has been assigned categories
-    //     $locations = Location::fetchLocationsWithCourt()->whereHas('courts.categories')->orderBy('name', 'asc')->get();
+        //show locations that have courts and has been assigned categories
+        $locations = Location::fetchLocationsWithCourt()->whereHas('courts.categories')->orderBy('name', 'asc')->get();
 
-    //     // create audit
-    //     $this->createAuditTrail('Visited  manual allocation page.');
+        // create audit
+        $this->createAuditTrail('Visited  manual allocation page.');
 
-    //     return view('dashboard.dockets.manuel-allocation', compact('categories', 'locations'));
-    // }
+        return view('dashboard.dockets.manuel-allocation', compact('categories', 'locations'));
+    }
 
-    // public function saveManuelAllocation(Request $request)
-    // {
+    public function saveManuelAllocation(Request $request)
+    {
 
-    //     $request->validate([
-    //         'suit_number' => ['required', 'string', 'regex:/^[A-Z]{2,5}\/\d{4,5}\/\d{4}$/'],
-    //         'case_title' => ['required', 'string'],
-    //         'case_category' => ['required', 'integer'],
-    //         'commercial_type' => ['required_if:case_category,1', 'nullable'],
-    //         'location' => ['required', 'integer'],
-    //         'court' => ['required', 'integer'],
-    //         'judge' => ['required', 'integer'],
-    //         'date_assignment' => ['required', 'date_format:d/m/Y H:i'],
-    //         'priority_level' => ['required', 'string'],
-    //     ]);
+        $request->validate([
+            'suit_number' => ['required', 'string', 'regex:/^[A-Z]{2,5}\/\d{4,5}\/\d{4}$/'],
+            'case_title' => ['required', 'string'],
+            'case_category' => ['required', 'integer'],
+            'commercial_type' => ['required_if:case_category,1', 'nullable'],
+            'location' => ['required', 'integer'],
+            'court' => ['required', 'integer'],
+            'judge' => ['required', 'integer'],
+            'date_assignment' => ['required', 'date_format:d/m/Y H:i'],
+            'priority_level' => ['required', 'string'],
+            'reason' => ['required', 'string'],
+        ]);
 
-    //     // check if suit number exist
-    //     if ($this->isCaseRegistered()) {
+        // check if suit number exist
+        if ($this->isCaseRegistered()) {
 
-    //         $this->createAuditTrail("Attempted to create a case with suit number $request->suit_number but already exists.");
+            $this->createAuditTrail("Attempted to create a case with suit number $request->suit_number but already exists.");
 
-    //         return back()->withInput()->withErrors(['suit_number' => 'The suit number is already taken.']);
-    //     }
+            return back()->withInput()->withErrors(['suit_number' => 'The suit number is already taken.']);
+        }
 
-    //     try {
-    //         $docket = null;
+        try {
+            $docket = null;
 
-    //         DB::transaction(function () use ($request, &$docket) {
-    //             //create manual docket
-    //             $docket = Docket::query()->create([
-    //                 'slug' => $slug = Str::slug($request->suit_number),
-    //                 'suit_number' => strtoupper($request->suit_number),
-    //                 'case_title' => strtoupper($request->case_title),
-    //                 'category_id' => $request->case_category,
-    //                 'case_stage' => $request->commercial_type ?? 'Trial',
-    //                 'location_id' => $request->location,
-    //                 'court_id' => $request->court,
-    //                 'judge_id' => $request->judge,
-    //                 'assigned_date' => Carbon::createFromFormat('d/m/Y H:i', $request->date_assignment),
-    //                 'priority_level' => $request->priority_level,
-    //                 'status' => 'Assigned',
-    //                 'is_assigned' => 1,
-    //                 'assign_type' => 'manual',
-    //                 'created_by' => Auth::id(),
-    //             ]);
+            DB::transaction(function () use ($request, &$docket) {
+                //create manual docket
+                $docket = Docket::query()->create([
+                    'slug' => $slug = Str::slug($request->suit_number),
+                    'suit_number' => strtoupper($request->suit_number),
+                    'case_title' => strtoupper($request->case_title),
+                    'category_id' => $request->case_category,
+                    'case_stage' => $request->commercial_type ?? 'Trial',
+                    'location_id' => $request->location,
+                    'court_id' => $request->court,
+                    'judge_id' => $request->judge,
+                    'assigned_date' => Carbon::createFromFormat('d/m/Y H:i', $request->date_assignment),
+                    'priority_level' => $request->priority_level,
+                    'reason_for_manual_assignment' => $request->reason,
+                    'status' => 'Assigned',
+                    'is_assigned' => 1,
+                    'assign_type' => 'manual',
+                    'created_by' => Auth::id(),
+                ]);
 
-    //             //create allocation copy
-    //             Allocation::query()->create([
-    //                 'docket_id' => $docket->id,
-    //                 'court_id' => $docket->court_id,
-    //                 'judge_id' => $docket->judge_id,
-    //                 'location_id' => $docket->location_id,
-    //                 'assigned_by' => $docket->created_by,
-    //                 'assignment_reason' => 'Manual assignment',
-    //                 'assigned_date' => $docket->assigned_date,
-    //                 'case_stage' => $docket->case_stage ?? 'Trial',
-    //             ]);
-    //         });
+                //create allocation copy
+                Allocation::query()->create([
+                    'docket_id' => $docket->id,
+                    'court_id' => $docket->court_id,
+                    'judge_id' => $docket->judge_id,
+                    'location_id' => $docket->location_id,
+                    'assigned_by' => $docket->created_by,
+                    'assignment_reason' => $docket->reason_for_manual_assignment,
+                    'assigned_date' => $docket->assigned_date,
+                    'case_stage' => $docket->case_stage ?? 'Trial',
+                ]);
+            });
 
-    //         $this->createAuditTrail("Created a manual case with suit number $docket->suit_number");
-    //     } catch (\Exception $e) {
+            $this->createAuditTrail("Created a manual case with suit number $docket->suit_number");
+        } catch (\Exception $e) {
 
-    //         Log::info("An error occurred during the manual docket creation or assignment: " . $e->getMessage());
+            Log::info("An error occurred during the manual docket creation or assignment: " . $e->getMessage());
 
-    //         return back()->withInput()->with('error', 'An error occurred during the manual case creation or assignment. Try again.');
-    //     }
+            return back()->withInput()->with('error', 'An error occurred during the manual case creation or assignment. Try again.');
+        }
 
-    //     //log case creation
+        //log case creation
 
-    //     return back()->with('success', 'Manual case created successfully!');
-    // }
+        return back()->with('success', 'Manual case created successfully!');
+    }
 
 
     public function showEditCase($slug)

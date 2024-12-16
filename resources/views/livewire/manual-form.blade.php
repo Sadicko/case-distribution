@@ -53,7 +53,7 @@
         <div class="form-group col-6 mb-3">
             <label for="judge" class="form-label">Judge*</label>
             <select name="judge" class="form-control select2" wire:model="selectedJudge"  wire:key="{{ $selectedCourt }}" >
-                <option value="">---Select a court---</option>
+                <option value="">---Select a judge---</option>
                 @foreach($judges as $judge)
                     <option value="{{ $judge->id }}" {{ old('judge') == $judge->id ? 'selected' : (count($judges) ==  1 ? 'selected' : '')}}>{{ $judge->name }}</option>
                 @endforeach

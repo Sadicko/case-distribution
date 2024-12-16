@@ -80,8 +80,8 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/cases', [DocketController::class, 'showCases'])->name('cases');
     Route::get('/cases/create', [DocketController::class, 'createCase'])->name('cases.create');
     Route::post('/cases/create', [DocketController::class, 'saveCase'])->name('cases.create');
-    // Route::get('/cases/manuel-allocation', [DocketController::class, 'getManuelAllocationForm'])->name('cases.manuel');
-    // Route::post('/cases/manuel-allocation', [DocketController::class, 'saveManuelAllocation'])->name('cases.manuel');
+    Route::get('/cases/manuel-allocation', [DocketController::class, 'getManuelAllocationForm'])->name('cases.manuel');
+    Route::post('/cases/manuel-allocation', [DocketController::class, 'saveManuelAllocation'])->name('cases.manuel');
     Route::get('/cases/{slug}/show', [DocketController::class, 'showCase'])->name('cases.show');
     Route::get('/cases/{slug}/edit', [DocketController::class, 'showEditCase'])->name('cases.edit');
     Route::post('/cases/{slug}/edit', [DocketController::class, 'updateCase'])->name('cases.edit');
