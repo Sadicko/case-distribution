@@ -163,6 +163,13 @@ class DocketController extends Controller
     public function saveManuelAllocation(Request $request)
     {
 
+        if (Gate::denies('Manual case allocation')) {
+
+            $this->createAuditTrail("Denied access to  Manual case allocation: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Manual case allocation.']);
+        }
+
         $request->validate([
             'suit_number' => ['required', 'string', 'regex:/^[A-Z]{2,5}\/\d{4,5}\/\d{4}$/'],
             'case_title' => ['required', 'string'],
