@@ -13,7 +13,6 @@
                         <div
                             class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
                             <h3 class="h4 mb-0">Dashboard</h3>
-                            </h3>
                             <div class="col-auto d-flex w-sm-100 mt-2 mt-sm-0">
                                 @can('Create cases')
                                     <a href="{{ route('cases.create') }}" class="btn btn-dark  w-sm-100 me-2">

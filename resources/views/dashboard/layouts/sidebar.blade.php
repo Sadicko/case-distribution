@@ -21,6 +21,17 @@
                 </a>
             </li>
 
+            @can('Manage workflow')
+            <li>
+                <a class="m-link @yield('workflow_active')" href="{{ route('workflow') }}">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <div>
+                        <h6 class="mb-0">Workflow</h6>
+                    </div>
+                </a>
+            </li>
+            @endcanany
+
             @canany(['Manage categories', 'Create categories', 'Read categories', 'Update categories', 'Delete categories', 'Print categories'])
                 <li>
                     <a class="m-link @yield('category_active')" href="{{ route('categories') }}">

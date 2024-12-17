@@ -18,6 +18,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkflowController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,7 +74,9 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     // home
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
-    //Route::get('/workflow', [HomeController::class, 'showWorkflow'])->name('workflow');
+    //Work flows
+    Route::get('/workflow', [WorkflowController::class, 'showWorkflow'])->name('workflow');
+
     //categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');

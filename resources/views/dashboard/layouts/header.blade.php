@@ -5,7 +5,7 @@
             <!-- header rightbar icon -->
             <div class="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">
 
-                {{-- <div class="dropdown notifications">
+                 <div class="dropdown notifications">
                     <a class="nav-link dropdown-toggle pulse" href="#" role="button" data-bs-toggle="dropdown">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25px"
                             height="25px" viewBox="0 0 38 38">
@@ -64,7 +64,9 @@
                                 notifications</a>
                         </div>
                     </div>
-                </div> --}}
+                </div>
+
+
 
                 <div class="dropdown user-profile ml-2 ml-sm-3 d-flex align-items-center">
                     <a class="nav-link dropdown-toggle pulse p-0" href="#" role="button" data-bs-toggle="dropdown"
