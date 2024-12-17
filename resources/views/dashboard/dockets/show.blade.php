@@ -62,6 +62,14 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    @if ($docket->reassignment_initiated)
+                    <div class="alert alert-danger bg-warning alert-dismissible fade show" role="alert">
+                      <i class="fas fa-exclamation-triangle"></i> Re-allocation has been initiated for this case.
+                        | {{ $docket->reallocation?->approvals_count ?? '0' }} out of  {{  getenv("APPROVAL_STEPS") }} approval  step(s) completed.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="suit_number" class="form-label">Suit number</label>

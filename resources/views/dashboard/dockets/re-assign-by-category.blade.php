@@ -33,7 +33,7 @@
                     <div class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="fas fa-triangle-exclamation flex-shrink-0 me-2"></i>
                         <div>
-                            You are about changing the category of the case. This will trigger a new allocation. the case will now be allocated to courts under the new category. Ensure you have been authorized to perform this action.
+                            You are about changing the category of the case. This will trigger a new allocation. the case will now be allocated to courts under the new category when approved. Ensure you have been authorized to perform this action.
                         </div>
                     </div>
 
@@ -124,7 +124,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-12">
-                                        <label for="reason" class="form-label">Reason for manual re-allocation*</label>
+                                        <label for="reason" class="form-label">Reason for re-allocation*</label>
                                         <textarea name="reason" id="reason" class="form-control no-resize">{{  old('reason') }}</textarea>
                                         @error('reason')
                                         <small class="invalid-feedback">{{ $message }}</small>
@@ -132,7 +132,7 @@
                                     </div>
                                     <div class="row mt-4 mb-5">
                                         <div class="form-group">
-                                            <button type="button" class="btn btn-primary bg-dark float-end assignBtn">Submit for re-allocation</button>
+                                            <button type="button" class="btn btn-primary bg-dark float-end assignBtn">Submit for  approval</button>
                                         </div>
                                     </div>
                                 </div>
@@ -149,7 +149,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h5>Are you sure you want to submit this case for re-allocation? Kindly confirm details below.</h5>
+                                    <h5>Are you sure you want to submit this case for approval? Kindly confirm details below.</h5>
                                     <div class="text-uppercase text-danger mb-3  mt-4">
                                         <i class="fas fa-times-circle me-2"></i><strong>Current Category: </strong> <span class="text-info">{{ $docket->categories->name }}</span>
                                     </div>

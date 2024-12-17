@@ -191,7 +191,17 @@ class ModuleSeeder extends Seeder
             //     'permissions' => [
             //         'Manage support',
             //     ]
-            // ]
+            // ],
+            [
+                'slug' => uniqid(),
+                'name' => 'Workflow',
+                'permissions' => [
+                    'Read Workflow',
+                    'Approve step one',
+                    'Approve step two',
+                    'Approve step three',
+                ]
+            ],
 
         ];
 

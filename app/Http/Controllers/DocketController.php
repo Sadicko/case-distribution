@@ -44,7 +44,29 @@ class DocketController extends Controller
 
     public function showCase($slug)
     {
-        $docket = Docket::query()->with('courts', 'judges', 'categories', 'locations', 'creators', 'disposers', 'docketlogs', 'docketlogs.users', 'allocations', 'allocations.courts', 'allocations.judges', 'allocations.locations')->where('slug', $slug)->firstOrFail();
+        $docket = Docket::query()
+            ->with([
+                'courts',
+                'judges',
+                'categories',
+                'locations',
+                'creators',
+                'disposers',
+                'docketlogs.users',
+                'allocations.courts',
+                'allocations.judges',
+                'allocations.locations',
+                'reallocation' => function ($query) {
+                    $query->where('status', 'pending')
+                        ->select('id', 'docket_id', 'status')
+                        ->withCount(['approvals' => function ($subQuery) {
+                            $subQuery->where('is_approved', 1);
+                        }]);
+                }
+            ])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
 
         return view('dashboard.dockets.show', compact('docket'));
     }

@@ -21,7 +21,7 @@
                 </a>
             </li>
 
-            @can('Manage workflow')
+            @canany(['Read Workflow', 'Approve step one', 'Approve step two', 'Approve step three'])
             <li>
                 <a class="m-link @yield('workflow_active')" href="{{ route('workflow') }}">
                     <i class="fa-solid fa-newspaper"></i>

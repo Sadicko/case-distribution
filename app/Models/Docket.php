@@ -61,6 +61,12 @@ class Docket extends Model
         return $this->belongsTo(User::class, 'disposed_by', 'id');
     }
 
+    public function reallocation()
+    {
+        return $this->hasOne(CaseReassignment::class, 'docket_id');
+    }
+
+
     protected static function boot()
     {
         parent::boot();
