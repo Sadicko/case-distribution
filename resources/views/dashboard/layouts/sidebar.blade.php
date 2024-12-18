@@ -41,7 +41,7 @@
                         </div>
                     </a>
                 </li>
-            @endcan
+            @endcanany
 
             @canany(['Manage cases', 'Create cases', 'Upload cases', 'Read cases', 'Update cases', 'Delete cases', 'Print cases',  'Track cases'])
                 <li class="collapsed">
@@ -151,7 +151,7 @@
                         </div>
                     </a>
                 </li>
-            @endcan
+            @endcanany
         </ul>
         <!-- Menu: menu collapse btn -->
         <button type="button" class="btn btn-link sidebar-mini-btn text-muted">
