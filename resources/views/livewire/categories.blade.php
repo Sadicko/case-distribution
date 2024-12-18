@@ -3,22 +3,6 @@
     <div class="row align-item-center">
         <div class="@can('Create categories') col-md-8  @else col-md-12 @endcan">
             <div class="card mb-3">
-                <div class="card-header">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Active</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="card-body basic-custome-color pt-5">
                     <form wire:submit="search">
                         <div class="input-group mb-3">
@@ -27,6 +11,26 @@
                             <button class="btn btn-outline-default border text-muted" type="button" id="button-addon2" wire:click="clear"><i class="fas fa-times-circle text-danger"></i></button>
                         </div>
                     </form>
+
+                    {{-- <nav>
+                        <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                            @foreach ($courtTypes as $courttype)
+                            @if ($courttype->categories_count > 0)
+                            <button class="nav-link @if($loop->first) active @endif" id="{{  $courttype->name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ $courttype->name }}-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">{{ $courttype->name  }}</button>
+                            @endif
+                            @endforeach
+                        </div>
+                    </nav> --}}
+                    {{-- <div class="tab-content" id="nav-tabContent">
+                        @foreach ($courtTypes as $courttype2)
+                        @if ($courttype->categories_count > 0)
+                        <div class="tab-pane fade @if($loop->first) show active @endif" id="{{  $courttype2->name }}-home" role="tabpanel" aria-labelledby="{{  $courttype2->name }}-tab">
+                            {{ $courttype2->name }}
+                        </div>
+                        @endif
+                        @endforeach
+                    </div> --}}
+
                     <div class="wire:opacity=4">
                         <table id="" class="table table-bordered">
                             <thead>

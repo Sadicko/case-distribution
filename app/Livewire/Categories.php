@@ -31,7 +31,7 @@ class Categories extends Component
 
     public function mount()
     {
-        $this->courtTypes = Courttype::query()->get();
+        $this->courtTypes = Courttype::query()->withCount('categories')->get();
     }
 
 
@@ -112,7 +112,7 @@ class Categories extends Component
         $this->reset(['editCategoryName', 'editCourtType', 'editStatus']);
 
         // Emit an event to refresh the table
-        $this->dispatch('modal-hide');
+        $this->dispatch('hide-edit-modal');
     }
 
     public function checkIfUpdateCategoryExist()
