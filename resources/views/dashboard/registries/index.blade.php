@@ -36,6 +36,7 @@
                					<th>Registry</th>
                					<th>Email</th>
                					<th>Location</th>
+                                <th>Court Type</th>
                					<th>Region</th>
                					<th>Courts</th>
                					<th class="text-center">Action</th>
@@ -48,6 +49,7 @@
                					<td>{{ $registry->name. ' - ' .$registry->code }}</td>
                					<td>{{ $registry->email }}</td>
                					<td>{{ $registry->locations->name }}</td>
+                                <td>{{ $registry->courttypes->name ?? '-'}}</td>
                					<td>{{ $registry->locations->regions?->name }}</td>
                					<td>{{ $registry->courts_count }}</td>
                					<td class="text-center">

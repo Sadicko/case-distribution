@@ -49,16 +49,7 @@
 											<x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
 											</div>
 
-											<div class="col-md-6 mb-3">
-												<label for="court_type"  class="form-label">Court type</label>
-												<select class="form-control select2" name="court_type"  id="court_type">
-													<option value=""></option>
-													@foreach($courttypes as $court_type)
-													<option value="{{ $court_type->id }}" {{ old('court_type') == $court_type->id ? 'selected' : ($location->courttype_id == $court_type->id ? 'selected' : '') }} >{{ $court_type->name }}</option>
-													@endforeach
-												</select>
-												<x-input-error :messages="$errors->get('region')" class="mt-2 text-danger" />
-												</div>
+
 												<div class="col-md-6 mb-3">
 													<label for="region"  class="form-label">Region</label>
 													<select class="form-control select2" name="region" required id="region">

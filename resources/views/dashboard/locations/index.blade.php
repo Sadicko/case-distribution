@@ -34,7 +34,7 @@
                 				<th>##</th>
                 				<th>Location</th>
                 				<th>Code</th>
-                				<th>Court Type</th>
+                				{{-- <th>Court Type</th> --}}
                 				<th>Region</th>
                 				<th class="text-center">Action</th>
                 			</tr>
@@ -45,7 +45,7 @@
                 				<td>{{ $loop->index + 1 }}</td>
                 				<td>{{ $location->name }}</td>
                 				<td>{{ $location->code ?? '-'}}</td>
-                				<td>{{ $location->courttypes->name ?? '-'}}</td>
+                				{{-- <td>{{ $location->courttypes->name ?? '-'}}</td> --}}
                 				<td>{{ $location->regions?->name ?? '-' }}</td>
                 				<td class="text-center">
                 					<a href="{{ route('locations.edit', $location->slug) }}" class="mr-2"><i class="fas fa-pencil-alt"></i></a>
@@ -53,7 +53,7 @@
                 			</tr>
                 			@endforeach
                 		</tbody>
-                	</table>	
+                	</table>
                 </div>
             </div>
         </div>

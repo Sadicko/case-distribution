@@ -28,10 +28,12 @@ class Location extends Model
     {
         return $this->hasMany(Court::class, 'location_id');
     }
-    public function assets()
+
+    public function registries()
     {
-        return $this->hasMany(Asset::class, 'location_id');
+        return $this->hasMany(Registry::class, 'location_id');
     }
+
 
     public static function fetchLocationsWithCourt()
     {

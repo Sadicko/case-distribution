@@ -34,6 +34,11 @@ class Registry extends Model
         return $this->hasMany(Court::class, 'registry_id');
     }
 
+    public function courttypes()
+    {
+        return $this->belongsTo(Courttype::class, 'courttype_id');
+    }
+
     public static function fetchRegistry()
     {
         $user = Auth::user();

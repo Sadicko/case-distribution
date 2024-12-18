@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Courttype;
 use App\Models\Location;
 use App\Models\Registry;
 use App\Traits\AuditTrailLog;
@@ -40,10 +41,11 @@ class RegistryController extends Controller
         }
 
         $locations = Location::orderby('name', 'asc')->get();
+        $courttypes = Courttype::query()->where('status', 'Published')->latest()->get();
 
         $this->createAuditTrail("Visited Registry creation page");
 
-        return view('dashboard.registries.create', compact('locations'));
+        return view('dashboard.registries.create', compact('locations', 'courttypes'));
     }
 
     public function store(Request $request)
@@ -61,6 +63,7 @@ class RegistryController extends Controller
             'registry_code' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
+            'court_type' => ['required', 'integer'],
             'location' => ['required', 'integer'],
         ]);
 
@@ -79,6 +82,7 @@ class RegistryController extends Controller
             'status' => $request->status,
             'location_id' => $request->location,
             'region_id' => Location::find($request->location)->region_id,
+            'courttype_id' => $request->court_type,
             'slug' => str_shuffle(uniqid()),
         ]);
 
@@ -101,15 +105,18 @@ class RegistryController extends Controller
 
         $registry =  Registry::whereslug($slug)->firstOrfail();
         $locations = Location::orderby('name', 'asc')->get();
+        $courttypes = Courttype::query()->where('status', 'Published')->latest()->get();
 
         $this->createAuditTrail("Visited Registry edit page.");
 
-        return view('dashboard.registries.edit', compact('registry', 'locations'));
+        return view('dashboard.registries.edit', compact('registry', 'locations', 'courttypes'));
     }
 
 
     public function update(Request $request, $slug)
     {
+
+        // return $request;
 
         if (Gate::denies('Update registries')) {
 
@@ -123,6 +130,7 @@ class RegistryController extends Controller
             'registry_code' => ['required', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
+            'court_type' => ['required', 'integer'],
             'location' => ['required', 'integer'],
         ]);
 
@@ -144,6 +152,7 @@ class RegistryController extends Controller
             'status' => $request->status,
             'email' => $request->email,
             'location_id' => $request->location,
+            'courttype_id' => $request->court_type,
             'region_id' => $region,
         ]);
 

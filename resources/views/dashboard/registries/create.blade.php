@@ -63,6 +63,16 @@
 												</select>
 												<x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
 												</div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="court_type"  class="form-label">Court type</label>
+                                                    <select class="form-control select2" name="court_type">
+                                                        <option value=""></option>
+                                                        @foreach($courttypes as $court_type)
+                                                        <option value="{{ $court_type->id }}" {{ old('court_type') == $court_type->id ? 'selected' : '' }} >{{ $court_type->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <x-input-error :messages="$errors->get('court_type')" class="mt-2 text-danger" />
+                                                    </div>
 
 												<div class="col-md-12 mb-3">
 													<button type="submit" class="btn btn-primary bg-gradient-primary btn-sm mt-3"><i class="fas fa-save"></i> Create</button>

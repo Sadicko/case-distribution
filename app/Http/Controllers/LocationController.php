@@ -15,9 +15,10 @@ class LocationController extends Controller
 {
     use AuditTrailLog;
 
-    public function index(){
+    public function index()
+    {
 
-        if(Gate::denies('Manage locations')){
+        if (Gate::denies('Manage locations')) {
 
             $this->createAuditTrail("Denied access to the location list page: Unauthorized");
 
@@ -33,9 +34,10 @@ class LocationController extends Controller
         return view('dashboard.locations.index', compact('locations'));
     }
 
-    public function create(){
+    public function create()
+    {
 
-        if(Gate::denies('Create locations')){
+        if (Gate::denies('Create locations')) {
 
             $this->createAuditTrail("Denied access to create location: Unauthorized");
 
@@ -52,8 +54,9 @@ class LocationController extends Controller
         return view('dashboard.locations.create', compact('regions', 'courttypes'));
     }
 
-    public function store(Request $request){
-        if(Gate::denies('Create locations')){
+    public function store(Request $request)
+    {
+        if (Gate::denies('Create locations')) {
 
             $this->createAuditTrail("Denied access to create location: Unauthorized");
 
@@ -64,7 +67,7 @@ class LocationController extends Controller
             'location_name' => ['required', 'string', 'max:255'],
             'location_code' => ['nullable', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
-            'court_type' => ['required', 'array'],
+            // 'court_type' => ['required', 'integer'],
             'region' => ['required', 'integer'],
         ]);
 
@@ -76,7 +79,7 @@ class LocationController extends Controller
             'name' => $request->location_name,
             'code' => $request->location_code,
             'status' => $request->status,
-            'courttype_id' => $request->court_type,
+            // 'courttype_id' => $request->court_type,
             'region_id' => $request->region,
             'slug' => str_shuffle(uniqid()),
             'created_by' => Auth::id(),
@@ -95,23 +98,27 @@ class LocationController extends Controller
     }
 
 
-    public function fetchLocations(Request $request){
+    public function fetchLocations(Request $request)
+    {
 
-        if($request->wantsJson()){
+        if ($request->wantsJson()) {
 
-            $locations = Location::query()->where('courttype_id', $request->court_type)->get();
+            $locations = Location::query()->whereHas('registries', function ($query) use ($request) {
+                $query->where('courttype_id', $request->court_type);
+            })->get();
+            // $locations = Location::query()->where('courttype_id', $request->court_type)->get();
 
             return response()->json($locations);
         }
 
         abort(404);
-
     }
 
 
-    public function edit($slug){
+    public function edit($slug)
+    {
 
-        if(Gate::denies('Update Locations')){
+        if (Gate::denies('Update Locations')) {
 
             $this->createAuditTrail("Denied access to update location: Unauthorized");
 
@@ -130,9 +137,10 @@ class LocationController extends Controller
     }
 
 
-    public function update(Request $request, $slug){
+    public function update(Request $request, $slug)
+    {
 
-        if(Gate::denies('Update Locations')){
+        if (Gate::denies('Update Locations')) {
 
             $this->createAuditTrail("Denied access to update location: Unauthorized");
 
@@ -162,9 +170,9 @@ class LocationController extends Controller
         ]);
 
 
-        if($request->status == 'Move to trash'){
+        if ($request->status == 'Move to trash') {
 
-            if(Gate::denies('Delete Locations')){
+            if (Gate::denies('Delete Locations')) {
 
                 $this->createAuditTrail("Denied access to delete location: Unauthorized");
 
@@ -184,5 +192,3 @@ class LocationController extends Controller
         return back()->with('success', 'Location updated successfully.');
     }
 }
-
-

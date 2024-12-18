@@ -20,24 +20,25 @@ class Courttype extends Model
     public function locations()
     {
         return $this->hasMany(Location::class, 'courttype_id');
-
     }
 
     public function courts()
     {
         return $this->hasMany(Court::class, 'courttype_id');
-
     }
 
     public function categories()
     {
         return $this->hasMany(Category::class, 'courttype_id');
-
     }
 
     public function judges()
     {
         return $this->hasMany(Judge::class, 'courttype_id');
+    }
 
+    public function registries()
+    {
+        return $this->hasMany(Registry::class, 'courttype_id');
     }
 }
