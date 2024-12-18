@@ -46,7 +46,7 @@ class Categories extends Component
         $this->validate();
 
         if ($this->checkIfCategoryExist()) {
-            $this->addError('categoryName', 'Category name already taken for specified court type');
+            $this->addError('categoryName', 'Category name already taken for the specified court type');
             return;
         }
 
@@ -69,7 +69,7 @@ class Categories extends Component
 
     public function checkIfCategoryExist()
     {
-        return Category::query()->where('name', strtoupper($this->categoryName))->where('courttype_id', '==', $this->courtType)->exists();
+        return Category::query()->where('name', strtoupper($this->categoryName))->where('courttype_id', $this->courtType)->exists();
     }
 
     public function edit($slug)
@@ -94,7 +94,8 @@ class Categories extends Component
 
         if ($this->checkIfUpdateCategoryExist()) {
             $this->addError('editCategoryName', 'Category name already taken for specified court type');
-            exit();
+            $this->dispatch('show-edit-modal');
+            return;
         }
 
         $category = Category::query()->where('slug', $this->slug)->first();
@@ -116,7 +117,11 @@ class Categories extends Component
 
     public function checkIfUpdateCategoryExist()
     {
-        return Category::query()->where('name', strtoupper($this->categoryName))->where('slug', '!=', $this->slug)->where('courttype_id', '!=', $this->courtType)->exists();
+        return Category::query()
+            ->where('name', strtoupper($this->editCategoryName)) // Check if the name matches
+            ->where('courttype_id', $this->editCourtType) // Ensure it's the same court type
+            ->where('slug', '!=', $this->slug) // Exclude the current record
+            ->exists();
     }
 
 
