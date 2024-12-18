@@ -69,7 +69,7 @@ class Categories extends Component
 
     public function checkIfCategoryExist()
     {
-        return Category::query()->where('name', strtoupper($this->categoryName))->where('courttype_id', '!=', $this->courtType)->exists();
+        return Category::query()->where('name', strtoupper($this->categoryName))->where('courttype_id', '==', $this->courtType)->exists();
     }
 
     public function edit($slug)
