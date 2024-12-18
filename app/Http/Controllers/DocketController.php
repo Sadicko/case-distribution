@@ -56,7 +56,7 @@ class DocketController extends Controller
                 'allocations.courts',
                 'allocations.judges',
                 'allocations.locations',
-                'reallocation' => function ($query) {
+                'reallocations' => function ($query) {
                     $query->where('status', 'pending')
                         ->select('id', 'docket_id', 'status')
                         ->withCount(['approvals' => function ($subQuery) {
@@ -130,7 +130,7 @@ class DocketController extends Controller
                     'case_title' => strtoupper($request->case_title),
                     'category_id' => $request->case_category,
                     'case_stage' => $request->commercial_type ?? 'Trial',
-                    'reason_for_manual_assignment' => 'New',
+                    'reason_for_assignment' => 'New',
                     'location_id' => $request->location,
                     //'date_filed' => Carbon::createFromFormat('d/m/Y', $request->date_filed),
                     'priority_level' => $request->priority_level,
@@ -229,7 +229,7 @@ class DocketController extends Controller
                     'judge_id' => $request->judge,
                     'assigned_date' => Carbon::createFromFormat('d/m/Y H:i', $request->date_assignment),
                     'priority_level' => $request->priority_level,
-                    'reason_for_manual_assignment' => $request->reason,
+                    'reason_for_assignment' => $request->reason,
                     'status' => 'Assigned',
                     'is_assigned' => 1,
                     'assign_type' => 'manual',
@@ -243,7 +243,7 @@ class DocketController extends Controller
                     'judge_id' => $docket->judge_id,
                     'location_id' => $docket->location_id,
                     'assigned_by' => $docket->created_by,
-                    'assignment_reason' => $docket->reason_for_manual_assignment,
+                    'assignment_reason' => $docket->reason_for_assignment,
                     'assigned_date' => $docket->assigned_date,
                     'case_stage' => $docket->case_stage ?? 'Trial',
                 ]);

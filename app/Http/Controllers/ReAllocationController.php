@@ -87,7 +87,7 @@ class ReAllocationController extends Controller
                     'location_id' => $docket->location_id,
                     'category_id' => $request->case_category,
                     'case_stage' => $request->commercial_type ?? $docket->case_stage,
-                    'reason_for_manual_assignment' => $request->reason,
+                    'reason_for_re_assignment' => $request->reason,
                     'submitted_by' => Auth::id(),
                     'status' => 'pending',
                 ]);
@@ -134,7 +134,7 @@ class ReAllocationController extends Controller
             });
 
             // Return success message after the transaction
-            return to_route('cases.show', $docket->slug)->with('success', "Reassignment Initiated. Awaiting approval");
+            return to_route('cases.show', $docket->slug)->with('success', "Rea-allocation Initiated. Awaiting approval");
         } catch (\Exception $e) {
             // Step 3: Handle failure
 
@@ -149,46 +149,123 @@ class ReAllocationController extends Controller
     {
 
         $request->validate([
-            'case_category' => ['required', 'integer'],
-            'reason' => ['required', 'string'],
+            'slug' => ['required', 'string'],
         ]);
 
-        //get docket
-        $docket = Docket::query()->with('categories')->where('slug', $request->slug)->firstOrFail();
+        //fetch initiated docket for re-allocation
+        $reAssignDocket = CaseReassignment::query()->with('dockets', 'categories', 'approvals')->where('slug', $request->slug)->firstOrFail();
 
+        //check if current user has approval right or is the required person to approve.
+        $approval = CaseReassignmentApproval::where('case_reassignment_id', $reAssignDocket->id)
+            ->where('is_approved', false)
+            ->where('approved_by', Auth::id())
+            ->first();
+
+        if (!$approval) {
+            return response()->json(['error' => 'You do not have pending approval or you are not authorized to approved this re-allocation.']);
+        }
+
+
+        //using transaction to ensure all query completes for assignments
         try {
             //initialize assigned court
             $assignedCourt = null;
+            $message = null;
 
             //start transaction
-            DB::transaction(function () use ($request, &$assignedCourt, &$docket) {
+            DB::transaction(function () use ($request, &$assignedCourt, &$message, &$approval, &$reAssignDocket) {
 
-                //update docket by changing category
-                $docket->update([
-                    'category_id' => $request->case_category,
-                    'reason_for_manual_assignment' => $request->reason
+                //Set is_approve to true for current user
+                $approval->update([
+                    'is_approved' => true,
                 ]);
 
 
-                //log case creation
-                $this->createAuditTrail("Updated case with suit number $docket->suit_number by changing the category");
+                // Check if all approvals are done. Then update the docket itself and trigger re-assignment
+                $pendingApprovals = CaseReassignmentApproval::where('case_reassignment_id', $reAssignDocket->id)
+                    ->where('is_approved', false)
+                    ->count();
 
+                if ($pendingApprovals == 0) {
+                    //update initiated records
+                    $reAssignDocket->update(['status' => 'approved']);
 
-                // Step 2: re-assign the case using the service
-                $assignedCourt = $this->caseDistributionService->assignCase($docket);
+                    // Step 1: update the actual docket by changing category
+                    $docket = $reAssignDocket->dockets;
+                    $docket->update([
+                        'category_id' => $reAssignDocket->category_id,
+                        'reason_for_assignment' => $reAssignDocket->reason_for_assignment
+                    ]);
 
-                // Log case assignment
-                $this->createAuditTrail("Re-assigned the case with suit no $docket->suit_number to $assignedCourt->name successfully");
+                    //log re-allocation
+                    $this->createAuditTrail("Approved step $approval->step for the case with suit number $reAssignDocket->suit_number for re-allocation.");
+
+                    // Step 2: re-assign the case using the service
+                    $assignedCourt = $this->caseDistributionService->assignCase($docket);
+
+                    //set initiated to false. That means, case reallocated
+                    $docket->update(['reassignment_initiated' => false]);
+
+                    $message = "The case with suit no $docket->suit_number has been Re-allocated to $assignedCourt->name successfully";
+
+                    // Log case assignment
+                    $this->createAuditTrail("Re-allocated the case with suit no $docket->suit_number to $assignedCourt->name");
+                } else {
+                    //message after only approving
+                    $message = "Approved step $approval->step for the case with suit number $reAssignDocket->suit_number for re-allocation.";
+                    //log re-allocation
+                    $this->createAuditTrail("Approved step $approval->step for the case with suit number $reAssignDocket->suit_number for re-allocation.");
+                }
             });
 
             // Return success message after the transaction
-            return to_route('cases.show', $docket->slug)->with('success', "The case with suit no $docket->suit_number has been re-allocated to $assignedCourt->name successfully");
+            return response()->json(['success' => $message]);
         } catch (\Exception $e) {
             // Step 3: Handle failure
 
-            Log::error("An error occurred during docket creation or allocation: " . $e->getMessage());
+            Log::error("The approval process did not complete as expected. Re-allocation not done. Error: " . $e->getMessage());
 
-            return back()->withInput()->with('error', "An error occurred during the update and re-allocation. Try again");
+            return response()->json(["error" => "The approval process did not complete as expected. Re-allocation not done. Please try again"]);
         }
+    }
+
+
+    public function approveReassignment($request, $id)
+    {
+        $approval = CaseReassignmentApproval::where('case_reassignment_id', $id)
+            ->where('is_approved', false)
+            ->where('approved_by', Auth::id())
+            ->first();
+
+        if (!$approval) {
+            return 'You do not have pending approval or you are not authorized to approved this re-allocation.';
+        }
+
+        // // Check if the user has already approved any step
+        // $alreadyApproved = CaseReassignmentApproval::where('case_reassignment_id', $id)
+        //     ->where('approved_by', Auth::id())
+        //     ->exists();
+
+        // if ($alreadyApproved) {
+        //     return 'You have already approved this re-allocation.';
+        // }
+
+        $approval->update([
+            'is_approved' => true,
+            'approved_by' => auth()->id(),
+        ]);
+
+        // Check if all approvals are done
+        $pendingApprovals = CaseReassignmentApproval::where('case_reassignment_id', $id)
+            ->where('is_approved', false)
+            ->count();
+
+        if ($pendingApprovals == 0) {
+            $reassignment = CaseReassignment::find($id);
+            $reassignment->update(['status' => 'approved']);
+            // Update docket or courts table as needed here
+        }
+
+        return redirect()->back()->with('success', 'Approval successful.');
     }
 }

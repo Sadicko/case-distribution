@@ -18,4 +18,9 @@ class CaseReassignment extends Model
     {
         return $this->belongsTo(Docket::class, 'docket_id');
     }
+
+    public function categories()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

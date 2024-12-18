@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('dockets', function (Blueprint $table) {
-            $table->longText('reason_for_manual_assignment')->nullable('Reason for manual assignment');
+            $table->longText('reason_for_assignment')->nullable('Reason for assignment');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('dockets', function (Blueprint $table) {
-            $table->dropColumn(['reason_for_manual_assignment']);
+            $table->dropColumn(['reason_for_assignment']);
         });
     }
 };

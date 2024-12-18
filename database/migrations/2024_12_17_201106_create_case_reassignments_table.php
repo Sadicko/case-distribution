@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('category_id');
             $table->string('case_stage')->nullable();
             $table->foreignId('location_id');
-            $table->longText('reason_for_manual_assignment');
+            $table->longText('reason_for_re_assignment');
             $table->unsignedBigInteger('submitted_by');
             $table->string('status')->default('pending')->comment('pending, approved, rejected');
             $table->timestamps();

@@ -75,7 +75,7 @@ class CaseDistributionService
             'judge_id' => $docket->judge_id,
             'location_id' => $docket->location_id,
             'assigned_by' => $docket->created_by,
-            'assignment_reason' => $docket->reason_for_manual_assignment,
+            'assignment_reason' => $docket->reason_for_assignment,
             'assigned_date' => $docket->assigned_date,
             'case_stage' => $docket->case_stage,
         ]);

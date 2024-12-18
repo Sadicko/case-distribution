@@ -191,7 +191,7 @@
                                     <div class="accordion-body">
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table id="initTable" class="table table-striped table-hover display">
+                                                <table class="table table-striped table-hover display">
                                                     <thead>
                                                     <tr>
                                                         <th>##</th>

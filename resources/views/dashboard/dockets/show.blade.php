@@ -65,7 +65,7 @@
                     @if ($docket->reassignment_initiated)
                     <div class="alert alert-danger bg-warning alert-dismissible fade show" role="alert">
                       <i class="fas fa-exclamation-triangle"></i> Re-allocation has been initiated for this case.
-                        | {{ $docket->reallocation?->approvals_count ?? '0' }} out of  {{  getenv("APPROVAL_STEPS") }} approval  step(s) completed.
+                        | {{ $docket->reallocations?->approvals_count ?? '0' }} out of  {{  getenv("APPROVAL_STEPS") }} approval  step(s) completed.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endif
@@ -135,7 +135,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="priority" class="form-label">Reason</label>
-                            <p class="form-control-plaintext" id="priority">{{ $docket->reason_for_manual_assignment }}</p>
+                            <p class="form-control-plaintext" id="priority">{{ $docket->reason_for_assignment }}</p>
                         </div>
                         @if($docket->disposed_by)
                         <div class="col-md-6 mb-3">

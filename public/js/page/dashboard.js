@@ -188,58 +188,6 @@ $(function () {
     })
 
 
-    $(document).on('click', '#releaseBail', function () {
-
-        if (confirm('Are you sure you want to RELEASE this bail?')) {
-            let btn = $(this);
-
-            let slug = btn.data('slug');
-
-            btn.html('<i class="fas fa-spin fa-spinner"></i> Releasing...');
-
-            $.post('/bail/release', { slug: slug }, function (data) {
-
-                if (data.success) {
-                    btn.hide();
-                    $('.show_released').show()
-                    toastr.success(data.success);
-
-                    livewire.emit('reloadComponent');
-
-                    window.location.reload();
-
-                } else {
-                    btn.html('<i class="fas fa-check"></i> Release bail').show();
-                    toastr.error(data.error);
-                }
-            })
-        }
-    })
-
-
-    $(document).on('click', '#releaseSurety', function () {
-
-        if (confirm('Are you sure you want to RELEASE this surety document?')) {
-            let btn = $(this);
-
-            let slug = btn.data('slug');
-
-            btn.html('<i class="fas fa-spin fa-spinner"></i> Releasing...');
-
-            $.post('/surety/release', { slug: slug }, function (data) {
-
-                if (data.success) {
-                    toastr.success(data.success);
-                    btn.html('<i class="fas fa-check"></i> Release Document');
-                    window.location.reload();
-                } else {
-                    btn.html('<i class="fas fa-check"></i> Release Document');
-                    toastr.error(data.error);
-                }
-            })
-        }
-    })
-
 
     $(document).on('click', '#checkAll', function () {
         if ($(this).is(':checked')) {
@@ -331,5 +279,42 @@ $(function () {
         const today = new Date().toISOString().split('T')[0];
         document.querySelector('.date').setAttribute('max', today);
     }
+
+
+    $(document).on('click', '.confirm-approval', function () {
+
+        $('#docket_slug').val($(this).data('slug'));
+        $(".selected_suit_number").html($(this).data('suit'))
+        $(".selected_case_title").html($(this).data('title'))
+        $(".current_category").html($(this).data('oldcategory'))
+        $(".selected_category").html($(this).data('newcategory'))
+        $(".reason_for_reallocation").html($(this).data('reason'))
+
+        $("#confirmApprovalModal").modal('show');
+    })
+
+
+    $(document).on('click', '#proceedApproval', function () {
+
+        let btn = $(this);
+
+        let slug = $('#docket_slug').val();
+
+        btn.html('<i class="fas fa-spin fa-spinner"></i> Approving...');
+
+        $.post('/cases/reassign/approve', { slug: slug }, function (data) {
+
+            if (data.success) {
+                // $("#releaseBailModal").modal('hide');
+                window.location.reload();
+                toastr.success(data.success);
+
+            } else {
+                btn.html('Yes! Approve').show();
+                toastr.error(data.error);
+            }
+        })
+    })
+
 
 })

@@ -61,7 +61,7 @@ class Docket extends Model
         return $this->belongsTo(User::class, 'disposed_by', 'id');
     }
 
-    public function reallocation()
+    public function reallocations()
     {
         return $this->hasOne(CaseReassignment::class, 'docket_id');
     }
@@ -81,7 +81,7 @@ class Docket extends Model
                 'location_id',
                 'priority_level',
                 'date_filed',
-                'reason_for_manual_assignment',
+                'reason_for_assignment',
                 'case_stage'
             ];
 
@@ -114,7 +114,7 @@ class Docket extends Model
                 'disposed_at',
                 'disposed_by',
                 'created_by',
-                'reason_for_manual_assignment',
+                'reason_for_assignment',
                 'case_stage'
             ];
 

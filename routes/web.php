@@ -96,6 +96,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     //re-allocation
     Route::get('/cases/{slug}/reassign-by-category', [ReAllocationController::class, 'allocationByCategory'])->name('cases.reassign-by-category');
     Route::post('/cases/{slug}/reassign-by-category', [ReAllocationController::class, 'saveAllocationByCategory'])->name('cases.reassign-by-category');
+    Route::post('/cases/reassign/approve', [ReAllocationController::class, 'reassign']);
 
     // download csv template
     Route::get('/download-template', [UploadController::class, 'downloadTemplate'])->name('download-template');
@@ -150,7 +151,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('/judges/{slug}/edit', [JudgeController::class, 'edit'])->name('judges.edit');
     Route::post('/judges/{slug}/edit', [JudgeController::class, 'update'])->name('judges.edit');
 
-    //court-judge assigment
+    //court-judge assignment
     Route::get('/court-judge/{slug}/assign', [CourtJudgeController::class, 'index'])->name('court-judge');
     Route::post('/court-judge/{slug}/assign', [CourtJudgeController::class, 'assignJudge'])->name('court-judge');
 
