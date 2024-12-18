@@ -92,9 +92,9 @@ class Categories extends Component
             'editStatus' => 'required',
         ]);
 
-        if ($this->checkIfCategoryExist()) {
-            $this->addError('categoryName', 'Category name already taken for specified court type');
-            return;
+        if ($this->checkIfUpdateCategoryExist()) {
+            $this->addError('editCategoryName', 'Category name already taken for specified court type');
+            exit();
         }
 
         $category = Category::query()->where('slug', $this->slug)->first();
