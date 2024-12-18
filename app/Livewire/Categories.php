@@ -36,7 +36,7 @@ class Categories extends Component
 
 
     protected $rules = [
-        'categoryName' => 'required|string|max:225|unique:categories,name',
+        'categoryName' => 'required|string|max:225',
         'courtType' => 'required|integer',
         'status' => 'required',
     ];
@@ -44,6 +44,13 @@ class Categories extends Component
     public function saveCategory()
     {
         $this->validate();
+
+        if ($this->checkIfCategoryExist()) {
+            $this->addError('categoryName', 'Category name already taken for specified court type');
+            return;
+        }
+
+
         Category::query()->create([
             'slug' => uniqid(),
             'name' => strtoupper($this->categoryName),
@@ -52,11 +59,17 @@ class Categories extends Component
             'created_by' => Auth::id(),
         ]);
 
-        $this->createAuditTrail("Created new category #".$this->categoryName);
+        $this->createAuditTrail("Created new category #" . $this->categoryName);
 
         $this->reset(['categoryName', 'courtType', 'status']);
 
         $this->dispatch('categoryUpdated'); // Emit an event to refresh the table
+    }
+
+
+    public function checkIfCategoryExist()
+    {
+        return Category::query()->where('name', strtoupper($this->categoryName))->where('courttype_id', '!=', $this->courtType)->exists();
     }
 
     public function edit($slug)
@@ -79,6 +92,11 @@ class Categories extends Component
             'editStatus' => 'required',
         ]);
 
+        if ($this->checkIfCategoryExist()) {
+            $this->addError('categoryName', 'Category name already taken for specified court type');
+            return;
+        }
+
         $category = Category::query()->where('slug', $this->slug)->first();
 
         $category->update([
@@ -88,7 +106,7 @@ class Categories extends Component
         ]);
 
         //log
-        $this->createAuditTrail("Updated records for case category #".$this->editCategoryName);
+        $this->createAuditTrail("Updated records for case category #" . $this->editCategoryName);
 
         $this->reset(['editCategoryName', 'editCourtType', 'editStatus']);
 
@@ -96,11 +114,16 @@ class Categories extends Component
         $this->dispatch('modal-hide');
     }
 
+    public function checkIfUpdateCategoryExist()
+    {
+        return Category::query()->where('name', strtoupper($this->categoryName))->where('slug', '!=', $this->slug)->where('courttype_id', '!=', $this->courtType)->exists();
+    }
+
 
 
     public function search()
     {
-        return Category::query()->with('courttypes')->when($this->query, function ($query){
+        return Category::query()->with('courttypes')->when($this->query, function ($query) {
             $query->whereLike(['name'], $this->query);
         })->latest()->paginate(15);
     }
