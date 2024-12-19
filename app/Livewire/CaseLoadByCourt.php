@@ -38,7 +38,7 @@ class CaseLoadByCourt extends Component
 
         $this->startDate = $legalYearStart->format('Y-m-d');
         $this->endDate = $legalYearEnd->format('Y-m-d');
-        $this->categories = Category::getCategories()->get();
+        $this->categories = Category::getCategories()->with('courttypes')->get();
         $this->locations = Location::fetchLocations()->get();
         // $this->registries = Registry::fetchRegistry()->get();
 

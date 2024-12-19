@@ -24,7 +24,7 @@ class DocketManager extends Component
 
     public function mount()
     {
-        $this->categories = Category::fetchCategoriesWithCourt()->get();
+        $this->categories = Category::fetchCategoriesWithCourt()->with('courttypes')->get();
         $this->selectedCategory = null;
         $this->selectedCourt = null;
     }
@@ -76,13 +76,11 @@ class DocketManager extends Component
             $endDate = date('Y-m-d', strtotime($this->endDate . ' +1 day'));
 
             $query->whereBetween('assigned_date', [$startDate . ' 00:00:00', $endDate . ' 00:00:00']);
-
         }
 
         $this->dispatch('search-completed');
 
         return $query->latest()->paginate(15);
-
     }
 
     public function clear()

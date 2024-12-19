@@ -17,8 +17,7 @@
                                     <select name="category" id="case_category" wire:model.live="selectedCategory" class="form-control select2">
                                         <option></option>
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}
-                                            </option>
+                                            <option value="{{ $category->id }}">{{ $category->name }} @if(!in_array(Auth::user()->access_type, registry_level())) - {{  $category->courttypes->name }} @endif</option>
                                         @endforeach
                                     </select>
                                 </div>

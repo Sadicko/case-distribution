@@ -62,8 +62,7 @@
                 <select name="category" class="form-control select2" id="case_category" wire:model="selectedCategory">
                     <option value="all">All</option>
                     @foreach($categories as $cat)
-                    <option value="{{ $cat->id }}">{{ $cat->name }}
-                    </option>
+                    <option value="{{ $cat->id }}">{{ $cat->name }} @if(!in_array(Auth::user()->access_type, registry_level())) - {{  $cat->courttypes->name }} @endif </option>
                     @endforeach
                 </select>
             </div>
