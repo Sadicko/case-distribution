@@ -129,7 +129,7 @@ class Categories extends Component
     public function search()
     {
         return Category::query()->with('courttypes')->when($this->query, function ($query) {
-            $query->whereLike(['name'], $this->query);
+            $query->whereLike(['name', 'courttypes.name'], $this->query);
         })->latest()->paginate(15);
     }
 
