@@ -1,11 +1,11 @@
 <div>
     <div class="row">
-        <div class="form-group col-6 mb-3" @if (in_array(Auth::user()->access_type, registry_level()) && count($categories) > 0 )  @endif>
+        <div class="form-group col-6 mb-3">
             <label for="case_category" class="form-label">Case category*</label>
             <select name="case_category" class="form-control select2" id="case_category">
                 <option value=""></option>
                 @foreach($categories as $category)
-                    <option value="{{ $category->id }}" data-name="{{ $category->name }}"  {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" data-name="{{ $category->name }}"  {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }} @if(!in_array(Auth::user()->access_type, registry_level())) - {{  $category->courttypes->name }} @endif</option>
                 @endforeach
             </select>
             @error('case_category')

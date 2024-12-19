@@ -72,11 +72,24 @@ class Court extends Model
         return $this->hasMany(CourtLog::class, 'court_id', 'id');
     }
 
+
+    protected static $loggingUserId = null;
+
+    public static function setLoggingUser($userId)
+    {
+        static::$loggingUserId = $userId;
+    }
+
+    public static function getLoggingUser()
+    {
+        return static::$loggingUserId ?? Auth::id();
+    }
+
     protected static function boot()
     {
         parent::boot();
 
-        // Log the initial creation of the will
+        // Log the initial creation of the court
         static::created(function ($court) {
             $fields = [
                 'name',
@@ -95,14 +108,14 @@ class Court extends Model
 
                     'slug' => uniqid(),
                     'court_id' => $court->id,
-                    'user_id' => Auth::id(),
+                    'user_id' => self::getLoggingUser(),
                     'activity' => 'Created',
                     'comment' => "Initial value for " . $field . " : " . $court->$field ?? " not_set"
                 ]);
             }
         });
 
-        // Log any updates to specific fields after the will has been created
+        // Log any updates to specific fields after the court has been created
         static::updated(function ($court) {
             $fieldsToCheck = [
                 'name',
@@ -123,7 +136,7 @@ class Court extends Model
                     CourtLog::query()->create([
                         'slug' => uniqid(),
                         'court_id' => $court->id,
-                        'user_id' => Auth::id(),
+                        'user_id' => self::getLoggingUser(),
                         'activity' => 'Updated',
                         'comment' => "{$field} was changed from " . ($court->getOriginal($field) ?? 'not_set') . " to " . ($court->$field ?? 'not_set'),
                     ]);
@@ -140,17 +153,14 @@ class Court extends Model
         if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
 
             $query = static::query()->where('availability', 1);
-
         } elseif (Gate::any(court_room_access_level())) {
 
             $query = static::query()->where('id', $user->court_id)->where('availability', 1);
-
         } else {
 
             $query = static::query()->where('registry_id', $user->registry_id)->where('availability', 1);
         }
 
         return $query;
-
     }
 }

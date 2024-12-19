@@ -46,7 +46,7 @@
                                     <th>#!</th>
                                     <th>Suit Number</th>
                                     <th>Case Title</th>
-                                    <th>Date Of Filing</th>
+                                    {{-- <th>Date Of Filing</th> --}}
                                     <th>Case Category</th>
                                     <th>Case Location</th>
                                 </tr>
@@ -57,7 +57,7 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $row['suit_number'] }}</td>
                                         <td>{{ $row['case_title'] }}</td>
-                                        <td>{{ $row['date_filed'] }}</td>
+                                        {{-- <td>{{ $row['date_filed'] }}</td> --}}
                                         <td>{{ $row['case_category'] }}</td>
                                         <td>{{ $row['location'] }}</td>
                                     </tr>

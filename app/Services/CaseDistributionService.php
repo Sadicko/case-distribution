@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Allocation;
 use App\Models\Court;
+use Illuminate\Support\Facades\Log;
 
 class CaseDistributionService
 {
@@ -15,7 +16,7 @@ class CaseDistributionService
         //
     }
 
-    public function assignCase($docket)
+    public function assignCase($docket, $userId = null)
     {
         // Step 1: Fetch all eligible courts
         $eligibleCourts = Court::query()
@@ -58,8 +59,8 @@ class CaseDistributionService
 
 
         // Step 5: Update court workload and log assignment
-        $selectedCourt->increment('case_count');
-
+        Court::setLoggingUser($userId);  // set the logging user
+        $selectedCourt->increment('case_count'); //increment the workload
 
         // Step 6: Assign court and judge to docket
         $docket->court_id = $selectedCourt->id;

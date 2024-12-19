@@ -22,3 +22,18 @@
 
    INFO  Horizon started successfully.  
 
+  2024-12-19 09:59:04 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-12-19 09:59:08 App\Jobs\ProcessCasesJob ....................... 4s DONE
+  2024-12-19 10:29:44 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-12-19 10:29:49 App\Jobs\ProcessCasesJob ....................... 4s DONE
+  2024-12-19 10:35:51 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-12-19 10:35:56 App\Jobs\ProcessCasesJob ....................... 4s DONE
+  2024-12-19 10:36:53 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-12-19 10:36:59 App\Jobs\ProcessCasesJob ....................... 5s DONE
+
+   INFO  Horizon started successfully.  
+
+  2024-12-19 10:39:17 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-12-19 10:39:22 App\Jobs\ProcessCasesJob ....................... 4s DONE
+  2024-12-19 10:41:47 App\Jobs\ProcessCasesJob ....................... RUNNING
+  2024-12-19 10:42:01 App\Jobs\ProcessCasesJob ...................... 13s DONE

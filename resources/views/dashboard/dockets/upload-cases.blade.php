@@ -49,12 +49,12 @@
                             @csrf
                             <div class="row justify-content-center mb-5">
                                 <div class="col-6">
-                                    <div class="form-group mb-3 mt-5" @if (in_array(Auth::user()->access_type, registry_level()) ) style="display: none" @endif>
+                                    <div class="form-group mb-3 mt-5">
                                         <label for="case_category" class="form-label">Case category*</label>
                                         <select name="case_category" class="form-control select2" id="case_category" required>
                                             <option value=""></option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('case_category') == $category->id ? 'selected' : (count($categories) ==  1 ? 'selected' : '') }}>{{ $category->name }}@if(!in_array(Auth::user()->access_type, registry_level())) - {{  $category->courttypes->name }} @endif</option>
                                             @endforeach
                                         </select>
                                         @error('case_category')
