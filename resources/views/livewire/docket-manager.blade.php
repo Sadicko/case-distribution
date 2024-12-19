@@ -41,18 +41,21 @@
                                     <input type="date" name="endDate" id="endDate" class="form-control datepicker" placeholder="End date"
                                            autocomplete="off"  wire:model="endDate">
                                 </div>
-                                <div class="form-group col-9 mb-2">
+                                <div class="form-group col-8 mb-2">
                                     <label for="searchTerm"> Enter search</label>
                                     <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
                                 </div>
-                                <div class="form-group col-3 mb-2 mt-2">
+                                <div class="form-group col-4 mb-2 mt-2">
                                     <div class="form-group btn-group  d-flex justify-content-end pt-3">
                                         <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
                                                 class="fas fa-search"></i>
                                             Search</button>
                                         <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
                                                 class="fas fa-undo"></i>
-                                            Reset</button>
+                                            Reset search</button>
+                                            <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
+                                                class="fas fa-refresh"></i>
+                                            Refresh page</button>
                                     </div>
                                 </div>
                             @else
@@ -76,9 +79,12 @@
                                         <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
                                                 class="fas fa-search"></i>
                                             Search</button>
-                                        <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
+                                            <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
                                                 class="fas fa-undo"></i>
-                                            Reset</button>
+                                            Reset search</button>
+                                            <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
+                                                class="fas fa-refresh"></i>
+                                            Refresh page</button>
                                     </div>
                                 </div>
                             @endif
