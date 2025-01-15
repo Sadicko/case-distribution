@@ -259,9 +259,11 @@ class CourtController extends Controller
         // Sync the categories
         $court->categories()->sync($request->categories);
 
-        $this->createAuditTrail('Assigned ' . count($request->categories) . "categories to the court #" . $court->name);
+        $total_assigned = !empty($request->categories) ? count($request->categories): 0;
 
-        return to_route('courts')->with('success', count($request->categories) . ' categories assigned to ' . $court->name . ' successfully.');
+        $this->createAuditTrail('Assigned ' . $total_assigned . "categories to the court #" . $court->name);
+
+        return to_route('courts')->with('success', $total_assigned . ' categories assigned to ' . $court->name . ' successfully.');
 
     }
 
