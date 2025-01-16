@@ -95,7 +95,7 @@ class DocketController extends Controller
     public function saveCase(Request $request)
     {
         $request->validate([
-            'suit_number' => ['required', 'string', 'regex:/^[aA-zZ]{1,5}\/\d{4,5}\/\d{4}$/'],
+            'suit_number' => ['required', 'string', 'regex:/^[aA-zZ]{1,4}\d{1,4}\/\d{4}\/\d{4}$/'],
             'case_title' => ['required', 'string'],
             'case_category' => ['required', 'integer'],
             'commercial_type' => ['required_if:case_category,1', 'nullable'],
