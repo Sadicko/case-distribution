@@ -107,7 +107,6 @@ class CourtController extends Controller
             $this->createAuditTrail("Tried to add a court name #$request->court_name which already exist.");
 
             return back()->withInput()->withErrors(['court_name' => 'The court name is already taken.']);
-
         }
 
         $location = Location::query()->find($request->location);
@@ -259,12 +258,11 @@ class CourtController extends Controller
         // Sync the categories
         $court->categories()->sync($request->categories);
 
-        $total_assigned = !empty($request->categories) ? count($request->categories): 0;
+        $total_assigned = !empty($request->categories) ? count($request->categories) : 0;
 
-        $this->createAuditTrail('Assigned ' . $total_assigned . "categories to the court #" . $court->name);
+        $this->createAuditTrail('Assigned ' . $total_assigned . " categories to the court #" . $court->name);
 
         return to_route('courts')->with('success', $total_assigned . ' categories assigned to ' . $court->name . ' successfully.');
-
     }
 
     public function fetchCourts(Request $request)
@@ -277,7 +275,5 @@ class CourtController extends Controller
         }
 
         abort(404);
-
     }
-
 }

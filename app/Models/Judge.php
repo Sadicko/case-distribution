@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use PhpParser\Comment\Doc;
 
 class Judge extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $guarded = [];
 
@@ -44,5 +45,8 @@ class Judge extends Model
         return $this->belongsTo(CourtType::class, 'courttype_id');
     }
 
-
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_id');
+    }
 }

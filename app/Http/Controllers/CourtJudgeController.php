@@ -16,7 +16,7 @@ class CourtJudgeController extends Controller
     use AuditTrailLog;
     public function index($slug)
     {
-        if(Gate::denies('Assign court judges')){
+        if (Gate::denies('Assign court judges')) {
 
             $this->createAuditTrail("Denied access to  Assign court judges: Unauthorized");
 
@@ -35,7 +35,7 @@ class CourtJudgeController extends Controller
 
     public function assignJudge(Request $request, $slug)
     {
-        if(Gate::denies('Assign court judges')){
+        if (Gate::denies('Assign court judges')) {
 
             $this->createAuditTrail("Denied access to  Assign court judges: Unauthorized");
 
@@ -67,10 +67,8 @@ class CourtJudgeController extends Controller
         $court = Court::query()->find($request->court);
         $judge = Judge::query()->find($request->judge);
 
-        $this->createAuditTrail('Assigned the judge #'.$judge->name.' to the court #'.$court->name);
+        $this->createAuditTrail('Assigned the judge #' . $judge->name . ' to the court #' . $court->name);
 
         return redirect()->back()->with('success', 'Judge assigned successfully.');
     }
-
-
 }

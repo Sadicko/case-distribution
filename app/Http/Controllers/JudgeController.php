@@ -8,6 +8,7 @@ use App\Models\Judge;
 use App\Models\Location;
 use App\Traits\AuditTrailLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class JudgeController extends Controller
@@ -16,14 +17,14 @@ class JudgeController extends Controller
 
     public function index()
     {
-        if(Gate::denies('Manage judges')){
+        if (Gate::denies('Manage judges')) {
 
             $this->createAuditTrail("Denied access to  Manage judges: Unauthorized");
 
             return back()->with(['error' => 'You are not authorized to Manage judges.']);
         }
 
-        $judges = Judge::query()->with('currentCourt', 'currentCourt.locations')->latest()->get();
+        $judges = Judge::query()->with('currentCourt', 'currentCourt.locations', 'creator')->latest()->get();
 
         $this->createAuditTrail('Visited judges page.');
 
@@ -32,7 +33,7 @@ class JudgeController extends Controller
 
     public function create()
     {
-        if(Gate::denies('Create judges')){
+        if (Gate::denies('Create judges')) {
 
             $this->createAuditTrail("Denied access to  Create judges: Unauthorized");
 
@@ -40,7 +41,7 @@ class JudgeController extends Controller
         }
 
         $courttypes = Courttype::query()->where('status', '!=', 'Archived')->get();
-//        $locations = Location::query()->where('status', '!=', 'Archived')->get();
+        //        $locations = Location::query()->where('status', '!=', 'Archived')->get();
 
         $this->createAuditTrail('Visited judges creation page.');
 
@@ -60,16 +61,17 @@ class JudgeController extends Controller
             'name' => strtoupper($request->get('name')),
             'status' => $request->get('status'),
             'courttype_id' => $request->get('courttype'),
+            'created_by' => Auth::id(),
         ]);
 
-        $this->createAuditTrail('Created a new judge #'.$judge->name);
+        $this->createAuditTrail('Created a new judge #' . $judge->name);
 
         return back()->with('success', 'Judge created successfully.');
     }
 
     public function edit($slug)
     {
-        if(Gate::denies('Update judges')){
+        if (Gate::denies('Update judges')) {
 
             $this->createAuditTrail("Denied access to  Update judges: Unauthorized");
 
@@ -79,7 +81,7 @@ class JudgeController extends Controller
         $judge = Judge::query()->where('slug', $slug)->firstOrFail();
         $courttypes = Courttype::query()->where('status', '!=', 'Archived')->get();
 
-        $this->createAuditTrail('Visited edit page for #'.$judge->name);
+        $this->createAuditTrail('Visited edit page for #' . $judge->name);
 
         return view('dashboard.judges.edit', compact('judge', 'courttypes'));
     }
@@ -104,7 +106,7 @@ class JudgeController extends Controller
             'availability' => $request->get('availability') ? 1 : 0,
         ]);
 
-        $this->createAuditTrail('Updated records of the judge #'.$judge->name);
+        $this->createAuditTrail('Updated records of the judge #' . $judge->name);
 
         return back()->with('success', 'Judge records updated successfully.');
     }
