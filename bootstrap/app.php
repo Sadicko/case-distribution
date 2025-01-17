@@ -24,5 +24,5 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Schedule $schedule) {
         //schedule commands
         $schedule->command('backup:clean')->daily()->at('01:00');
-        $schedule->command('backup:run')->everyThreeHours($minutes = 0);
+        $schedule->command('backup:run')->weekdays()->everyThreeHours($minutes = 0)->between('6:00', '18:00');
     })->create();
