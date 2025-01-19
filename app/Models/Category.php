@@ -36,6 +36,36 @@ class Category extends Model
 
     }
 
+    public static function fetchCategoriesWithRegistries()
+    {
+        $user = Auth::user();
+
+        if ($user->hasRole('Super Admin') || !Gate::any(limited_access_level())) {
+
+            $query = static::query()->whereHas('registries', function ($qeury) {
+                $qeury->whereHas('courts');
+            });
+
+        } elseif (Gate::any(court_room_access_level())) {
+
+            $query = static::query()->whereHas('registries', function ($query) use ($user) {
+                $query->whereHas('courts', function ($subQuery) use ($user) {
+                    $subQuery->where('courts.id', $user->court_id);
+                });
+            });
+
+        } else {
+
+            $query = static::query()->whereHas('registries', function ($query) use ($user) {
+                $query->where('registries.id', $user->registry_id);
+            });
+        }
+
+        return $query;
+
+    }
+
+
     public static function fetchCategoriesWithCourt()
     {
         $user = Auth::user();

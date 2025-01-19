@@ -163,7 +163,8 @@ class Docket extends Model
 
             $query = static::query()->whereHas('courts', function ($query) use ($user) {
                 $query->where('registry_id', $user->registry_id);
-            });
+            })
+                ->orWhere('created_by', Auth::id());//Should Those who created it should be able to view, in the case of GJ - Commercial
         }
 
         return $query;

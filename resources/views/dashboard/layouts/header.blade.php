@@ -157,7 +157,7 @@
             </button>
 
             <!-- main menu Search-->
-            <div class="order-0 col-lg-4 col-md-6 col-sm-12 col-12 mb-3 mb-md-0 d-flex align-items-center">
+            <div class="order-0 col-lg-5 col-md-6 col-sm-12 col-12 mb-3 mb-md-0 d-flex align-items-center">
                 @canany(['manage_system', 'general_admin'])
                     <a class="menu-toggle-option me-3 text-primary d-flex align-items-center" href="#"
                        title="Menu Option">
