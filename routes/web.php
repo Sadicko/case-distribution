@@ -113,6 +113,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::get('reports', [ReportController::class, 'index'])->name('reports');
     Route::get('reports/case-load-by-registry', [ReportController::class, 'caseLoadByRegistry'])->name('reports.registry');
     Route::get('reports/case-load-by-courts', [ReportController::class, 'caseLoadByCourts'])->name('reports.courts');
+    Route::get('reports/cases-allocations-by-courts', [ReportController::class, 'caseAllocationByCourts'])->name('reports.cases');
 
     // courttypes
     Route::resource('courttypes', CourttypeController::class);

@@ -18,7 +18,7 @@
         </div>
 
         <div class="d-flex mb-2">
-            <h6 class="text-muted me-3">LEGAL YEAR:</h6>
+            <h6 class="text-muted me-3">Current Week:</h6>
             <small>{{ getCustomLocalDate($legalYearStart) .' - '. getCustomLocalDate($legalYearEnd) }}</small>
         </div>
 

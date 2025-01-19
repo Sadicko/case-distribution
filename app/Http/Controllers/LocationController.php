@@ -151,7 +151,7 @@ class LocationController extends Controller
             'location_name' => ['required', 'string', 'max:255'],
             'location_code' => ['nullable', 'string', 'max:255'],
             'status' => ['required', 'string', 'max:255'],
-            'court_type' => ['required', 'integer'],
+//            'court_type' => ['required', 'integer'],
             'region' => ['required', 'integer'],
         ]);
 

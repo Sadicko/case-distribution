@@ -63,8 +63,9 @@ class ReportController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function caseAllocationByCourts()
     {
+
         if (Gate::denies('Read reports')) {
 
             $this->createAuditTrail("Denied access to  Read reports: Unauthorized");
@@ -72,44 +73,18 @@ class ReportController extends Controller
             return back()->with(['error' => 'You are not authorized to Read reports.']);
         }
 
-
-        $q = $request->q;
         // Get the current date
         $currentDate = legalYear()['currentDate'];
         $currentYear = legalYear()['currentYear'];
-        $legalYearStart = legalYear()['legalYearStart'];
-        $legalYearEnd = legalYear()['legalYearEnd'];
+        // Get the current date
+        $today = Carbon::today();
+        $legalYearStart = $today->copy()->startOfWeek(Carbon::MONDAY);
+        $legalYearEnd = $legalYearStart->copy()->addDays(4); // Monday + 4 days = Friday
 
+        $this->createAuditTrail("Visited report page: Case allocations to courts.");
 
-        switch ($q) {
-            case "by-courts":
-                $view = "by-courts";
-                $title = "Reports by courts";
-                break;
-
-            case "by-registries":
-                $view = "by-registries";
-                $title = "Reports by registries";
-                break;
-
-            case "by-region":
-                $view = "by-regions";
-                $title = "Reports by regions";
-                break;
-
-            case "by-bail-type":
-                $view = "by-bail-type";
-                $title = "Reports by bail-types";
-                break;
-
-            default:
-                $view = "index";
-                $title = "Reports by status";
-                break;
-        }
-
-        $this->createAuditTrail("Visited report page.");
-
-        return view("dashboard.reports.$view", compact("legalYearStart", "legalYearEnd", 'title'));
+        return view("dashboard.reports.by-case-allocations", compact("legalYearStart", "legalYearEnd"));
     }
+
+
 }

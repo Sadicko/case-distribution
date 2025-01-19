@@ -22,14 +22,14 @@
             </li>
 
             @canany(['Read Workflow', 'Approve step one', 'Approve step two', 'Approve step three'])
-            <li>
-                <a class="m-link @yield('workflow_active')" href="{{ route('workflow') }}">
-                    <i class="fa-solid fa-newspaper"></i>
-                    <div>
-                        <h6 class="mb-0">Workflow</h6>
-                    </div>
-                </a>
-            </li>
+                <li>
+                    <a class="m-link @yield('workflow_active')" href="{{ route('workflow') }}">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <div>
+                            <h6 class="mb-0">Workflow</h6>
+                        </div>
+                    </a>
+                </li>
             @endcanany
 
             @canany(['Manage categories', 'Create categories', 'Read categories', 'Update categories', 'Delete categories', 'Print categories'])
@@ -129,6 +129,14 @@
                                 <i class="fas fa-bar-chart"></i>
                                 <div>
                                     <h6 class="mb-0">Workload Report</h6>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="m-link @yield('cases_report_active')" href="{{  route('reports.cases') }}">
+                                <i class="fas fa-line-chart"></i>
+                                <div>
+                                    <h6 class="mb-0">Court allocations</h6>
                                 </div>
                             </a>
                         </li>
