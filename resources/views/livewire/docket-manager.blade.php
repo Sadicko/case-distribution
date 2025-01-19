@@ -11,7 +11,62 @@
                 <div class="accordion-body">
                     <form id="filterForm"  wire:submit="search">
                         <div class="row mb-2">
-                            @if(!in_array(Auth::user()->access_type, court_room_level()))
+                            @if(Auth::user()->hasRole('Super Admin') || !Gate::any(limited_access_level()))
+                                <div class="col form-group">
+                                    <label for="location"  class="form-label">Location*</label>
+                                    <select class="form-control select2" name="location"  id="location" required wire:model="selectedLocation">
+                                        <option value="all">All</option>
+                                        @foreach($locations as $location)
+                                            <option value="{{ $location->id }}" {{ old('location', $selectedLocation) == $location->id ? 'selected' : '' }} >{{ $location->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col form-group">
+                                    <label for="registry"  class="form-label">Registry*</label>
+                                    <select class="form-control select2" name="registry"  id="registry" required wire:model="selectedRegistry">
+                                        <option value="all">All</option>
+                                        @foreach($registries as $registry)
+                                            <option value="{{ $registry->id }}" {{ old('registry', $selectedRegistry) == $registry->id ? 'selected' : '' }}>{{ $registry->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-3 mb-2">
+                                    <label for="court"  class="form-label">Court</label>
+                                    <select name="court" id="court" wire:model="selectedCourt" class="form-control select2">
+                                        <option value="all">All</option>
+                                        @foreach($courts as $court)
+                                            <option value="{{ $court->id }}"  {{ old('courts', $selectedCourt) == $court->id ? 'selected' : '' }}>{{ $court->name }}  @if(!in_array(Auth::user()->access_type, registry_level())) - {{  $court->courttypes->name }} @endif  </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-2 mb-2">
+                                    <label for="from">From</label>
+                                    <input type="date" name="startDate" id="startDate" class="form-control datepicker" placeholder="Start date"
+                                           autocomplete="off" wire:model="startDate">
+                                </div>
+                                <div class="form-group col-2 mb-2">
+                                    <label for="to"> To</label>
+                                    <input type="date" name="endDate" id="endDate" class="form-control datepicker" placeholder="End date"
+                                           autocomplete="off"  wire:model="endDate">
+                                </div>
+                                <div class="form-group col-8 mb-2">
+                                    <label for="searchTerm"> Enter search</label>
+                                    <input type="text" name="searchTerm" class="form-control" id="searchTerm" placeholder="Enter Suit no or Case title" wire:model="searchTerm" >
+                                </div>
+                                <div class="form-group col-4 mb-2 mt-2">
+                                    <div class="form-group btn-group  d-flex justify-content-end pt-3">
+                                        <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
+                                                class="fas fa-search"></i>
+                                            Search</button>
+                                        <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
+                                                class="fas fa-undo"></i>
+                                            Reset search</button>
+                                        <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
+                                                class="fas fa-refresh"></i>
+                                            Refresh page</button>
+                                    </div>
+                                </div>
+                            @elseif(!in_array(Auth::user()->access_type, court_room_level()))
                                 <div class="form-group col-5 mb-2" wire:ignore>
                                     <label for="case_category">Case category</label>
                                     <select name="category" id="case_category" wire:model.live="selectedCategory" class="form-control select2">
@@ -22,8 +77,8 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-3 mb-2">
-                                    <label for="case_court">Court</label>
-                                    <select name="court" id="case_court" wire:model="selectedCourt" wire:key="{{ $selectedCategory }}" @if(!$selectedCategory) disabled @endif class="form-control">
+                                    <label for="court">Court</label>
+                                    <select name="court" id="court" wire:model="selectedCourt" wire:key="{{ $selectedCategory }}" @if(!$selectedCategory) disabled @endif class="form-control select2">
                                         <option></option>
                                         @foreach ($courts as $court)
                                             <option value="{{ $court->id }}">{{ $court->name }}</option>
@@ -52,7 +107,7 @@
                                         <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
                                                 class="fas fa-undo"></i>
                                             Reset search</button>
-                                            <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
+                                        <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
                                                 class="fas fa-refresh"></i>
                                             Refresh page</button>
                                     </div>
@@ -78,10 +133,10 @@
                                         <button type="submit" class="btn btn-primary bg-dark btn-sm btn-block "><i
                                                 class="fas fa-search"></i>
                                             Search</button>
-                                            <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
+                                        <button type="button" class="btn btn-secondary btn-sm btn-block" wire:click="clear"><i
                                                 class="fas fa-undo"></i>
                                             Reset search</button>
-                                            <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
+                                        <button type="button" class="btn bg-danger text-white btn-sm btn-block" wire:click="$refresh"><i
                                                 class="fas fa-refresh"></i>
                                             Refresh page</button>
                                     </div>
@@ -191,9 +246,7 @@
             var selectData = $(this).select2("val");
         @this.set('selectedCategory', selectData);
         });
-        $('#case_court').select2({
-            placeholder: 'Choose court',
-        });
+
 
         // Gets today's date in YYYY-MM-DD format
         const today = new Date().toISOString().split('T')[0];
@@ -222,7 +275,7 @@
                     endDate.setAttribute('max', today);
                 }
 
-                $('#case_court').select2({
+                $('.select2').select2({
                     placeholder: 'Choose court',
                 });
 
@@ -233,7 +286,17 @@
         $('#filterForm').submit(function (event) {
             event.preventDefault(); // Prevent form submission if necessary
 
-            let selectedCourt = $('#case_court').val();
+            let selectedLocation = $('#location').val();
+            if (selectedLocation) {
+            @this.set('selectedLocation', selectedLocation);
+            }
+
+            let selectedRegistry = $('#registry').val();
+            if (selectedRegistry) {
+            @this.set('selectedRegistry', selectedRegistry);
+            }
+
+            let selectedCourt = $('#court').val();
             if (selectedCourt) {
             @this.set('selectedCourt', selectedCourt);
             }
