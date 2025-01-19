@@ -17,19 +17,22 @@ class CaseAllocationReport extends Component
     public $legalYearEnd;
 
 
+    //for general court, location and registry info on print page.
     public $courtSelected = null;
     public $courtRegistry = null;
     public $courtLocation = null;
 
+    //variables for listing
     public $categories;
     public $locations;
     public $registries;
+    public $courts;
+    public $dockets;
 
+    //from filter variables
     public $selectedCourt = 'all';
     public $selectedLocation = 'all';
     public $selectedRegistry = 'all';
-
-    public $dockets;
 
     public function mount($legalYearStart, $legalYearEnd)
     {
@@ -39,7 +42,7 @@ class CaseAllocationReport extends Component
         $this->startDate = $legalYearStart->format('Y-m-d');
         $this->endDate = $legalYearEnd->format('Y-m-d');
         $this->locations = Location::fetchLocations()->get();
-//        $this->categories = Category::getCategories()->with('courttypes')->get();
+        // $this->categories = Category::getCategories()->with('courttypes')->get();
         // $this->registries = Registry::fetchRegistry()->get();
 
         $this->fetchReport();
@@ -47,6 +50,8 @@ class CaseAllocationReport extends Component
 
     public function fetchReport()
     {
+//                 dd($this->selectedLocation . '-' . $this->selectedRegistry . '-' . $this->selectedCourt . '-' . $this->startDate . '-' . $this->endDate);
+
         sleep(0.5);
 
         $query = Docket::getDockets()->with('courts', 'judges');
@@ -55,7 +60,7 @@ class CaseAllocationReport extends Component
             $query->where('location_id', $this->selectedLocation);
             $this->courtLocation = Location::query()->find($this->selectedLocation);
         }
-
+//
         if (!empty($this->selectedRegistry) && $this->selectedRegistry != 'all') {
             $query->whereHas('courts', function ($subQuery) {
                 $subQuery->where('registry_id', $this->selectedRegistry);
@@ -76,9 +81,12 @@ class CaseAllocationReport extends Component
             ->orderBy('assigned_date', 'desc')
             ->get();
 
+        //get registries
         $this->registries = Registry::fetchRegistry()->whereHas('courts', function ($query) {
             $query->where('location_id', $this->selectedLocation);
         })->get();
+        //get courts
+        $this->courts =  Court::query()->where('registry_id', $this->selectedRegistry)->get();
 
         // dispatch event to the frontend
         $this->dispatch('search-completed');

@@ -47,7 +47,7 @@
                 <select class="form-control select2" name="location"  id="location" required wire:model="selectedLocation">
                     <option value="all">All</option>
                     @foreach($locations as $location)
-                        <option value="{{ $location->id }}" {{ old('location') == $location->id ? 'selected' : '' }} >{{ $location->name }}</option>
+                        <option value="{{ $location->id }}" {{ old('location', $selectedLocation) == $location->id ? 'selected' : '' }} >{{ $location->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -56,7 +56,7 @@
                 <select class="form-control select2" name="registry"  id="registry" required wire:model="selectedRegistry">
                     <option value="all">All</option>
                     @foreach($registries as $registry)
-                        <option value="{{ $registry->id }}" {{ old('registry') == $registry->id ? 'selected' : '' }} >{{ $registry->name }}</option>
+                        <option value="{{ $registry->id }}" {{ old('registry', $selectedRegistry) == $registry->id ? 'selected' : '' }}>{{ $registry->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -64,6 +64,9 @@
                 <label for="court"  class="form-label">Court</label>
                 <select name="court" id="court" wire:model="selectedCourt" class="form-control select2">
                     <option value="all">All</option>
+                    @foreach($courts as $court)
+                        <option value="{{ $court->id }}"  {{ old('courts', $selectedCourt) == $court->id ? 'selected' : '' }}>{{ $court->name }}  @if(!in_array(Auth::user()->access_type, registry_level())) - {{  $court->courttypes->name }} @endif  </option>
+                    @endforeach
                 </select>
             </div>
             {{--            <div class="col form-group">--}}
@@ -104,17 +107,13 @@
                 <h5 class="text-info text-uppercase text-center">
                     Case allocations
                     @if(Auth::user()->hasRole('Super Admin') || !Gate::any(limited_access_level()))
-                        {{ !empty($courtSelected) && ($selectedCourt != 'all') ? "for " . $courtSelected->name : ' For all courts' }}
+                        {{ !empty($courtSelected) && ($selectedCourt != 'all') ? "for " . $courtSelected->name : ' For all '.$courtRegistry?->name . " courts"  }}
 
-                        {{ !empty($courtRegistry) && ($selectedRegistry != 'all') ? ', '. $courtRegistry->name : ' under All registries' }}
-
-                        {{ !empty($courtLocation) && ($selectedLocation != 'all') ? ' - '. $courtLocation->name : ' - All court locations' }}
+                        {{ !empty($courtLocation) && ($selectedLocation != 'all') ? ' - '. $courtLocation->name : ' ' }}
                     @else
-                        {{ !empty($courtSelected) && ($selectedCourt != 'all') ? "for " . $courtSelected->name : ' For all courts' }}
+                        {{ !empty($courtSelected) && ($selectedCourt != 'all') ? "for " . $courtSelected->name : ' For all '.Auth::user()->registries->name . " courts"  }}
 
-                        {{ Auth::user()->registries->name }}
-
-                        {{  ' - '. Auth::user()->locations->name }}
+                        {{  ', '. Auth::user()->locations->name }}
                     @endif
                     <br> from
                     <br> {{  getCustomLocalDate($startDate) }} - {{  getCustomLocalDate($endDate) }}
@@ -146,7 +145,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="4"><h5 class="text-center text-muted">No records found</h5></td>
+                            <td colspan="6"><h5 class="text-center text-muted">No records found</h5></td>
                         </tr>
                     @endif
                     </tbody>
@@ -178,6 +177,7 @@
 
                 $('.select2').select2({
                     placeholder: 'Choose option',
+                    allowClear: true,
                 });
 
             }, 100); // Delay to ensure DOM is updated
