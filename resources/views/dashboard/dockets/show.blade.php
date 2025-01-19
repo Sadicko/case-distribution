@@ -131,7 +131,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="priority" class="form-label">Priority</label>
-                            <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority) }}</p>
+                            <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority_level) }}</p>
                         </div>
 {{--                        <div class="col-md-6 mb-3">--}}
 {{--                            <label for="priority" class="form-label">Reason</label>--}}

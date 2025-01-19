@@ -82,7 +82,7 @@
                                         <small class="invalid-feedback">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) && count($locations) > 0 )  @endif>
+                                    <div class="form-group mb-3" @if (in_array(Auth::user()->access_type, registry_level()) && count($locations) > 0 ) style="display: none"  @endif>
                                         <label for="location" class="form-label">Location*</label>
                                         <select name="location" class="form-control select2" id="location">
                                             <option value=""></option>
