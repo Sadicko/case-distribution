@@ -16,6 +16,9 @@ class CaseDistributionService
         //
     }
 
+    /**
+     * @throws \Exception
+     */
     public function assignCase($docket, $userId = null)
     {
         // Step 1: Fetch all eligible courts

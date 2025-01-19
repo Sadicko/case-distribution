@@ -17,7 +17,7 @@
                     <td>{{ $log->activity }}</td>
                     <td>{{ $log->comment }}</td>
                     <td>{{ $log->users->full_name }}</td>
-                    <td>{{ $log->created_at->format('d-m-Y H:i') }}</td>
+                    <td>{{ getCustomLocalTime($log->created_at) }}</td>
                 </tr>
             @endforeach
 

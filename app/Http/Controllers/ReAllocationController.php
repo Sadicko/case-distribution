@@ -79,7 +79,7 @@ class ReAllocationController extends Controller
             DB::transaction(function () use ($request, &$assignedCourt, &$docket) {
 
 
-                $reassignment = CaseReassignment::create([
+                $reassignment = CaseReassignment::query()->create([
                     'slug' => uniqid(),
                     'docket_id' => $docket->id,
                     'suit_number' => $docket->suit_number,
@@ -102,25 +102,25 @@ class ReAllocationController extends Controller
                     3 => 'Approve step three',
                 ];
 
-                // Fetch approvers dynamically based on the number of steps
-                $approvers = [];
+                // Fetch approvals dynamically based on the number of steps
+                $approvals = [];
                 for ($i = 1; $i <= $approvalSteps; $i++) {
 
-                    $approver = User::permission($permissions[$i] ?? '')->whereNotIn('id', $approvers)->inRandomOrder()->first();
+                    $approval = User::permission($permissions[$i] ?? '')->whereNotIn('id', $approvals)->inRandomOrder()->first();
 
-                    if ($approver) {
-                        $approvers[$i] = $approver->id;
+                    if ($approval) {
+                        $approvals[$i] = $approval->id;
                     } else {
-                        // Handle case where no approver is found for a step
-                        throw new Exception("No approver found for step $i");
+                        // Handle case where no approval is found for a step
+                        throw new Exception("No approval found for step $i");
                     }
                 }
 
                 // Create approval steps
-                foreach ($approvers as $step => $approverId) {
-                    CaseReassignmentApproval::create([
+                foreach ($approvals as $step => $approvalId) {
+                    CaseReassignmentApproval::query()->create([
                         'case_reassignment_id' => $reassignment->id,
-                        'approved_by' => $approverId,
+                        'approved_by' => $approvalId,
                         'step' => $step,
                     ]);
                 }
@@ -140,7 +140,7 @@ class ReAllocationController extends Controller
 
             Log::error("An error occurred during Reassignment submission for approval: " . $e->getMessage());
 
-            return back()->withInput()->with('error', "No approver found for steps. Try again or contact Administrator.");
+            return back()->withInput()->with('error', "No approval found for steps. Try again or contact Administrator.");
         }
     }
 
@@ -156,7 +156,7 @@ class ReAllocationController extends Controller
         $reAssignDocket = CaseReassignment::query()->with('dockets', 'categories', 'approvals')->where('slug', $request->slug)->firstOrFail();
 
         //check if current user has approval right or is the required person to approve.
-        $approval = CaseReassignmentApproval::where('case_reassignment_id', $reAssignDocket->id)
+        $approval = CaseReassignmentApproval::query()->where('case_reassignment_id', $reAssignDocket->id)
             ->where('is_approved', false)
             ->where('approved_by', Auth::id())
             ->first();
@@ -182,7 +182,7 @@ class ReAllocationController extends Controller
 
 
                 // Check if all approvals are done. Then update the docket itself and trigger re-assignment
-                $pendingApprovals = CaseReassignmentApproval::where('case_reassignment_id', $reAssignDocket->id)
+                $pendingApprovals = CaseReassignmentApproval::query()->where('case_reassignment_id', $reAssignDocket->id)
                     ->where('is_approved', false)
                     ->count();
 
@@ -194,7 +194,7 @@ class ReAllocationController extends Controller
                     $docket = $reAssignDocket->dockets;
                     $docket->update([
                         'category_id' => $reAssignDocket->category_id,
-                        'reason_for_assignment' => $reAssignDocket->reason_for_assignment
+                        'reason_for_assignment' => $reAssignDocket->reason_for_re_assignment
                     ]);
 
                     //log re-allocation
@@ -230,42 +230,42 @@ class ReAllocationController extends Controller
     }
 
 
-    public function approveReassignment($request, $id)
-    {
-        $approval = CaseReassignmentApproval::where('case_reassignment_id', $id)
-            ->where('is_approved', false)
-            ->where('approved_by', Auth::id())
-            ->first();
-
-        if (!$approval) {
-            return 'You do not have pending approval or you are not authorized to approved this re-allocation.';
-        }
-
-        // // Check if the user has already approved any step
-        // $alreadyApproved = CaseReassignmentApproval::where('case_reassignment_id', $id)
-        //     ->where('approved_by', Auth::id())
-        //     ->exists();
-
-        // if ($alreadyApproved) {
-        //     return 'You have already approved this re-allocation.';
-        // }
-
-        $approval->update([
-            'is_approved' => true,
-            'approved_by' => auth()->id(),
-        ]);
-
-        // Check if all approvals are done
-        $pendingApprovals = CaseReassignmentApproval::where('case_reassignment_id', $id)
-            ->where('is_approved', false)
-            ->count();
-
-        if ($pendingApprovals == 0) {
-            $reassignment = CaseReassignment::find($id);
-            $reassignment->update(['status' => 'approved']);
-            // Update docket or courts table as needed here
-        }
-
-        return redirect()->back()->with('success', 'Approval successful.');
-    }
+//    public function approveReassignment($request, $id)
+//    {
+//        $approval = CaseReassignmentApproval::query()->where('case_reassignment_id', $id)
+//            ->where('is_approved', false)
+//            ->where('approved_by', Auth::id())
+//            ->first();
+//
+//        if (!$approval) {
+//            return 'You do not have pending approval or you are not authorized to approved this re-allocation.';
+//        }
+//
+//        // // Check if the user has already approved any step
+//        // $alreadyApproved = CaseReassignmentApproval::where('case_reassignment_id', $id)
+//        //     ->where('approved_by', Auth::id())
+//        //     ->exists();
+//
+//        // if ($alreadyApproved) {
+//        //     return 'You have already approved this re-allocation.';
+//        // }
+//
+//        $approval->update([
+//            'is_approved' => true,
+//            'approved_by' => auth()->id(),
+//        ]);
+//
+//        // Check if all approvals are done
+//        $pendingApprovals = CaseReassignmentApproval::query()->where('case_reassignment_id', $id)
+//            ->where('is_approved', false)
+//            ->count();
+//
+//        if ($pendingApprovals == 0) {
+//            $reassignment = CaseReassignment::query()->find($id);
+//            $reassignment->update(['status' => 'approved']);
+//            // Update docket or courts table as needed here
+//        }
+//
+//        return redirect()->back()->with('success', 'Approval successful.');
+//    }
 }

@@ -133,10 +133,10 @@
                             <label for="priority" class="form-label">Priority</label>
                             <p class="form-control-plaintext" id="priority">{{ ucfirst($docket->priority) }}</p>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="priority" class="form-label">Reason</label>
-                            <p class="form-control-plaintext" id="priority">{{ $docket->reason_for_assignment }}</p>
-                        </div>
+{{--                        <div class="col-md-6 mb-3">--}}
+{{--                            <label for="priority" class="form-label">Reason</label>--}}
+{{--                            <p class="form-control-plaintext" id="priority">{{ $docket->reason_for_assignment }}</p>--}}
+{{--                        </div>--}}
                         @if($docket->disposed_by)
                         <div class="col-md-6 mb-3">
                             <label for="disposed_by" class="form-label">Disposed by</label>
