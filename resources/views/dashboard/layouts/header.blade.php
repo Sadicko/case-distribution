@@ -170,7 +170,8 @@
                 @endcanany
 
                 <div class="main-search px-3 flex-fill @canany(['manage_system', 'general_admin']) border-start  @endcanany">
-                    Hi {{ auth()->user()->first_name }}, Welcome.
+                    Hi {{ auth()->user()->first_name }}, Welcome. <br>
+                    <small class="text-muted">@if(auth()->user()->registries) {{ auth()->user()->registries->name }}, @endif  {{ auth()->user()->locations?->name }}</small>
                 </div>
             </div>
 

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('court_categories', function (Blueprint $table) {
+        Schema::create('registry_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('court_id')->constrained();
+            $table->foreignId('registry_id')->constrained();
             $table->foreignId('category_id')->constrained();
             $table->unsignedBigInteger('created_by')->nullable()->comment('who assigned or unassigned');
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('court_categories');
+        Schema::dropIfExists('registry_categories');
     }
 };

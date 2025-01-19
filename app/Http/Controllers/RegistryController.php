@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Courttype;
 use App\Models\Location;
 use App\Models\Registry;
@@ -23,7 +24,7 @@ class RegistryController extends Controller
             return back()->with(['error' => 'You are not authorized to Manage registries.']);
         }
 
-        $registries = Registry::withCount('courts')->orderby('name')->get();
+        $registries = Registry::query()->withCount('courts')->with('categories')->orderby('name')->get();
 
         $this->createAuditTrail("Visited Registry List page.");
 
@@ -204,4 +205,46 @@ class RegistryController extends Controller
 
         abort(404);
     }
+
+
+
+    public function assignCategories($slug)
+    {
+        if (Gate::denies('Assign categories to registries')) {
+
+            $this->createAuditTrail("Denied access to  Assign categories to registries: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Assign categories to registries.']);
+        }
+
+        $registry = Registry::query()->with('categories')->where('slug', $slug)->firstOrfail();
+
+        $categories = Category::query()->where('courttype_id', $registry->courttype_id)->get();
+
+        $this->createAuditTrail('Visited registry categories assignment page.');
+
+        return view('dashboard.registries.assign-categories', compact('registry', 'categories'));
+    }
+
+    public function saveCourtCategories(Request $request, $slug)
+    {
+        if (Gate::denies('Assign categories to registries')) {
+
+            $this->createAuditTrail("Denied access to  Assign categories to registries: Unauthorized");
+
+            return back()->with(['error' => 'You are not authorized to Assign categories to registries.']);
+        }
+
+        $registry = Registry::query()->where('slug', $slug)->firstOrfail();
+
+        // Sync the categories
+        $registry->categories()->sync($request->categories);
+
+        $total_assigned = !empty($request->categories) ? count($request->categories) : 0;
+
+        $this->createAuditTrail('Assigned ' . $total_assigned . " categories to the registry #" . $registry->name);
+
+        return to_route('registries')->with('success', $total_assigned . ' categories assigned to ' . $registry->name . ' successfully.');
+    }
+
 }

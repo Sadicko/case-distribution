@@ -82,14 +82,14 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @canany(['Update courts', 'Assign court judges', 'Assign categories courts'])
+                                                @canany(['Update courts', 'Assign court judges', 'Assign categories to courts'])
                                                     @can('Update courts')
                                                         <a href="{{ route('courts.edit', $court->slug) }}" class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-pencil"></i></a>
                                                     @endcan
                                                     @can('Assign court judges')
                                                         <a href="{{ route('court-judge', $court->slug) }}"  class="me-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change/Assign judge"><i class="fas fa-user-edit"></i></a>
                                                     @endcan
-                                                    @can('Assign categories courts')
+                                                    @can('Assign categories to courts')
                                                         <a href="{{ route('courts.assign-categories', $court->slug) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign Categories"><i class="fas fa-tasks"></i></a>
                                                     @endcan
                                                 @else

@@ -38,6 +38,7 @@
                                 <th>Status</th>
                                 <th>Access level</th>
                                 <th class="text-center">Roles</th>
+                                <th>Location</th>
                                 <th>Registry</th>
                                 <th>Court</th>
                                 <th>Last login</th>
@@ -82,6 +83,9 @@
                                             @endforeach
                                         @endif
 
+                                    </td>
+                                    <td>
+                                        {{ $user->locations?->name ?? '-'  }}
                                     </td>
                                     <td>
                                         {{ $user->registries?->name ?? '-'  }}

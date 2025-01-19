@@ -69,18 +69,19 @@ class ModuleSeeder extends Seeder
             //     ]
             // ],
 
-            // [
-            //     'slug' => uniqid(),
-            //     'name' => 'Registries',
-            //     'permissions' => [
-            //         'Manage registries',
-            //         'Create registries',
-            //         'Read registries',
-            //         'Update registries',
-            //         'Delete registries',
-            //         'Print registries',
-            //     ]
-            // ],
+            [
+                'slug' => uniqid(),
+                'name' => 'Registries',
+                'permissions' => [
+//                     'Manage registries',
+//                     'Create registries',
+//                     'Read registries',
+//                     'Update registries',
+//                     'Delete registries',
+//                     'Print registries',
+                    'Assign categories to registries',
+                ]
+            ],
             // [
             //     'slug' => uniqid(),
             //     'name' => 'Locations',
@@ -104,7 +105,7 @@ class ModuleSeeder extends Seeder
             //         'Delete courts',
             //         'Print courts',
             //         'Assign court judges',
-            //         'Assign categories courts',
+            //         'Assign categories to courts',
             //         'Read court logs',
             //     ]
             // ],

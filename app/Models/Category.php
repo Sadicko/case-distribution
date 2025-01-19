@@ -24,6 +24,12 @@ class Category extends Model
             ->withPivot('created_by');
     }
 
+    public function registries()
+    {
+        return $this->belongsToMany(Registry::class, 'registry_categories')
+            ->withPivot('created_by');
+    }
+
     public function dockets()
     {
         return $this->hasMany(Docket::class, 'category_id');

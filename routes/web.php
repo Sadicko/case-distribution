@@ -131,6 +131,8 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     Route::post('/registries/create', [RegistryController::class, 'store'])->name('registries.create');
     Route::get('/registries/{slug}/edit', [RegistryController::class, 'edit'])->name('registries.edit');
     Route::post('/registries/{slug}/edit', [RegistryController::class, 'update'])->name('registries.edit');
+    Route::get('/registries/assign/{slug}/categories', [RegistryController::class, 'assignCategories'])->name('registries.assign-categories');
+    Route::post('/registries/assign/{slug}/categories', [RegistryController::class, 'saveCourtCategories'])->name('registries.assign-categories');
     Route::post('/registry/fetch', [RegistryController::class, 'fetchRegistry']);
 
     // courts

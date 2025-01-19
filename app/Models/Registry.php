@@ -39,6 +39,14 @@ class Registry extends Model
         return $this->belongsTo(Courttype::class, 'courttype_id');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'registry_categories')
+            ->withPivot('created_by')
+            ->withTimestamps();
+    }
+
+
     public static function fetchRegistry()
     {
         $user = Auth::user();

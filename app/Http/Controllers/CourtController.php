@@ -228,29 +228,29 @@ class CourtController extends Controller
 
     public function assignCategories($slug)
     {
-        if (Gate::denies('Assign categories courts')) {
+        if (Gate::denies('Assign categories to courts')) {
 
-            $this->createAuditTrail("Denied access to  Assign categories courts: Unauthorized");
+            $this->createAuditTrail("Denied access to  Assign categories to courts: Unauthorized");
 
-            return back()->with(['error' => 'You are not authorized to Assign categories courts.']);
+            return back()->with(['error' => 'You are not authorized to Assign categories to courts.']);
         }
 
         $court = Court::query()->with('categories')->where('slug', $slug)->firstOrfail();
 
         $categories = Category::query()->where('courttype_id', $court->courttype_id)->get();
 
-        $this->createAuditTrail('Visited categories assign page.');
+        $this->createAuditTrail('Visited court categories assignment page.');
 
         return view('dashboard.courts.assign-categories', compact('court', 'categories'));
     }
 
     public function saveCourtCategories(Request $request, $slug)
     {
-        if (Gate::denies('Assign categories courts')) {
+        if (Gate::denies('Assign categories to courts')) {
 
-            $this->createAuditTrail("Denied access to  Assign categories courts: Unauthorized");
+            $this->createAuditTrail("Denied access to  Assign categories to courts: Unauthorized");
 
-            return back()->with(['error' => 'You are not authorized to Assign categories courts.']);
+            return back()->with(['error' => 'You are not authorized to Assign categories to courts.']);
         }
 
         $court = Court::query()->where('slug', $slug)->firstOrfail();
