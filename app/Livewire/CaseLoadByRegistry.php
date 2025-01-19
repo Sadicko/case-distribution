@@ -37,7 +37,7 @@ class CaseLoadByRegistry extends Component
 
         $this->startDate = $legalYearStart->format('Y-m-d');
         $this->endDate = $legalYearEnd->format('Y-m-d');
-        $this->categories = Category::getCategories()->with('courttypes')->get();
+        $this->categories = Category::fetchCategoriesWithRegistries()->with('courttypes')->get();
         $this->locations = Location::fetchLocations()->get();
         // $this->registries = Registry::fetchRegistry()->get();
 
@@ -54,19 +54,19 @@ class CaseLoadByRegistry extends Component
 
         if (!empty($this->selectedLocation) && $this->selectedLocation != 'all') {
             $query->where('location_id', $this->selectedLocation);
-            $this->courtLocation = Location::find($this->selectedLocation);
+            $this->courtLocation = Location::query()->find($this->selectedLocation);
         }
 
         if (!empty($this->selectedRegistry) && $this->selectedRegistry != 'all') {
             $query->whereHas('courts', function ($subQuery) {
                 $subQuery->where('registry_id', $this->selectedRegistry);
             });
-            $this->courtRegistry = Registry::find($this->selectedRegistry);
+            $this->courtRegistry = Registry::query()->find($this->selectedRegistry);
         }
 
         if (!empty($this->selectedCategory) && $this->selectedCategory != 'all') {
             $query->where('category_id', $this->selectedCategory);
-            $this->courtCategory = Category::find($this->selectedCategory);
+            $this->courtCategory = Category::query()->find($this->selectedCategory);
         }
 
         // Adjust the end date to be inclusive of the whole day

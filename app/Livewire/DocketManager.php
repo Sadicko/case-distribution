@@ -24,7 +24,7 @@ class DocketManager extends Component
 
     public function mount()
     {
-        $this->categories = Category::fetchCategoriesWithCourt()->with('courttypes')->get();
+        $this->categories = Category::fetchCategoriesWithRegistries()->with('courttypes')->get();
         $this->selectedCategory = null;
         $this->selectedCourt = null;
     }

@@ -169,16 +169,17 @@ class ModuleSeeder extends Seeder
             //         'Export roles',
             //     ]
             // ],
-            // [
-            //     'slug' => uniqid(),
-            //     'name' => 'System Settings',
-            //     'permissions' => [
-            //         'Manage settings',
-            //         'Create settings',
-            //         'Read settings',
-            //         'Update settings',
-            //     ]
-            // ],
+            [
+                'slug' => uniqid(),
+                'name' => 'System Settings',
+                'permissions' => [
+//                     'Manage settings',
+//                     'Create settings',
+//                     'Read settings',
+//                     'Update settings',
+                    'Manage admin metrics',
+                ]
+            ],
             // [
             //     'slug' => uniqid(),
             //     'name' => 'Logs',

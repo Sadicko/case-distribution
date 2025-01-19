@@ -29,6 +29,7 @@ class CaseDistributionService
             ->whereHas('categories', function ($query) use ($docket) {
                 $query->where('categories.id', $docket->category_id); // Match the case category
             })
+            ->whereNot('id', $docket->court_id) // Not same court->mostly if re-assigning
             ->whereHas('currentJudge')
             ->get();
 

@@ -157,7 +157,7 @@
             </button>
 
             <!-- main menu Search-->
-            <div class="order-0 col-lg-5 col-md-6 col-sm-12 col-12 mb-3 mb-md-0 d-flex align-items-center">
+            <div class="order-0 col-lg-6 col-md-6 col-sm-12 col-12 mb-3 mb-md-0 d-flex align-items-center">
                 @canany(['manage_system', 'general_admin'])
                     <a class="menu-toggle-option me-3 text-primary d-flex align-items-center" href="#"
                        title="Menu Option">
@@ -170,8 +170,8 @@
                 @endcanany
 
                 <div class="main-search px-3 flex-fill @canany(['manage_system', 'general_admin']) border-start  @endcanany">
-                    Hi {{ auth()->user()->first_name }}, Welcome. <br>
-                    <small class="text-muted">@if(auth()->user()->registries) {{ auth()->user()->registries->name }}, @endif  {{ auth()->user()->locations?->name }}</small>
+                    Hi {{ Auth::user()->first_name }}, Welcome. <br>
+                    <small class="text-muted text-uppercase" style="font-size: 12px">@if(Auth::user()->courts) {{ ucwords(Auth::user()->courts->name) }}, @endif @if(Auth::user()->registries) {{ Auth::user()->registries->name }}, @endif  {{ Auth::user()->locations?->name }}</small>
                 </div>
             </div>
 

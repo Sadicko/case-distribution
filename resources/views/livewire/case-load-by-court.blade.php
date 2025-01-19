@@ -93,13 +93,16 @@
                     <img src="{{ asset('images/coat_of_arms.png') }}" alt="coat_of_arms" style="width: 150px">
                 </div>
                 <h5 class="text-primary text-uppercase text-center">
-                    Workload load for
-                    {{ !empty($courtCategory) && ($selectedCategory != 'all') ? $courtCategory->name .' Courts' : ' For all courts' }}
+                    Workload load
+                    @if(Auth::user()->hasRole('Super Admin') || !Gate::any(limited_access_level()))
+                        {{ !empty($courtSelected) && ($selectedCourt != 'all') ? "for " . $courtSelected->name : ' For all '.$courtRegistry?->name . " courts"  }}
 
-                    {{ !empty($courtRegistry) && ($selectedRegistry != 'all') ? ' under '. $courtRegistry->name : ' under All registries' }}
+                        {{ !empty($courtLocation) && ($selectedLocation != 'all') ? ' - '. $courtLocation->name : ' ' }}
+                    @else
+                        {{ !empty($courtSelected) && ($selectedCourt != 'all') ? "for " . $courtSelected->name : ' For all '.Auth::user()->registries->name . " courts"  }}
 
-                    {{ !empty($courtLocation) && ($selectedLocation != 'all') ? ' - '. $courtLocation->name : ' - All court locations' }}
-
+                        {{  ', '. Auth::user()->locations->name }}
+                    @endif
                     {{-- <br> from
                     <br> {{  getCustomLocalDate($startDate) }} to {{  getCustomLocalDate($endDate) }} --}}
                 </h5>

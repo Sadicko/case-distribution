@@ -63,6 +63,10 @@ p, strong, i{
     line-height: 2.5rem;
 }
 
+.text-capitalize{
+    text-transform: capitalize !important;
+}
+
 .btn-primary{
     background-color: rgb(255 249 245 / var(--tw-bg-opacity));
 }
