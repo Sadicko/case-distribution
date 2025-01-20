@@ -152,6 +152,7 @@ return [
              */
             'disks' => [
                 'backups',
+//                'r2',
             ],
         ],
 

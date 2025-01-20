@@ -33,10 +33,10 @@ class ModuleSeeder extends Seeder
             //         'Print categories',
             //     ]
             // ],
-            [
-                'slug' => uniqid(),
-                'name' => 'Cases',
-                'permissions' => [
+//            [
+//                'slug' => uniqid(),
+//                'name' => 'Cases',
+//                'permissions' => [
                     // 'Manage cases',
                     // 'Create cases',
                     // 'Upload cases',
@@ -46,18 +46,18 @@ class ModuleSeeder extends Seeder
                     // 'Change case options',
                     // 'Set case as urgent',
                     // 'Set case location',
-                    'Re-assign cases by category',
-                    'Re-assign cases by orders',
-                    'Re-assign commercial cases',
+                    //'Re-assign cases by category',
+                    //'Re-assign cases by orders',
+                    //'Re-assign commercial cases',
                     // 'Track cases',
                     // 'Print cases',
                     // 'Download cases',
                     // 'Delete cases',
                     // 'Read case logs',
                     // 'Read case metadata',
-                    'Read case history',
-                ]
-            ],
+//                    'Read case history',
+//                ]
+//            ],
             // [
             //     'slug' => uniqid(),
             //     'name' => 'Reports',
@@ -194,16 +194,16 @@ class ModuleSeeder extends Seeder
             //         'Manage support',
             //     ]
             // ],
-            [
-                'slug' => uniqid(),
-                'name' => 'Workflow',
-                'permissions' => [
-                    'Read Workflow',
-                    'Approve step one',
-                    'Approve step two',
-                    'Approve step three',
-                ]
-            ],
+//            [
+//                'slug' => uniqid(),
+//                'name' => 'Workflow',
+//                'permissions' => [
+//                    'Read Workflow',
+//                    'Approve step one',
+//                    'Approve step two',
+//                    'Approve step three',
+//                ]
+//            ],
 
         ];
 

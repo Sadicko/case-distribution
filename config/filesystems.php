@@ -62,6 +62,16 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'r2' => [
+            'driver' => 's3',
+            'key' => env('CLOUDFLARE_ACCESS_KEY_ID'),
+            'secret' => env('CLOUDFLARE_SECRET_ACCESS_KEY'),
+            'region' => env('CLOUDFLARE_DEFAULT_REGION'),
+            'bucket' => env('CLOUDFLARE_BUCKET'),
+            'url' => env('CLOUDFLARE_URL'),
+            'endpoint' => env('CLOUDFLARE_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+        ],
 
     ],
 
