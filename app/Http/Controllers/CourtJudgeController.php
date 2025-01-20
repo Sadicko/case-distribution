@@ -51,7 +51,7 @@ class CourtJudgeController extends Controller
 
         // Mark the current judge as historical
         DB::table('court_judges')
-            ->where('id', $request->court)
+            ->where('court_id', $request->court)
             ->whereNull('unassigned_at')
             ->update(['unassigned_at' => Carbon::now()]);
 
@@ -72,5 +72,25 @@ class CourtJudgeController extends Controller
         $this->createAuditTrail('Assigned the judge #' . $judge->name . ' to the court #' . $court->name);
 
         return redirect()->back()->with('success', 'Judge assigned successfully.');
+    }
+
+
+    public function unAssignJudge(Request $request)
+    {
+        $request->validate([
+            'judge_id' => ['required', 'integer', 'exists:judges,id'],
+        ]);
+
+        // Mark the judge as historical judge for the current court
+        DB::table('court_judges')
+            ->where('judge_id', $request->judge_id)
+            ->whereNull('unassigned_at')
+            ->update([
+                'unassigned_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+
+        return redirect()->back()->with('success', 'Judge unassigned successfully.');
+
     }
 }

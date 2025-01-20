@@ -157,6 +157,7 @@ Route::middleware(['auth', 'auth.reset-password'])->group(function () {
     //court-judge assignment
     Route::get('/court-judge/{slug}/assign', [CourtJudgeController::class, 'index'])->name('court-judge');
     Route::post('/court-judge/{slug}/assign', [CourtJudgeController::class, 'assignJudge'])->name('court-judge');
+    Route::post('/court-judge/unassign', [CourtJudgeController::class, 'unAssignJudge'])->name('court-judge.unassign');
 
     // profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
