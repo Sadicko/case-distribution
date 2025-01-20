@@ -25,7 +25,9 @@ class CourtJudgeController extends Controller
 
         $court = Court::query()->where('slug', $slug)->firstOrFail();
         $currentJudge = $court->currentJudge->first();
-        $judges = Judge::query()->whereDoesntHave('courts')->where('courttype_id', $court->courttype_id)->get();
+        $judges = Judge::query()->whereDoesntHave('courts', function ($query){
+            $query->whereNull('unassigned_at');
+        })->where('courttype_id', $court->courttype_id)->get();
 
 
         $this->createAuditTrail('Visited court - judge assign page');

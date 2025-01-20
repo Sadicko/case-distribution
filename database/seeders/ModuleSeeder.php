@@ -69,19 +69,19 @@ class ModuleSeeder extends Seeder
             //     ]
             // ],
 
-            [
-                'slug' => uniqid(),
-                'name' => 'Registries',
-                'permissions' => [
+//            [
+//                'slug' => uniqid(),
+//                'name' => 'Registries',
+//                'permissions' => [
 //                     'Manage registries',
 //                     'Create registries',
 //                     'Read registries',
 //                     'Update registries',
 //                     'Delete registries',
 //                     'Print registries',
-                    'Assign categories to registries',
-                ]
-            ],
+//                    'Assign categories to registries',
+//                ]
+//            ],
             // [
             //     'slug' => uniqid(),
             //     'name' => 'Locations',
@@ -169,17 +169,17 @@ class ModuleSeeder extends Seeder
             //         'Export roles',
             //     ]
             // ],
-            [
-                'slug' => uniqid(),
-                'name' => 'System Settings',
-                'permissions' => [
+//            [
+//                'slug' => uniqid(),
+//                'name' => 'System Settings',
+//                'permissions' => [
 //                     'Manage settings',
 //                     'Create settings',
 //                     'Read settings',
 //                     'Update settings',
-                    'Manage admin metrics',
-                ]
-            ],
+//                    'Manage admin metrics',
+//                ]
+//            ],
             // [
             //     'slug' => uniqid(),
             //     'name' => 'Logs',
